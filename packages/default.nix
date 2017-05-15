@@ -6,4 +6,5 @@
 
 {
   ngrok = pkgs.callPackage ./ngrok.nix {};
+  xquartz-helpers = pkgs.callPackage ./xquartz-helpers.nix {};
 }
