@@ -39,7 +39,7 @@ addToFile '. $HOME/.nix-profile/etc/profile.d/nix.sh' "$HOME/.profile"
 addToFile 'export NIX_PATH=nixpkgs=$HOME/.nix-defexpr/channels/nixpkgs:corpkgs=$HOME/Development/nix-machines/packages:$NIX_PATH' "$HOME/.profile"
 
 touch ~/.bash_profile
-addToFile '. .profile' "$HOME/.bash_profile"
+addToFile '. $HOME/.profile' "$HOME/.bash_profile"
 
 if [ ! -e "$HOME/.nixpkgs/" ]; then
   mkdir -p $HOME/.nixpkgs/
