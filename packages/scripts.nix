@@ -2,7 +2,7 @@
 stdenv.mkDerivation {
   name = "corpscripts";
   src = ./scripts;
-  phases = [ "installPhase" ];
+  phases = [ "unpackPhase" "installPhase" ];
 
   installPhase = ''
     mkdir -p $out/bin
