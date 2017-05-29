@@ -36,16 +36,10 @@ fi
 logWork "Configuring ~/.profile and .bash_profile..."
 touch ~/.profile
 addToFile '. $HOME/.nix-profile/etc/profile.d/nix.sh' "$HOME/.profile"
-addToFile 'export NIX_PATH=nixpkgs=$HOME/.nix-defexpr/channels/nixpkgs:corpkgs=$HOME/Development/nix-machines/packages:$NIX_PATH' "$HOME/.profile"
+addToFile 'export NIX_PATH=nixpkgs=$HOME/.nix-defexpr/channels/nixpkgs' "$HOME/.profile"
 
 touch ~/.bash_profile
 addToFile '. $HOME/.profile' "$HOME/.bash_profile"
-
-if [ ! -e "$HOME/.nixpkgs/" ]; then
-  mkdir -p $HOME/.nixpkgs/
-  logWork "Configuring ~/.nixpkgs/config.nix..."
-  echo "{ allowUnfree = true; }" > $HOME/.nixpkgs/config.nix
-fi
 
 logWork "Checking for nix-machines..."
 if [ ! -e "$HOME/Development/nix-machines" ]; then
@@ -53,6 +47,12 @@ if [ ! -e "$HOME/Development/nix-machines" ]; then
   pushd $HOME/Development
   git clone git@github.com:corps/nix-machines.git
   popd
+fi
+
+if [ ! -e "$HOME/.nixpkgs/config.nix" ]; then
+  mkdir -p $HOME/.nixpkgs/
+  logWork "Linking config.nix"
+  ln -s $HOME/Development/nix-machines/config.nix $HOME/.nixpkgs/config.nix
 fi
 
 logWork "Loading nix environment"
