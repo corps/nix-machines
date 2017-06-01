@@ -5,6 +5,7 @@
     in 
     with self; rec {
 
+    dropbox_uploader = pkg packages/dropbox_uploader.nix {};
     ngrok = pkg packages/ngrok.nix {};
     xquartz-helpers = pkg packages/xquartz-helpers.nix {};
     corpscripts = pkg packages/scripts.nix {};
