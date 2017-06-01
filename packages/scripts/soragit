@@ -1,0 +1,24 @@
+#! /usr/bin/env nix-shell
+#! nix-shell -i bash -p curl jq
+
+if [ ! -e $HOME/.github.token ]; then
+  echo "Put your github token into ~/.github.token"
+  exit 1
+fi
+
+token=`cat $HOME/.github.token`
+
+function getIssues {
+  issues=`curl -H "Authorization: token $token" https://api.github.com/repos/OKSKY/oksky-chat/issues?assignee=$1 -s`
+  echo ""
+  echo "Stats for $1"
+  echo "Issue Count: $(echo $issues | jq length)" 
+  echo "Pull Count: $(echo $issues | jq '[.[].pull_request?] | map(select(.)) | length')" 
+  echo "link: https://github.com/OKSKY/oksky-chat/issues?q=assignee%3A$1+is%3Aopen"
+}
+
+getIssues noda-solairo
+getIssues Yukaaaah
+getIssues kuczmama
+getIssues naokikurosawa
+getIssues ssimic
