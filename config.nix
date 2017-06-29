@@ -3,11 +3,11 @@
     let self = super.pkgs; 
         pkg = pkgs.callPackage;
     in 
-    with self; rec {
+  with self; rec {
 
     dropbox_uploader = pkg packages/dropbox_uploader.nix {};
     ngrok = pkg packages/ngrok.nix {};
-    xquartz-helpers = pkg packages/xquartz-helpers.nix {};
+    xhelpers = pkg packages/xhelpers.nix {};
     corpscripts = pkg packages/scripts.nix {};
   };
 
