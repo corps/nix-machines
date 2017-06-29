@@ -37,6 +37,7 @@ logWork "Configuring ~/.profile and .bash_profile..."
 touch ~/.profile
 addToFile '. $HOME/.nix-profile/etc/profile.d/nix.sh' "$HOME/.profile"
 addToFile 'export NIX_PATH=nixpkgs=$HOME/.nix-defexpr/channels/nixpkgs' "$HOME/.profile"
+addToFile 'export GTK_IM_MODULE=ibus' "$HOME/.profile"
 
 touch ~/.bash_profile
 addToFile '. $HOME/.profile' "$HOME/.bash_profile"

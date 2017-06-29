@@ -1,6 +1,6 @@
 { config, lib, pkgs, ... }:
 
-let localPkgs = import ../../packages { inherit pkgs; }; in
+let localPkgs = (import ../../config.nix { inherit pkgs; }).packageOverrides pkgs; in
 {
   environment.systemPackages = with pkgs; [
     chromium
