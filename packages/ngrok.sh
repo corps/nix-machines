@@ -8,7 +8,6 @@ if [ ! -e $HOME/bin/ngrok ]; then
   cd $HOME/bin
   unzip ngrok.zip
   rm ngrok.zip
-  ./ngrok
 fi
 
 cd $HOME/bin
