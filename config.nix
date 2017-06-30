@@ -8,6 +8,7 @@
     ngrok = pkg packages/ngrok.nix {};
     xhelpers = pkg packages/xhelpers.nix {};
     corpscripts = pkg packages/scripts.nix {};
+    freeciv = pkg packages/freeciv.nix {};
   };
 
   allowUnfree = true;
