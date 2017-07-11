@@ -33,14 +33,15 @@ if [ ! -e "/nix" ]; then
   curl https://nixos.org/nix/install | sh
 fi
 
-logWork "Configuring ~/.profile and .bash_profile..."
+logWork "Configuring ~/.profile .bash_profile and bashrc..."
 touch ~/.profile
 addToFile '. $HOME/.nix-profile/etc/profile.d/nix.sh' "$HOME/.profile"
-addToFile 'export NIX_PATH=nixpkgs=$HOME/.nix-defexpr/channels/nixpkgs' "$HOME/.profile"
 addToFile 'export GTK_IM_MODULE=ibus' "$HOME/.profile"
 
 touch ~/.bash_profile
 addToFile '. $HOME/.profile' "$HOME/.bash_profile"
+touch ~/.bashrc
+addToFile '. $HOME/.profile' "$HOME/.bashrc"
 
 logWork "Checking for nix-machines..."
 if [ ! -e "$HOME/Development/nix-machines" ]; then

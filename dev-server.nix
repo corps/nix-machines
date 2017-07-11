@@ -7,6 +7,7 @@
     ./modules/system/xserver.nix
     ./modules/system/fonts.nix
     ./modules/system/input-methods.nix
+    ./modules/system/audio.nix
     ./modules/users/dame.nix
   ];
 }
