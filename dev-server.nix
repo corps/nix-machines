@@ -10,4 +10,6 @@
     ./modules/system/audio.nix
     ./modules/users/dame.nix
   ];
+
+  time.timeZone = "Asia/Tokyo";
 }
