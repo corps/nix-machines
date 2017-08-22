@@ -33,16 +33,6 @@ if [ ! -e "/nix" ]; then
   curl https://nixos.org/nix/install | sh
 fi
 
-logWork "Configuring ~/.profile .bash_profile and bashrc..."
-touch ~/.profile
-addToFile '. $HOME/.nix-profile/etc/profile.d/nix.sh' "$HOME/.profile"
-addToFile 'export GTK_IM_MODULE=ibus' "$HOME/.profile"
-
-touch ~/.bash_profile
-addToFile '. $HOME/.profile' "$HOME/.bash_profile"
-touch ~/.bashrc
-addToFile '. $HOME/.profile' "$HOME/.bashrc"
-
 logWork "Checking for nix-machines..."
 if [ ! -e "$HOME/Development/nix-machines" ]; then
   mkdir -p $HOME/Development
@@ -50,12 +40,3 @@ if [ ! -e "$HOME/Development/nix-machines" ]; then
   git clone git@github.com:corps/nix-machines.git
   popd
 fi
-
-if [ ! -e "$HOME/.nixpkgs/config.nix" ]; then
-  mkdir -p $HOME/.nixpkgs/
-  logWork "Linking config.nix"
-  ln -s $HOME/Development/nix-machines/config.nix $HOME/.nixpkgs/config.nix
-fi
-
-logWork "Loading nix environment"
-. $HOME/.nix-profile/etc/profile.d/nix.sh

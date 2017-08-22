@@ -1,6 +1,5 @@
 { config, lib, pkgs, ... }:
 
-let localPkgs = (import ../../config.nix { inherit pkgs; }).packageOverrides pkgs; in
 {
   environment.systemPackages = with pkgs; [
     chromium
@@ -12,16 +11,8 @@ let localPkgs = (import ../../config.nix { inherit pkgs; }).packageOverrides pkg
     patchelf
     file
     jre
-    localPkgs.ngrok
+    ngrok
   ];
-
-  nixpkgs.config = {
-    allowUnfree = true;
-    chromium = {
-      enablePepperFlash = true;
-      enablePepperPDF = true;
-    };
-  };
 
   programs = {
     bash.enableCompletion = true;
