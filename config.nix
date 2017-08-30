@@ -9,7 +9,9 @@
     xhelpers = pkg packages/xhelpers.nix {};
     corpscripts = pkg packages/scripts.nix {};
     freeciv = pkg packages/freeciv.nix {};
+    my_neovim = pkg packages/vim {};
   };
 
   allowUnfree = true;
+  vim.ftNix = false; # http://nicknovitski.com/vim-nix-syntax
 }
