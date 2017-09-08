@@ -23,14 +23,15 @@ plugins = %w[
   kopischke/vim-fetch
   pangloss/vim-javascript
   michalliu/sourcebeautify.vim
-  vim-scripts/Css-Pretty
   sheerun/vim-polyglot
   Shougo/denite.nvim
-  mhartington/nvim-typescript
   tpope/vim-eunuch
   tpope/vim-fugitive
   tpope/vim-rails
+  vim-ruby/vim-ruby
   tpope/vim-surround
+  jeetsukumaran/vim-buffergator
+  mhartington/nvim-typescript
 ]
 
 existing =

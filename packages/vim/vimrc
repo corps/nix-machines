@@ -1,8 +1,3 @@
-" set background=dark
-" set termguicolors
-" set Vim-specific sequences for RGB colors
-" let &t_8f = "\<Esc>[38;2;%lu;%lu;%lum"
-" let &t_8b = "\<Esc>[48;2;%lu;%lu;%lum"
 colorscheme srcery
 
 syntax on
@@ -16,46 +11,64 @@ set mouse-=a                     " disable mouse
 set hidden                      " don't abadon buffers
 set diffopt+=iwhite             " ignore whitespace in diff-mode
 set autoread                    " update changed files
-let mapleader = "\<tab>"
+" let mapleader = "\<tab>"
+map <space> <leader>
+map <space><space> <leader><leader>
 
-set hlsearch history=10000 
+set hlsearch history=10000
+
+au FileType haskell,vhdl,ada            let b:comment_leader = '-- '
+au FileType vim                         let b:comment_leader = '" '
+au FileType c,cpp,java,go,typescript    let b:comment_leader = '// '
+au FileType sh,make,ruby                let b:comment_leader = '# '
+au FileType tex                         let b:comment_leader = '% '
+noremap <silent> ,c :<C-B>sil <C-E>s/^/<C-R>=escape(b:comment_leader,'\/')<CR>/<CR>:noh<CR>
+noremap <silent> ,u :<C-B>sil <C-E>s/^\V<C-R>=escape(b:comment_leader,'\/')<CR>//e<CR>:noh<CR>
+
+" gt for buffer
+map <leader>] :BuffergatorMruCycleNext<CR>
+" gT for buffer
+map <leader>[ :BuffergatorMruCyclePrev<CR>
+" close current buffer
+map gc :bdelete<CR>
+
+" grepping
+nmap <leader>g <plug>(GrepperOperator)
+xmap <leader>g <plug>(GrepperOperator)
+
+nnoremap <leader>o :Rexplore<CR>
+
+" Allow switching windows even if terminal is open.
+tnoremap <C-w>w <C-\><C-n><C-w>w
+tnoremap <C-w>W <C-\><C-n><C-w>W
+
+" Fuzzy matching (used instead of ctrlp)
+nnoremap <leader>p :FuzzyOpen<CR>
 
 " set incsearch
-
 " haya14busa/incsearch
-" map /  <Plug>(incsearch-forward)
-" map ?  <Plug>(incsearch-backward)
-" map g/ <Plug>(incsearch-stay)
-
+set ignorecase smartcase        " better searching
 let g:incsearch#auto_nohlsearch = 1
+map /  <Plug>(incsearch-forward)
+map ?  <Plug>(incsearch-backward)
+map g/ <Plug>(incsearch-stay)
 map n  <Plug>(incsearch-nohl-n)
 map N  <Plug>(incsearch-nohl-N)
 map *  <Plug>(incsearch-nohl-*)
 map #  <Plug>(incsearch-nohl-#)
 map g* <Plug>(incsearch-nohl-g*)
 map g# <Plug>(incsearch-nohl-g#)
-
-" map z/ <Plug>(incsearch-fuzzy-/)
-" map z? <Plug>(incsearch-fuzzy-?)
-" map zg/ <Plug>(incsearch-fuzzy-stay)
-map / <Plug>(incsearch-fuzzy-/)
-map ? <Plug>(incsearch-fuzzy-?)
-map g/ <Plug>(incsearch-fuzzy-stay)
+map z/ <Plug>(incsearch-fuzzy-/)
+map z? <Plug>(incsearch-fuzzy-?)
+map zg/ <Plug>(incsearch-fuzzy-stay)
 
 set backspace=indent,eol,start " Make backspace work cool
-
 set expandtab autoindent tabstop=2 shiftwidth=2
-" set foldmethod=indent foldlevel=1000
-" set updatetime=500
-
-set ignorecase smartcase        " better searching
 set undolevels=10000            " many undos
-" set noshelltemp
 set noerrorbells                " no bells and whistles
 set novisualbell                " no bells and whistles
 set grepprg=grep\ -nH\ $*
 set shortmess=a
-" set rtp+=/usr/share/vim/addons
 set shell=bash
 set gdefault
 set colorcolumn=100
@@ -100,47 +113,7 @@ set viminfo='20,<1000,s100,h,n~/.vim/tmp/info
 set undodir=~/.vim/undo//
 set undofile
 
-" grepping
-nmap <leader>g <plug>(GrepperOperator)
-xmap <leader>g <plug>(GrepperOperator)
-
-" lessspace.vim
-" let g:lessspace_blacklist = ['javascript', 'yaml']
-
-
-" Allow switching windows even if terminal is open.
-tnoremap <C-w>w <C-\><C-n><C-w>w
-tnoremap <C-w>W <C-\><C-n><C-w>W
-
 let g:deoplete#enable_at_startup = 1
-
-" let g:neomake_elixir_enabled_makers = ['elixir']
-" let g:neomake_elixir_elixir_maker = {
-      " \ 'exe' : 'mix',
-      " \ 'args': ['compile', '--warnings-as-errors'],
-      " \ 'cwd': getcwd(),
-      " \ 'errorformat':
-        " \ '** %s %f:%l: %m,' .
-        " \ '%f:%l: warning: %m'
-      " \ }
-
-" airline
-let g:airline#extensions#tabline#enabled = 1
-let g:airline#extensions#tabline#left_sep = ' '
-let g:airline#extensions#tabline#left_alt_sep = '|'
-" let g:airline_powerline_fonts = 1
-let g:airline#extensions#tabline#enabled = 1
-
-" Fuzzy matching (used instead of ctrlp)
-nnoremap <leader>p :FuzzyOpen<CR>
-" nnoremap <C-p> :FuzzyOpen<CR>
-
-" CtrlP
-" let g:ctrlp_max_files = 100000
-" let g:ctrlp_match_func = {'match': 'cpsm#CtrlPMatch'}
-" React
-" let g:jsx_ext_required = 0
-" NeoFormat
 
 let g:neoformat_only_msg_on_error = 1
 let g:neoformat_enabled_typescript = ['prettier']
@@ -161,23 +134,6 @@ augroup END
 set number
 let g:vimwiki_list = [{'path': '~/Dropbox/wiki', 'path_html': '~/Dropbox/wiki_html'}]
 let g:tex_flavor = "latex"
-
-let g:treeExplVertical = 1
-let g:treeExplWinSize = 10
-let g:treeExplIndent = 2
-
-" gt for buffer
-map gb :bnext<CR>
-" gT for buffer
-map gB :bprevious<CR>
-" close current buffer
-map gc :bdelete<CR>
-" force close current buffer
-map gC :bdelete!<CR>
-
-" vnoremap <c-a> :Inc<CR>
-" vnoremap # y?\V<C-R>=substitute(escape(@@,"/\\"),"\n","\\\\n","ge")<CR><CR>
-" vnoremap * y/\V<C-R>=substitute(escape(@@,"/\\"),"\n","\\\\n","ge")<CR><CR>
 
 " au BufRead,BufNewFile *.rb set tags=~/izip/darcs/opensource/tags,tags
 au BufRead,BufNewFile *.rb set tags=tags,~/c/ramaze/tags
@@ -205,14 +161,6 @@ au FileType ruby,eruby,nagaro let g:rubycomplete_include_object_space = 1
 " au FileType neko map <F5> :w<CR>:!rake run:%<CR>
 " au FileType oxid map <F5> :w<CR>:!oxid %<CR>
 " au FileType ruby map <F5> :w<CR>:!ruby %<CR>
-
-au FileType haskell,vhdl,ada            let b:comment_leader = '-- '
-au FileType vim                         let b:comment_leader = '" '
-au FileType c,cpp,java,go,typescript    let b:comment_leader = '// '
-au FileType sh,make,ruby                let b:comment_leader = '# '
-au FileType tex                         let b:comment_leader = '% '
-noremap <silent> ,c :<C-B>sil <C-E>s/^/<C-R>=escape(b:comment_leader,'\/')<CR>/<CR>:noh<CR>
-noremap <silent> ,u :<C-B>sil <C-E>s/^\V<C-R>=escape(b:comment_leader,'\/')<CR>//e<CR>:noh<CR>
 " ,c comments out a region
 " ,u uncomments a region
 

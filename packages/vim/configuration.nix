@@ -6,7 +6,6 @@ in {
     knownPlugins = pkgs.vimPlugins // plugins;
     pluginDictionaries = [{
       names = [
-        "css-pretty"
         "denite-nvim"
         "deoplete-nvim"
         "editorconfig-vim"
@@ -20,6 +19,7 @@ in {
         "supertab"
         "vim-airline"
         "vim-airline-themes"
+        "vim-buffergator"
         "vim-eunuch"
         "vim-fetch"
         "vim-fugitive"
@@ -28,6 +28,7 @@ in {
         "vim-javascript"
         "vim-polyglot"
         "vim-rails"
+        "vim-ruby"
         "vim-srcery"
         "vim-surround"
         "vimwiki"
