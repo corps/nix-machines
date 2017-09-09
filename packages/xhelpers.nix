@@ -1,6 +1,6 @@
 { stdenv, wmctrl, substituteAll, bash, wget, setxkbmap }:
 
-let 
+let
 
 bringToFrontScript = { window, name ? window }: substituteAll {
   src = ./bring-to-front.sh;
@@ -29,8 +29,8 @@ stdenv.mkDerivation rec {
 
   installPhase = ''
     mkdir -p $out/bin
-    cp $bringWebstorm $out/bin/bring-webstorm-to-front    
-    cp $bringRubymine $out/bin/bring-rubymine-to-front    
+    cp $bringWebstorm $out/bin/bring-webstorm-to-front
+    cp $bringRubymine $out/bin/bring-rubymine-to-front
     cp $bringChromium $out/bin/bring-chromium-to-front
     cp $bringTerminal $out/bin/bring-terminal-to-front
     cp $xinits $out/bin/my-xinits

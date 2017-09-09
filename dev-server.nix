@@ -1,15 +1,15 @@
 { config, lib, pkgs, ... }:
 {
   imports = [
-    ./modules/nixpkgs.nix
-    ./modules/system/networking.nix
-    ./modules/system/software.nix
-    ./modules/system/ssh.nix
-    ./modules/system/xserver.nix
-    ./modules/system/fonts.nix
-    ./modules/system/input-methods.nix
-    ./modules/system/audio.nix
-    ./modules/users/dame.nix
+    ./modules/nixos/nixpkgs.nix
+    ./modules/nixos/networking.nix
+    ./modules/nixos/software.nix
+    ./modules/nixos/ssh.nix
+    ./modules/nixos/xserver.nix
+    ./modules/nixos/fonts.nix
+    ./modules/nixos/input-methods.nix
+    ./modules/nixos/audio.nix
+    ./modules/nixos/dame.nix
   ];
 
   time.timeZone = "Asia/Tokyo";
