@@ -1,3 +1,0 @@
-#! /usr/bin/env nix-shell
-#! nix-shell -i bash -p ruby_2_4
-ruby update_plugins.rb
