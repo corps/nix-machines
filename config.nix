@@ -12,6 +12,7 @@
     my_neovim = pkg ./packages/vim {};
     fetch_from_github = pkg ./packages/fetch-from-github.nix {};
     uglifyjs = (pkg ./packages/uglifyjs {})."uglify-js-3.1.0";
+    jupyter = pkg ./packages/jupyter {};
   };
 
   allowUnfree = true;

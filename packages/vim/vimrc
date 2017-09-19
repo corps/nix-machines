@@ -15,6 +15,9 @@ set autoread                    " update changed files
 map <space> <leader>
 map <space><space> <leader><leader>
 
+" Leave terminal mode with escape
+tnoremap <Esc> <C-\><C-n>
+
 set hlsearch history=10000
 
 au FileType haskell,vhdl,ada            let b:comment_leader = '-- '
@@ -164,7 +167,8 @@ au FileType ruby,eruby,nagaro let g:rubycomplete_include_object_space = 1
 " ,c comments out a region
 " ,u uncomments a region
 
-autocmd! BufWritePost * Neomake
+" autocmd! BufWritePost * Neomake
+call neomake#configure#automake('w', 10)
 
 au BufEnter,BufRead,BufNewFile *.proto setfiletype proto
 

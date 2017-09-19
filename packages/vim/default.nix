@@ -10,3 +10,5 @@ neovim.override {
   ];
   configure = (import ./configuration.nix { inherit pkgs; });
 }
+
+

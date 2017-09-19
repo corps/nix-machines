@@ -1,6 +1,15 @@
 { pkgs, fetchFromGitHub }:
 let buildVimPlugin = pkgs.vimUtils.buildVimPluginFrom2Nix;
 in {
+  neoterm = buildVimPlugin {
+    name = "neoterm";
+    src = fetchFromGitHub {
+      owner = "kassio";
+      repo = "neoterm";
+      rev = "701c9fb20ebac1c4d05410f8054fa004bc9ecba4";
+      sha256 = "1wblgjn4c6ai7jb46xv3vx4dpwbmxrs5wr1824z2blnb17glas7p";
+    };
+  };
   denite-nvim = buildVimPlugin {
     name = "denite-nvim";
     src = fetchFromGitHub {
@@ -123,8 +132,8 @@ in {
     src = fetchFromGitHub {
       owner = "neomake";
       repo = "neomake";
-      rev = "f5f2ff9a58180f7994563f8e6d3ae11dec0483d6";
-      sha256 = "1j0pff0jrycfgnq2vcs1r90vpgvfqdia9xi5h43cx928cmkkkd3y";
+      rev = "f2bb4aeeb2a76b76c39d2a99372f64c0278274a8";
+      sha256 = "1p2bc6i081i2i3vdpbm3w5cs6j1vr1j6qsdic95jn4q0b4g1njbc";
     };
   };
   vim-javascript = buildVimPlugin {

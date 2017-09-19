@@ -14,7 +14,7 @@ substituteAll rec {
     url="https://github.com/$repoName/archive/''${rev}.tar.gz"
     sha256=$(nix-prefetch-url --unpack --type sha256 "$url" --quiet)
 
-    echo "fetchFromGithub {
+    echo "fetchFromGitHub {
       owner = \"$owner\";
       repo = \"$repo\";
       rev = \"$rev\";
