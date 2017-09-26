@@ -13,7 +13,12 @@
     fetch_from_github = pkg ./packages/fetch-from-github.nix {};
     uglifyjs = (pkg ./packages/uglifyjs {})."uglify-js-3.1.0";
     jupyter = pkg ./packages/jupyter {};
+    universal-ctags = pkg ./packages/universal-ctags.nix {};
 
+    recover = {
+      inherit jupyter my_neovim fetch_from_github uglifyjs xhelpers corpscripts autossh fzy
+      imagemagick wget universal-ctags;
+    };
     # inherit (pkgs.callPackage ./packages/nix.nix {}) nix;
   };
 
