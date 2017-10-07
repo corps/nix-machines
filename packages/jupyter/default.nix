@@ -3,18 +3,18 @@
 
 let
 
-jupyter = import ./python-env.nix { inherit pkgs fetchFromGitHub; };
-ihaskell = import ./ihaskell.nix { inherit jupyter fetchFromGitHub; };
-
-writeKernelFile = { name, language, display_name, argv }:
+writeKernelFile = json@{ name, argv, ...}:
   writeTextFile {
     name = "kernel.json";
     destination = "/kernels/${name}/kernel.json";
-    text = builtins.toJSON  { 
-      inherit language display_name; 
-      argv = argv ++ ["{connection_file}"]; 
-    };
+    text = builtins.toJSON  (json // {
+      argv = argv ++ ["{connection_file}"];
+    });
   };
+
+jupyter = import ./python-env.nix { inherit pkgs fetchFromGitHub; };
+ihaskell = import ./ihaskell.nix { inherit jupyter fetchFromGitHub; };
+bash_kernel = import ./bash_kernel.nix { inherit pkgs fetchFromGitHub writeScriptBin; };
 
 kernels = {
   python3 = null;
@@ -25,10 +25,19 @@ kernels = {
       "${ihaskell}/bin/ihaskell"
     ];
   };
+  bash = {
+    language = "bash";
+    display_name = "Bash";
+    env = { PS1 = "$"; };
+    argv = [
+      "${bash_kernel}/bin/bash_kernel"
+      "-f"
+    ];
+  };
 };
 
 kernelFileAttrs = builtins.attrNames (lib.attrsets.filterAttrs (n: v: v != null) kernels);
-kernelFiles = builtins.map 
+kernelFiles = builtins.map
   (name: writeKernelFile (kernels.${name} // { inherit name; })) kernelFileAttrs;
 
 whitelist = lib.strings.concatMapStringsSep ", " builtins.toJSON (builtins.attrNames kernels);

@@ -12,6 +12,7 @@
     my_neovim = pkg ./packages/vim {};
     fetch_from_github = pkg ./packages/fetch-from-github.nix {};
     uglifyjs = (pkg ./packages/uglifyjs {})."uglify-js-3.1.0";
+    # sudo-prompt = (pkg ./packages/sudo-prompt {})."sudo-prompt-7.1.1";
     jupyter = pkg ./packages/jupyter {};
     universal-ctags = pkg ./packages/universal-ctags.nix {};
 
