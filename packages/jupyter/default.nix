@@ -15,14 +15,37 @@ writeKernelFile = json@{ name, argv, ...}:
 jupyter = import ./python-env.nix { inherit pkgs fetchFromGitHub; };
 ihaskell = import ./ihaskell.nix { inherit jupyter fetchFromGitHub; };
 bash_kernel = import ./bash_kernel.nix { inherit pkgs fetchFromGitHub writeScriptBin; };
+gnuplot_kernel = import ./gnuplot_kernel.nix { inherit pkgs fetchFromGitHub writeScriptBin; };
+nix-kernel = import (fetchFromGitHub {
+  owner = "corps";
+  repo = "nix-kernel";
+  rev = "aa02c68fff8052fd654b80a3a1be53891bab85f6";
+  sha256 = "1bqavp678ggjqx53p5w55mbghynxn6j5n8g7pcdxpr01nc8v4wjh";
+}) { inherit pkgs writeScriptBin; };
 
 kernels = {
   python3 = null;
+  nix = {
+    language = "nix";
+    display_name = "Nix";
+    argv = [
+      "${nix-kernel}/bin/nix-kernel"
+      "-f"
+    ];
+  };
   haskell = {
     language = "haskell";
     display_name = "Haskell";
     argv = [
       "${ihaskell}/bin/ihaskell"
+    ];
+  };
+  gnuplot = {
+    language = "gnuplot";
+    display_name = "gnuplot";
+    argv = [
+      "${gnuplot_kernel}/bin/gnuplot_kernel"
+      "-f"
     ];
   };
   bash = {
