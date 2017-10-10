@@ -70,11 +70,12 @@ jupyterConfig = writeText "jupyter_config.py" ''
   home = expanduser("~")
   c.KernelSpecManager.whitelist = { ${whitelist} }
   # c.NotebookApp.disable_check_xsrf = True
-  c.NotebookApp.token = ""
+  # c.NotebookApp.token = ""
   # c.NotebookApp.allow_origin = ""
   c.NotebookApp.notebook_dir = home + "/Dropbox/Notebooks"
   c.TerminalInteractiveShell.confirm_exit = False
   c.JupyterConsoleApp.confirm_exit = False
+  c.NotebookApp.open_browser = False
 '';
 
 kernelDir = symlinkJoin { name = "jupyter-kernels"; paths = kernelFiles; };
