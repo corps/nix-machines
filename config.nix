@@ -15,6 +15,7 @@
     # sudo-prompt = (pkg ./packages/sudo-prompt {})."sudo-prompt-7.1.1";
     jupyter = pkg ./packages/jupyter {};
     universal-ctags = pkg ./packages/universal-ctags.nix {};
+    prettier = (pkg ./packages/prettier {})."prettier-1.7.4";
 
     recover = {
       inherit jupyter my_neovim fetch_from_github uglifyjs xhelpers corpscripts autossh fzy

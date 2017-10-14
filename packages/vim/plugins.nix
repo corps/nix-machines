@@ -1,6 +1,35 @@
 { pkgs, fetchFromGitHub }:
 let buildVimPlugin = pkgs.vimUtils.buildVimPluginFrom2Nix;
 in {
+  indent-guide = buildVimPlugin {
+    name = "indent-guide";
+    src = fetchFromGitHub {
+      owner = "nathanaelkane";
+      repo = "vim-indent-guides";
+      rev = "b40687195c01caf40f62d20093296590b48e3a75";
+      sha256 = "17hc3bdb707lkg0kyac2czjjijdrzarnh6sr78s9rqpwrj3fj4i4";
+    };
+  };
+
+  vim-commentary = buildVimPlugin {
+    name = "vim-commentary";
+    src = fetchFromGitHub {
+      owner = "tpope";
+      repo = "vim-commentary";
+      rev = "89f43af18692d22ed999c3097e449f12fdd8b299";
+      sha256 = "0nqm4s00c607r58fz29n67r2z5p5r9qayl5y1chy8bcrl59m17a2";
+    };
+  };
+
+  vim-repeat = buildVimPlugin {
+    name = "vim-repeat";
+    src = fetchFromGitHub {
+      owner = "tpope";
+      repo = "vim-repeat";
+      rev = "070ee903245999b2b79f7386631ffd29ce9b8e9f";
+      sha256 = "1grsaaar2ng1049gc3r8wbbp5imp31z1lcg399vhh3k36y34q213";
+    };
+  };
   neoterm = buildVimPlugin {
     name = "neoterm";
     src = fetchFromGitHub {
@@ -24,8 +53,8 @@ in {
     src = fetchFromGitHub {
       owner = "Shougo";
       repo = "deoplete.nvim";
-      rev = "91b5a10cae26718e44b3fb80a9904198350522e6";
-      sha256 = "1sjg5zkljfha739yq6k7j4p24fhlsmhyh8r44f1qrh448qbx1amf";
+      rev = "45f23f1586e7edc13c1fafca201a33112a4700f7";
+      sha256 = "0nfzg1zhg2yxl91774wjqbgrnfk2xpz8pyl02gyqg7nyrnzz1fkh";
     };
   };
   neovim-fuzzy = buildVimPlugin {

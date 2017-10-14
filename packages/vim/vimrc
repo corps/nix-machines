@@ -20,13 +20,16 @@ tnoremap <Esc> <C-\><C-n>
 
 set hlsearch history=10000
 
-au FileType haskell,vhdl,ada            let b:comment_leader = '-- '
-au FileType vim                         let b:comment_leader = '" '
-au FileType c,cpp,java,go,typescript    let b:comment_leader = '// '
-au FileType sh,make,ruby                let b:comment_leader = '# '
-au FileType tex                         let b:comment_leader = '% '
-noremap <silent> ,c :<C-B>sil <C-E>s/^/<C-R>=escape(b:comment_leader,'\/')<CR>/<CR>:noh<CR>
-noremap <silent> ,u :<C-B>sil <C-E>s/^\V<C-R>=escape(b:comment_leader,'\/')<CR>//e<CR>:noh<CR>
+au FileType haskell,vhdl,ada            setlocal commentstring=--\ %s
+au FileType vim                         setlocal commentstring="\ %s
+au FileType c,cpp,java,go,typescript    setlocal commentstring=//\ %s
+au FileType sh,make,ruby                setlocal commentstring=#\ %s
+au FileType tex                         setlocal commentstring=%\ %s
+au FileType nix                         setlocal commentstring=#\ %s
+xmap <leader>,  <Plug>Commentary
+nmap <leader>,  <Plug>Commentary
+omap <leader>,  <Plug>Commentary
+nmap <leader>,, <Plug>CommentaryLine
 
 " gt for buffer
 map <leader>] :BuffergatorMruCycleNext<CR>
@@ -124,7 +127,7 @@ let g:neoformat_enabled_typescript = ['prettier']
 function! neoformat#formatters#typescript#prettier() abort
     return {
         \ 'exe': 'prettier',
-        \ 'args': [ '--stdin', '--no-bracket-spacing', '--trailing-comma', 'es5', '--eslint-ignore', '--jsx-bracket-same-line'],
+        \ 'args': [ '--stdin', '--no-bracket-spacing', '--trailing-comma', 'es5', '--jsx-bracket-same-line', '--parser', 'typescript'],
         \ 'stdin': 1,
         \ }
 endfunction
@@ -135,8 +138,8 @@ augroup fmt
 augroup END
 
 set number
-let g:vimwiki_list = [{'path': '~/Dropbox/wiki', 'path_html': '~/Dropbox/wiki_html'}]
-let g:tex_flavor = "latex"
+" let g:vimwiki_list = [{'path': '~/Dropbox/wiki', 'path_html': '~/Dropbox/wiki_html'}]
+" let g:tex_flavor = 'latex'
 
 " au BufRead,BufNewFile *.rb set tags=~/izip/darcs/opensource/tags,tags
 au BufRead,BufNewFile *.rb set tags=tags,~/c/ramaze/tags

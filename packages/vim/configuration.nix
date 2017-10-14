@@ -9,29 +9,41 @@ in {
         "denite-nvim"
         "deoplete-nvim"
         "editorconfig-vim"
+
+        "vim-commentary"
+
         "incsearch-fuzzy-vim"
         "incsearch-vim"
+
+        "indent-guide"
+
         "neoformat"
         "neomake"
+
         "neovim-fuzzy"
         "nvim-typescript"
-        "sourcebeautify-vim"
+
+        # "sourcebeautify-vim"
+
         "supertab"
+
         "vim-airline"
         "vim-airline-themes"
+
         "vim-buffergator"
         "vim-eunuch"
+
         "vim-fetch"
-        "vim-fugitive"
-        "vim-go"
         "vim-grepper"
-        "vim-javascript"
+
         "vim-polyglot"
         "vim-rails"
-        "vim-ruby"
+
+        # for the color scheme
         "vim-srcery"
-        "vim-surround"
-        "vimwiki"
+        # "vim-surround"
+        # "vim-repeat"
+        # "vimwiki"
       ];
     }];
   };
