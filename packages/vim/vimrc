@@ -132,10 +132,25 @@ function! neoformat#formatters#typescript#prettier() abort
         \ }
 endfunction
 
-augroup fmt
-  autocmd!
-  autocmd BufWritePre * Neoformat
-augroup END
+function! neomake#makers#ft#typescript#EnabledMakers() abort
+    return ['tsc', 'tslint']
+endfunction
+
+function! neomake#makers#ft#typescript#tsc() abort
+    " tsc should not be passed a single file.
+    let maker = {
+        \ 'args': ['--watch', 'false', '--pretty', 'false'],
+        \ 'append_file': 0,
+        \ 'errorformat':
+            \ '%E%f %#(%l\,%c): error %m,' .
+            \ '%E%f %#(%l\,%c): %m,' .
+            \ '%Eerror %m,' .
+            \ '%C%\s%\+%m'
+        \ }
+    return maker
+endfunction
+
+call neomake#configure#automake('w')
 
 set number
 " let g:vimwiki_list = [{'path': '~/Dropbox/wiki', 'path_html': '~/Dropbox/wiki_html'}]

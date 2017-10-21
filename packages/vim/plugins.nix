@@ -158,11 +158,17 @@ in {
   };
   neomake = buildVimPlugin {
     name = "neomake";
+    # src = fetchFromGitHub {
+    #   owner = "neomake";
+    #   repo = "neomake";
+    #   rev = "f2bb4aeeb2a76b76c39d2a99372f64c0278274a8";
+    #   sha256 = "1p2bc6i081i2i3vdpbm3w5cs6j1vr1j6qsdic95jn4q0b4g1njbc";
+    # };
     src = fetchFromGitHub {
       owner = "neomake";
       repo = "neomake";
-      rev = "f2bb4aeeb2a76b76c39d2a99372f64c0278274a8";
-      sha256 = "1p2bc6i081i2i3vdpbm3w5cs6j1vr1j6qsdic95jn4q0b4g1njbc";
+      rev = "2697d90e5db15489287d424076aa19673668530d";
+      sha256 = "04zzvf9n7mzxffm7w1gxcwm1hab77a95341ljnc8x9q1n254garv";
     };
   };
   vim-javascript = buildVimPlugin {
