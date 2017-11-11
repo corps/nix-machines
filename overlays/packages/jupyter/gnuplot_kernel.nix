@@ -1,6 +1,6 @@
-{ pkgs, fetchFromGitHub, writeScriptBin }:
+{ bash, bashInteractive, gnuplot, python, fetchFromGitHub, writeScriptBin }:
 
-with pkgs.python35Packages;
+with python.pkgs;
 
 let
 
@@ -40,15 +40,12 @@ gnuplot_kernel = buildPythonPackage rec {
   };
 };
 
-env = pkgs.python.buildEnv.override {
-  extraLibs = let p = pkgs.python35Packages; in [ gnuplot_kernel notebook ];
-  ignoreCollisions = true;
-};
+env = python.withPackages (ps: with ps; [ gnuplot_kernel notebook ]);
 
 in
 
 writeScriptBin "gnuplot_kernel" ''
-#! ${pkgs.bash}/bin/bash
-PATH=${pkgs.gnuplot}/bin:${env}/bin:$PATH
+#! ${bash}/bin/bash
+PATH=${gnuplot}/bin:${env}/bin:$PATH
 exec python -m gnuplot_kernel $@
 ''

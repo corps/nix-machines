@@ -1,7 +1,14 @@
-{ python, python35Packages, writeText, writeTextFile, fetchFromGitHub,
-  nodejs, lib, symlinkJoin, writeScriptBin, stdenv, bash, pkgs }:
+{ writeText, writeTextFile, fetchFromGitHub, python35, newScope,
+  lib, symlinkJoin, writeScriptBin, bash, pkgs }:
 
 let
+
+python = import ./python-packages.nix python35;
+jupyter = (python.withPackages (ps: [ ps.notebook ]));
+scope = pkgs // {
+  inherit python jupyter;
+};
+callPackage = newScope scope;
 
 writeKernelFile = json@{ name, argv, ...}:
   writeTextFile {
@@ -12,16 +19,17 @@ writeKernelFile = json@{ name, argv, ...}:
     });
   };
 
-jupyter = import ./python-env.nix { inherit pkgs fetchFromGitHub; };
-ihaskell = import ./ihaskell.nix { inherit jupyter fetchFromGitHub; };
-bash_kernel = import ./bash_kernel.nix { inherit pkgs fetchFromGitHub writeScriptBin; };
-gnuplot_kernel = import ./gnuplot_kernel.nix { inherit pkgs fetchFromGitHub writeScriptBin; };
-nix-kernel = import (fetchFromGitHub {
-  owner = "corps";
-  repo = "nix-kernel";
-  rev = "aa02c68fff8052fd654b80a3a1be53891bab85f6";
-  sha256 = "1bqavp678ggjqx53p5w55mbghynxn6j5n8g7pcdxpr01nc8v4wjh";
-}) { inherit pkgs writeScriptBin; };
+ihaskell = callPackage ./ihaskell.nix {};
+bash_kernel = callPackage ./bash_kernel.nix {};
+gnuplot_kernel = callPackage ./gnuplot_kernel.nix {};
+# nix-kernel = callPackage (fetchFromGitHub {
+  # owner = "corps";
+  # repo = "nix-kernel";
+  # rev = "aa02c68fff8052fd654b80a3a1be53891bab85f6";
+  # sha256 = "1bqavp678ggjqx53p5w55mbghynxn6j5n8g7pcdxpr01nc8v4wjh";
+# });
+
+nix-kernel = callPackage ../../../../nix-kernel {};
 
 kernels = {
   python3 = null;

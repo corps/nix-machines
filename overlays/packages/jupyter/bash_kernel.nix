@@ -1,6 +1,6 @@
-{ pkgs, fetchFromGitHub, writeScriptBin }:
+{ bash, bashInteractive, python, fetchFromGitHub, writeScriptBin }:
 
-with pkgs.python35Packages;
+with python.pkgs;
 
 let
 
@@ -27,15 +27,12 @@ bash_kernel = buildPythonPackage rec {
   #};
 };
 
-env = pkgs.python.buildEnv.override {
-  extraLibs = let p = pkgs.python35Packages; in [ bash_kernel notebook ];
-  ignoreCollisions = true;
-};
+env = python.withPackages (ps: with ps; [ bash_kernel notebook ]);
 
 in
 
 writeScriptBin "bash_kernel" ''
-#! ${pkgs.bash}/bin/bash
-PATH=${pkgs.bashInteractive}/bin:${env}/bin:$PATH
+#! ${bash}/bin/bash
+PATH=${bashInteractive}/bin:${env}/bin:$PATH
 exec python -m bash_kernel $@
 ''
