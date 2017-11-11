@@ -22,14 +22,14 @@ writeKernelFile = json@{ name, argv, ...}:
 ihaskell = callPackage ./ihaskell.nix {};
 bash_kernel = callPackage ./bash_kernel.nix {};
 gnuplot_kernel = callPackage ./gnuplot_kernel.nix {};
-# nix-kernel = callPackage (fetchFromGitHub {
-  # owner = "corps";
-  # repo = "nix-kernel";
-  # rev = "aa02c68fff8052fd654b80a3a1be53891bab85f6";
-  # sha256 = "1bqavp678ggjqx53p5w55mbghynxn6j5n8g7pcdxpr01nc8v4wjh";
-# });
+nix-kernel = callPackage (fetchFromGitHub {
+  owner = "corps";
+  repo = "nix-kernel";
+  rev = "ae99b3dacadead82efebe97d31439bd021acd980";
+  sha256 = "1vc71ak2ag64ky2w6hxfxxivwvik1409iiqiihj6mdwrys9ryvdv";
+}) {};
 
-nix-kernel = callPackage ../../../../nix-kernel {};
+# nix-kernel = callPackage ../../../../nix-kernel {};
 
 kernels = {
   python3 = null;
