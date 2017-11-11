@@ -3,6 +3,7 @@
 {
   imports = [
     ./modules/darwin/nixpkgs.nix
+    ./modules/darwin/common.nix
   ];
 
   environment.systemPackages = with pkgs; [ 
