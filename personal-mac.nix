@@ -1,10 +1,7 @@
 { config, lib, pkgs, ... }:
 
 {
-  imports = [
-    ./modules/darwin/nixpkgs.nix
-    ./modules/darwin/common.nix
-  ];
+  imports = [ ./modules/darwin ];
 
   environment.systemPackages = with pkgs; [ 
     nix-repl prettier
@@ -12,5 +9,6 @@
     imagemagick wget universal-ctags ag
   ];
 
+  services.jupyter.enable = true;
   nixpkgs.config.vim.ftNix = false;
 }
