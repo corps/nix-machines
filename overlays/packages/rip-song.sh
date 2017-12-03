@@ -1,4 +1,6 @@
-#! /usr/bin/env nix-shell
+#! @bash@/bin/bash
+
+PATH=@yt@/bin:@db@/bin:$PATH
 #! nix-shell -i bash -p youtube-dl dropbox_uploader
 
 set -euo pipefail
@@ -19,5 +21,3 @@ youtube-dl -x "${url}" -o "${tmpfile}.%(ext)s"
 tmpfile=`ls ${tmpfile}*`
 dropbox_uploader upload "${tmpfile}" "/Music/${band} - Unknown Album/"
 rm $tmpfile
-
-# mkdir -p "${HOME}/Dropbox/Music/${band} - Unknown Album/"

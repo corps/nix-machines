@@ -1,6 +1,0 @@
-#! /usr/bin/env nix-shell
-#! nix-shell -i bash -p ruby
-
-gem install github_cli --conservative
-gcli=$(echo "puts Gem.bin_path('github_cli', 'gcli')" | ruby)
-exec $gcli $@

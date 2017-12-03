@@ -9,7 +9,7 @@
   environment.variables.LANG = "en_US.UTF-8";
 
   programs.bash.enable = true;
-  programs.bash.enableCompletion = true;
+  # programs.bash.enableCompletion = true;
 
   system.defaults.NSGlobalDomain."com.apple.trackpad.trackpadCornerClickBehavior" = 1;
   system.defaults.NSGlobalDomain.NSDocumentSaveNewDocumentsToCloud = false;
