@@ -18,7 +18,7 @@ let cfg = config.services.jupyter; in
     launchd.user.agents.jupyter = {
       path = [ pkgs.jupyter config.environment.systemPath ];
       serviceConfig.ProgramArguments = [ "${pkgs.jupyter}/bin/jupyter" ];
-      serviceConfig.KeepAlive = true;
+      serviceConfig.KeepAlive = false;
       serviceConfig.ProcessType = "Interactive";
     };
   };

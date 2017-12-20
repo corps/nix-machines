@@ -3,6 +3,7 @@
     ./keybindings.nix
     ./jupyter.nix
     ./nixpkgs.nix
+    ./symlinks.nix
   ];
 
   environment.variables.EDITOR = "vim";

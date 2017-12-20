@@ -50,12 +50,18 @@ in {
   };
   deoplete-nvim = buildVimPlugin {
     name = "deoplete-nvim";
-    src = fetchFromGitHub {
-      owner = "Shougo";
-      repo = "deoplete.nvim";
-      rev = "45f23f1586e7edc13c1fafca201a33112a4700f7";
-      sha256 = "0nfzg1zhg2yxl91774wjqbgrnfk2xpz8pyl02gyqg7nyrnzz1fkh";
-    };
+    # src = fetchFromGitHub {
+    #   owner = "Shougo";
+    #   repo = "deoplete.nvim";
+    #   rev = "45f23f1586e7edc13c1fafca201a33112a4700f7";
+    #   sha256 = "0nfzg1zhg2yxl91774wjqbgrnfk2xpz8pyl02gyqg7nyrnzz1fkh";
+    # };
+    src =fetchFromGitHub {
+			owner = "Shougo";
+			repo = "deoplete.nvim";
+			rev = "01139867ab6c73c44099bcd355f383141c2e024d";
+			sha256 = "15mpfk8l9g4h23mb7xbc675cp0gs39i89ckc9rsrmlqa995c00kf";
+		};
   };
   neovim-fuzzy = buildVimPlugin {
     name = "neovim-fuzzy";
@@ -132,10 +138,10 @@ in {
   nvim-typescript = buildVimPlugin {
     name = "nvim-typescript";
     src = fetchFromGitHub {
-      owner = "mhartington";
-      repo = "nvim-typescript";
-      rev = "2aac081aabbe7d258c69cd56c323478fc3ca80d7";
-      sha256 = "0y8p2v7210xb2lcvdba5iiav83x6g6sib3psmbk8ayq4p4dznjv6";
+			owner = "mhartington";
+			repo = "nvim-typescript";
+			rev = "d529137208bf5f523051ca22d620577971b0997d";
+			sha256 = "1923j3drdzfxsi413lvbz4d2dawppdy2v4zzvmvpcwv6afhydaaj";
     };
   };
   vim-grepper = buildVimPlugin {
