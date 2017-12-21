@@ -4,6 +4,7 @@
     ./jupyter.nix
     ./nixpkgs.nix
     ./symlinks.nix
+    ./supervisord.nix
   ];
 
   environment.variables.EDITOR = "vim";
@@ -18,4 +19,6 @@
   system.defaults.dock.orientation = "left";
   system.defaults.finder.AppleShowAllExtensions = true;
   system.defaults.finder._FXShowPosixPathInTitle = true;
+
+  services.supervisord.enable = true;
 }

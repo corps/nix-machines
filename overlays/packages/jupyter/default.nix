@@ -91,10 +91,10 @@ kernelDir = symlinkJoin { name = "jupyter-kernels"; paths = kernelFiles; };
 in
 
 writeScriptBin "jupyter" ''
-  #!${bash}/bin/bash -e
+  #!${bash}/bin/bash -ie
   export PATH=${jupyter}/bin:$PATH
   export JUPYTER_PATH=${kernelDir}:$JUPYTER_PATH
 
-  exec yes | ipython notebook --config ${jupyterConfig} $@
+  exec ipython notebook --config ${jupyterConfig} $@
 ''
 
