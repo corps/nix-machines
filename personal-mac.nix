@@ -26,5 +26,7 @@ in
   services.jupyter.enable = true;
   nixpkgs.config.vim.ftNix = false;
 
+  system.inputPlugins = [ pkgs.canto-input ];
+
   system.symlinks."${home}/.gitconfig" = gitConfig;
 }

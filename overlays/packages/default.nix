@@ -16,4 +16,5 @@ let callPackage = super.newScope self; in rec {
   prettier = (callPackage ./prettier {})."prettier-1.7.4";
   js-beautify = (callPackage ./js-beautify {})."js-beautify-1.7.4";
   qrcode-svg = callPackage ./qrcode-svg.nix {};
+  canto-input = callPackage ./mac_cantonese {};
 }
