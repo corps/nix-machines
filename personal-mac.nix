@@ -23,10 +23,12 @@ in
     qrcode-svg
   ];
 
-  services.jupyter.enable = true;
-  nixpkgs.config.vim.ftNix = false;
-
   system.inputPlugins = [ pkgs.canto-input ];
+
+  services.jupyter.enable = true;
+  services.chunkwm.enable = true;
+
+  nixpkgs.config.vim.ftNix = false;
 
   system.symlinks."${home}/.gitconfig" = gitConfig;
 }

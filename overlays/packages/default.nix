@@ -17,4 +17,8 @@ let callPackage = super.newScope self; in rec {
   js-beautify = (callPackage ./js-beautify {})."js-beautify-1.7.4";
   qrcode-svg = callPackage ./qrcode-svg.nix {};
   canto-input = callPackage ./mac_cantonese {};
+  chunkwm = super.callPackage ./chunkwm {
+    inherit (super.darwin.apple_sdk.frameworks) Carbon Cocoa ApplicationServices;
+    imagemagick = super.imagemagick;
+  };
 }

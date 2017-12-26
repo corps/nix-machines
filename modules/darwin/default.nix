@@ -6,6 +6,7 @@
     ./symlinks.nix
     ./supervisord.nix
     ./input-plugins.nix
+    ./chunkwm.nix
   ];
 
   environment.variables.EDITOR = "vim";
