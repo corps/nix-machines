@@ -22,4 +22,5 @@ let callPackage = super.newScope self; in rec {
     imagemagick = super.imagemagick;
   };
   iterm2 = callPackage ./iterm2.nix {};
+  bensrs = callPackage ./bensrs.nix {};
 }

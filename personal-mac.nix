@@ -20,7 +20,7 @@ in
     nix-repl prettier rip-song ngrok
     jupyter my_neovim fetch_from_github uglifyjs xhelpers autossh fzy
     imagemagick wget universal-ctags ag pkgs.nodePackages.node2nix js-beautify gnupg
-    qrcode-svg iterm2
+    qrcode-svg iterm2 bensrs
   ];
 
   system.inputPlugins = [ pkgs.canto-input ];
