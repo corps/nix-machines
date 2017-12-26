@@ -5,7 +5,8 @@ with lib;
 {
   config = mkIf config.services.chunkwm.enable {
     environment.systemPackages = with pkgs; [
-      chunkwm.border chunkwm.tiling
+      chunkwm.border
+      chunkwm.tiling
     ];
 
     environment.pathsToLink = [ "/lib/chunkwm" ];

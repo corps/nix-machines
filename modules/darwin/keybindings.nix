@@ -8,6 +8,6 @@
 
   services.khd.khdConfig = ''
     shift + cmd - d : open -a Brave
-    shift + cmd - e : open -a Terminal
+    shift + cmd - e : open -a iTerm
   '';
 }

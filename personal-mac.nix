@@ -20,7 +20,7 @@ in
     nix-repl prettier rip-song ngrok
     jupyter my_neovim fetch_from_github uglifyjs xhelpers autossh fzy
     imagemagick wget universal-ctags ag pkgs.nodePackages.node2nix js-beautify gnupg
-    qrcode-svg
+    qrcode-svg iterm2
   ];
 
   system.inputPlugins = [ pkgs.canto-input ];
@@ -31,4 +31,5 @@ in
   nixpkgs.config.vim.ftNix = false;
 
   system.symlinks."${home}/.gitconfig" = gitConfig;
+  system.symlinks."${home}/Library/Preferences/com.googlecode.iterm2.plist" = ./dotfiles/com.googlecode.iterm2.plist;
 }

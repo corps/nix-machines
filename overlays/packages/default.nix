@@ -21,4 +21,5 @@ let callPackage = super.newScope self; in rec {
     inherit (super.darwin.apple_sdk.frameworks) Carbon Cocoa ApplicationServices;
     imagemagick = super.imagemagick;
   };
+  iterm2 = callPackage ./iterm2.nix {};
 }
