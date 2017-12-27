@@ -16,6 +16,8 @@ in
     ./modules/darwin
   ];
 
+  system.defaults.dockEx."workspaces-edge-delay" = "0.0";
+
   environment.systemPackages = with pkgs; [
     nix-repl prettier rip-song ngrok
     jupyter my_neovim fetch_from_github uglifyjs xhelpers autossh fzy
