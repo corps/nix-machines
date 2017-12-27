@@ -26,7 +26,7 @@ in
   system.inputPlugins = [ pkgs.canto-input ];
 
   services.jupyter.enable = true;
-  services.chunkwm.enable = true;
+  # services.chunkwm.enable = true;
 
   nixpkgs.config.vim.ftNix = false;
 
