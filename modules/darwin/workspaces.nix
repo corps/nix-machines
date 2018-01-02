@@ -21,7 +21,7 @@ in
 
 
   config = {
-    system.activationScripts.defaults.text = showWriteDefaults 
+    system.activationScripts.defaults.text = showWriteDefaults
 		  (if (isNull edgeDelay) then "0.5" else edgeDelay);
   };
 }
