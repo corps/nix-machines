@@ -98,6 +98,7 @@ in
       ];
 
       serviceConfig.KeepAlive = false;
+      serviceConfig.RunAtLoad = true;
       serviceConfig.ProcessType = "Interactive";
       serviceConfig.StandardErrorPath = "/tmp/supervisord.err.log";
     };

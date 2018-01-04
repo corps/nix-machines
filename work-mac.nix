@@ -14,6 +14,7 @@ in
 {
   imports = [
     ./modules/darwin
+    ./modules/darwin/mox.nix
   ];
 
   system.defaults.dockEx."workspaces-edge-delay" = "0.0";
@@ -22,7 +23,7 @@ in
     nix-repl prettier rip-song ngrok
     jupyter my_neovim fetch_from_github uglifyjs autossh fzy
     imagemagick wget universal-ctags ag pkgs.nodePackages.node2nix js-beautify gnupg
-    qrcode-svg iterm2 bensrs
+    qrcode-svg iterm2 bensrs moxies.composter
   ];
 
   services.khd.khdConfig = ''
@@ -40,4 +41,8 @@ in
 
   system.symlinks."${home}/.gitconfig" = gitConfig;
   system.symlinks."${home}/Library/Preferences/com.googlecode.iterm2.plist" = ./dotfiles/com.googlecode.iterm2.plist;
+
+  system.activationScripts.extraActivation.text = ''
+    su - zachcollins -c "${pkgs.moxies.composter}/bin/mox-composter"
+  '';
 }

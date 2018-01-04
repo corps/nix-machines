@@ -25,4 +25,6 @@ let callPackage = super.newScope self; in rec {
   bensrs = callPackage ./bensrs.nix {};
 
   corpsLib = super.callPackage ./lib {};
+
+  moxies = super.callPackage ../../../vagrant-dev-vm/nix {};
 }
