@@ -22,7 +22,7 @@ in
     nix-repl prettier rip-song ngrok
     jupyter my_neovim fetch_from_github uglifyjs autossh fzy
     imagemagick wget universal-ctags ag pkgs.nodePackages.node2nix js-beautify gnupg
-    qrcode-svg iterm2 bensrs moxies.composter
+    qrcode-svg iterm2 bensrs
   ];
 
   services.khd.khdConfig = ''
@@ -39,10 +39,6 @@ in
   nixpkgs.config.vim.ftNix = false;
 
   system.symlinks."${home}/.gitconfig" = gitConfig;
-  system.symlinks."${home}/Library/Preferences/com.googlecode.iterm2.plist" = 
+  system.symlinks."${home}/Library/Preferences/com.googlecode.iterm2.plist" =
     toString ./dotfiles/com.googlecode.iterm2.plist;
-
-  system.activationScripts.extraActivation.text = ''
-    su - zachcollins -c "${pkgs.moxies.composter}/bin/mox-composter"
-  '';
 }
