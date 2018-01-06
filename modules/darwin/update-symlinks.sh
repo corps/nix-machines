@@ -23,6 +23,11 @@ update_symlink() {
 
     if [ -f "$DEST" ]; then
         local CURSRC
+
+        if [ ! -h "$DEST" ]; then
+          return 0
+        fi
+
         CURSRC=$(realpath "$DEST")
         if [ "x$CURSRC" == "x$SRC" ]; then
             return 0

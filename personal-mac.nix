@@ -33,5 +33,6 @@ in
   nixpkgs.config.vim.ftNix = false;
 
   system.symlinks."${home}/.gitconfig" = gitConfig;
-  system.symlinks."${home}/Library/Preferences/com.googlecode.iterm2.plist" = ./dotfiles/com.googlecode.iterm2.plist;
+  system.symlinks."${home}/Library/Preferences/com.googlecode.iterm2.plist" =
+    toString ./dotfiles/com.googlecode.iterm2.plist;
 }
