@@ -2,8 +2,8 @@
 
 with lib;
 
-let 
-cfg = config.services.jupyter; 
+let
+cfg = config.services.jupyter;
 in
 
 {
@@ -19,9 +19,9 @@ in
   config = mkIf cfg.enable {
     supervisord.programs.jupyter = {
       command = "${pkgs.jupyter}/bin/jupyter";
-			startsecs = 10;            
+			startsecs = 10;
       stopwaitsecs = 20;
-      stdout_logfile = "/tmp/jupyter.log";   
+      stdout_logfile = "/tmp/jupyter.log";
     };
   };
 }

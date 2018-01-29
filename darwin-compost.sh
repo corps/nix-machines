@@ -31,6 +31,12 @@ fi
 
 if ! check fileExists /nix; then
   curl https://nixos.org/nix/install | sh
+
+  if isDarwin; then
+    . /nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh
+  else
+    . $HOME/.nix-profile/etc/profile.d/nix.sh
+  fi
 fi
 
 check existsOnPath nix-env || exitWithMessage 1 "Cannot find nix executables on path."
@@ -51,5 +57,10 @@ if ! check isLink "/etc/nix/nix.conf"; then
   echo -e "$YELLOW /etc/nix/nix.conf is not a link.  sudo rm it and link to /etc/static/nix.conf.$RESTORE"
 fi
 
-NIX_PATH=nixpkgs-overlays=$HOME/Development/nix-machines/overlays:$NIX_PATH
+if ! check fileExists "$HOME/.config/nixpkgs/overlays/nix-machines"; then
+  mkdir -p $HOME/.config/nixpkgs/overlays
+  ln -s $DIR/packages $HOME/.config/nixpkgs/overlays/nix-machines
+fi
+
+
 exec darwin-rebuild switch $@

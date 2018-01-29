@@ -9,6 +9,10 @@ let
     notebook = super.notebook.overridePythonAttrs (old: {
       doCheck = false;
     });
+
+    send2trash = super.send2trash.overridePythonAttrs (old: {
+      doCheck = false;
+    });
   };
 in python.override { inherit packageOverrides; }
     
