@@ -51,6 +51,9 @@ tnoremap <C-w>W <C-\><C-n><C-w>W
 " Fuzzy matching (used instead of ctrlp)
 nnoremap <leader>p :FuzzyOpen<CR>
 
+let g:syntastic_always_populate_loc_list = 1
+let g:ide_import_on_comletion = v:false
+
 " set incsearch
 " haya14busa/incsearch
 set ignorecase smartcase        " better searching

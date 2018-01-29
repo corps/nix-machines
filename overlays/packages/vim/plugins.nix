@@ -1,6 +1,26 @@
 { pkgs, fetchFromGitHub }:
 let buildVimPlugin = pkgs.vimUtils.buildVimPluginFrom2Nix;
 in {
+  purescript-vim = buildVimPlugin {
+    name = "purescript-vim";
+    src = fetchFromGitHub {
+      owner = "purescript-contrib";
+      repo = "purescript-vim";
+      rev = "ece34d9782a075761f31854a33eccd932eb2cf57";
+      sha256 = "0x6hpibmhgw5aqq25rcpvgz2a60jh7i8x23gigakmmrxv51cjcrj";
+    };
+  };
+
+  psc-ide-vim = buildVimPlugin {
+    name = "psc-ide-vim";
+    src = fetchFromGitHub {
+      owner = "FrigoEU";
+      repo = "psc-ide-vim";
+      rev = "737b9b65389884c8662a44d8a1bdd7465cd876b6";
+      sha256 = "02nicrmlr43axk6cdf1y8vi4fzg0i1n8hamv0r0cd2mri4pxqxcr";
+    };
+  };
+
   indent-guide = buildVimPlugin {
     name = "indent-guide";
     src = fetchFromGitHub {

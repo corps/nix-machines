@@ -23,6 +23,9 @@ in {
         "neovim-fuzzy"
         "nvim-typescript"
 
+        "psc-ide-vim"
+        "purescript-vim"
+
         # "sourcebeautify-vim"
 
         "supertab"
