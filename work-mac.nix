@@ -29,6 +29,7 @@ in
     shift + cmd - 0x29 : open -a Slack
     shift + cmd - 0x2C : open -a Webstorm
     shift + cmd - 0x2F : open -a Pycharm
+    shift + cmd - l : open -a Quip
   '';
 
   system.inputPlugins = [ pkgs.canto-input ];

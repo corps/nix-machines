@@ -1,4 +1,4 @@
-{ youtube-dl, dropbox_uploader, bash, substituteAll }:
+{ youtube-dl, dropbox_uploader, bash, substituteAll, icu }:
 
 substituteAll {
   src = ./rip-song.sh;
@@ -7,5 +7,5 @@ substituteAll {
   dir = "bin";
   yt = youtube-dl;
   db = dropbox_uploader;
-  inherit bash;
+  inherit bash icu;
 }
