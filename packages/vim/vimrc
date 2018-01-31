@@ -42,8 +42,6 @@ map gc :bdelete<CR>
 nmap <leader>g <plug>(GrepperOperator)
 xmap <leader>g <plug>(GrepperOperator)
 
-nnoremap <leader>o :Rexplore<CR>
-
 " Allow switching windows even if terminal is open.
 tnoremap <C-w>w <C-\><C-n><C-w>w
 tnoremap <C-w>W <C-\><C-n><C-w>W
@@ -124,6 +122,8 @@ set undofile
 
 let g:deoplete#enable_at_startup = 1
 
+autocmd Filetype purescript let b:deoplete_disable_auto_complete = 1
+
 let g:neoformat_only_msg_on_error = 1
 let g:neoformat_enabled_typescript = ['prettier']
 
@@ -153,8 +153,6 @@ function! neomake#makers#ft#typescript#tsc() abort
     return maker
 endfunction
 
-call neomake#configure#automake('w')
-
 set number
 " let g:vimwiki_list = [{'path': '~/Dropbox/wiki', 'path_html': '~/Dropbox/wiki_html'}]
 " let g:tex_flavor = 'latex'
@@ -174,24 +172,7 @@ au BufNewFile,BufRead *.sass  setf sass
 au BufNewFile,BufRead *.go    setf go
 au BufNewFile,BufRead .envrc  setf sh
 
-au FileType slim set textwidth=0
-au FileType ruby,eruby,nagaro set omnifunc=rubycomplete#Complete
-au FileType ruby,eruby,nagaro let g:rubycomplete_rails = 0
-au FileType ruby,eruby,nagaro let g:rubycomplete_buffer_loading = 1
-au FileType ruby,eruby,nagaro let g:rubycomplete_classes_in_global = 1
-au FileType ruby,eruby,nagaro let g:rubycomplete_include_object = 1
-au FileType ruby,eruby,nagaro let g:rubycomplete_include_object_space = 1
-
-" au FileType neko map <F5> :w<CR>:!rake run:%<CR>
-" au FileType oxid map <F5> :w<CR>:!oxid %<CR>
-" au FileType ruby map <F5> :w<CR>:!ruby %<CR>
-" ,c comments out a region
-" ,u uncomments a region
-
-" autocmd! BufWritePost * Neomake
-call neomake#configure#automake('w', 10)
-
-au BufEnter,BufRead,BufNewFile *.proto setfiletype proto
+call neomake#configure#automake('w')
 
 highlight WhitespaceEOL ctermbg=red guibg=red
 match WhitespaceEOL /\s\+$/
