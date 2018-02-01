@@ -40,7 +40,6 @@ in {
         "vim-grepper"
 
         "vim-polyglot"
-        "vim-rails"
 
         # for the color scheme
         "vim-srcery"
