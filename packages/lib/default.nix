@@ -1,4 +1,4 @@
-{ stdenv, nodejs, lib }:
+{ stdenv, nodejs, lib, wget, bash, substituteAll, unzip }:
 
 rec {
   embedInNativeApp = { name, url, version }:
