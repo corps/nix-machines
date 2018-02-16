@@ -158,10 +158,10 @@ in {
   nvim-typescript = buildVimPlugin {
     name = "nvim-typescript";
     src = fetchFromGitHub {
-			owner = "mhartington";
-			repo = "nvim-typescript";
-			rev = "d529137208bf5f523051ca22d620577971b0997d";
-			sha256 = "1923j3drdzfxsi413lvbz4d2dawppdy2v4zzvmvpcwv6afhydaaj";
+      owner = "mhartington";
+      repo = "nvim-typescript";
+      rev = "b1d61b22d2459f1f62ab256f564b52d05626440a";
+      sha256 = "0m499h7r85psp70y5rd79kxymfgzy9qs9fw5dy0yalihllvxpcwz";
     };
   };
   vim-grepper = buildVimPlugin {

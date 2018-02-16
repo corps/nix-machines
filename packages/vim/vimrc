@@ -71,6 +71,7 @@ map zg/ <Plug>(incsearch-fuzzy-stay)
 
 set backspace=indent,eol,start " Make backspace work cool
 set expandtab autoindent tabstop=2 shiftwidth=2
+autocmd FileType make setlocal noexpandtab
 set undolevels=10000            " many undos
 set noerrorbells                " no bells and whistles
 set novisualbell                " no bells and whistles
