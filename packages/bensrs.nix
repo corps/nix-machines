@@ -2,6 +2,6 @@
 
 corpsLib.embedInNativeApp {
   name = "BenSRS";
-  version = "1.0";
+  version = "1.1";
   url = "https://corps.github.io/ben-srs";
 }
