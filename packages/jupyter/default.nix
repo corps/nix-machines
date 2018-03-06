@@ -29,23 +29,25 @@ nix-kernel = callPackage (fetchFromGitHub {
   sha256 = "1vc71ak2ag64ky2w6hxfxxivwvik1409iiqiihj6mdwrys9ryvdv";
 }) {};
 
-purescript-kernel = (callPackage (fetchFromGitHub {
-  owner = "corps";
-  repo = "purescript-webpack-kernel";
-  rev = "97b78702df3565ea46554b21eebb5d4d40bad09e";
-  sha256 = "006xzk8bn3p1mg3q911sy7q5pgvv0r6gacxgsmv4rmmzky90ybim";
-}) {}) + "/lib/node_modules/purescript-webpack-kernel";
-
-# nix-kernel = callPackage ../../../../nix-kernel {};
+purescript-kernel = callPackage ./purescript.nix {
+  npmPackages = [
+    "moment"
+    "bignumber.js"
+  ];
+  bowerPackages = [
+    "purescript-lens"
+    "purescript-profunctor-lenses"
+  ];
+};
 
 kernels = {
   python3 = null;
 
   purescript-webpacker = {
     language = "purescript";
-    display_name = "Purescript / Webpack";
+    display_name = "Purescript";
     argv = [
-      "${purescript-kernel}/purescript-webpack/kernel"
+      "${purescript-kernel}/purescript/kernel"
     ];
   };
   nix = {
