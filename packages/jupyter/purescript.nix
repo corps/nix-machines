@@ -25,7 +25,7 @@ npmInstalls = lib.concatStringsSep "\n" (builtins.map (p: "npm install ${p} --sa
 bowerInstalls = lib.concatStringsSep "\n" (builtins.map (p: "bower install ${p} --save")
 bowerPackages);
 
-path = "/lib/node_module/purescript-kernel";
+path = "/lib/node_modules/purescript-kernel";
 
 customized = stdenv.mkDerivation {
   inherit src;
