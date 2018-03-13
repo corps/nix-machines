@@ -37,6 +37,7 @@ purescript-kernel = callPackage ./purescript.nix {
   bowerPackages = [
     "purescript-lens"
     "purescript-profunctor-lenses"
+    "purescript-foreign-generic"
   ];
 };
 
