@@ -16,8 +16,8 @@ let
 src = fetchFromGitHub {
   owner = "corps";
   repo = "purescript-kernel";
-  rev = "2f05cb6c7e4a5530e7d08bbe7158c92e8d94bf78";
-  sha256 = "0hl6mfgmxinjf6gki5dcdamia6wycv10l6gxdqaszl9v68rrh4n4";
+  rev = "b704fe7250440ee345b3327f116165097ae36665";
+  sha256 = "17zx7lj84iwv8l856c9kxycj16g1rhq79fna31zz79i5n6hgj98n";
 };
 
 npmInstalls = lib.concatStringsSep "\n" (builtins.map (p: "npm install ${p} --save") npmPackages);
