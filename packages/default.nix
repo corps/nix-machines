@@ -24,4 +24,5 @@ let callPackage = super.newScope self; in rec {
   iterm2 = callPackage ./iterm2.nix {};
   bensrs = callPackage ./bensrs.nix {};
   corpsLib = super.callPackage ./lib {};
+  make-tmpfs = callPackage ./make-tmpfs.nix {};
 }
