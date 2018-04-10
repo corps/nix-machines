@@ -25,4 +25,5 @@ let callPackage = super.newScope self; in rec {
   bensrs = callPackage ./bensrs.nix {};
   corpsLib = super.callPackage ./lib {};
   make-tmpfs = callPackage ./make-tmpfs.nix {};
+  tiddly = callPackage ./tiddly {};
 }

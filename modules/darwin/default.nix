@@ -9,6 +9,7 @@
     ./chunkwm.nix
     ./workspaces.nix
     ./nativeapps.nix
+    ./tiddly.nix
   ];
 
   environment.variables.EDITOR = "vim";

@@ -1,0 +1,12 @@
+#! /usr/bin/env bash
+
+TIDDLY_HOME=$HOME/Dropbox/tiddly/
+PORT=9118
+
+mkdir -p $TIDDLY_HOME
+
+if [ ! -e $TIDDLY_HOME/tiddlywiki.info ]; then
+  tiddlywiki $TIDDLY_HOME --init server
+fi
+
+exec tiddlywiki $TIDDLY_HOME --server $PORT
