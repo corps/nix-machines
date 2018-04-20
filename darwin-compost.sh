@@ -54,7 +54,7 @@ if ! check fileExists "$HOME/Development/nix-machines"; then
 fi
 
 if ! check isLink "/etc/nix/nix.conf"; then
-  echo -e "$YELLOW /etc/nix/nix.conf is not a link.  sudo rm it and link to /etc/static/nix.conf.$RESTORE"
+  echo -e "$YELLOW /etc/nix/nix.conf is not a link.  sudo rm it and link to /etc/static/nix/nix.conf"
 fi
 
 if ! check fileExists "$HOME/.config/nixpkgs/overlays/nix-machines"; then
