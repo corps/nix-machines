@@ -6,7 +6,6 @@
     ./symlinks.nix
     ./supervisord.nix
     ./input-plugins.nix
-    ./chunkwm.nix
     ./workspaces.nix
     ./nativeapps.nix
     ./tiddly.nix

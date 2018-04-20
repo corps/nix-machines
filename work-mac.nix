@@ -39,7 +39,6 @@ in
 
   services.jupyter.enable = true;
   services.tiddly.enable = true;
-  # services.chunkwm.enable = true;
 
   nixpkgs.config.vim.ftNix = false;
 

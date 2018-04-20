@@ -1,10 +1,10 @@
-{ stdenv, makeWrapper, curl, bash, coreutils, gnused, which, gnugrep }:
+{ stdenv, makeWrapper, curl, bash, coreutils, gnused, which, gnugrep, callPackage }:
 
 stdenv.mkDerivation {
   name = "dropbox_uploader";
 
   buildInputs = [ makeWrapper ];
-  src = ./Dropbox-Uploader;
+  src = callPackage ./src.nix {};
   phases = ["unpackPhase" "installPhase"];
   installPhase = ''
     mkdir -p $out/bin
