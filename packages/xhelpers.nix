@@ -9,19 +9,12 @@ bringToFrontScript = { window, name ? window }: substituteAll {
   inherit wmctrl window bash;
 };
 
-xinits = substituteAll {
-  src = ./my-xinits;
-  isExecutable = true;
-  inherit bash setxkbmap;
-};
-
 in
 
 stdenv.mkDerivation rec {
   name = "xhelpers";
   phases = [ "installPhase" ];
 
-  inherit xinits;
   bringWebstorm = bringToFrontScript { window = "WebStorm"; };
   bringRubymine = bringToFrontScript { window = "RubyMine"; };
   bringChromium = bringToFrontScript { window = "Chromium"; };
@@ -33,6 +26,5 @@ stdenv.mkDerivation rec {
     cp $bringRubymine $out/bin/bring-rubymine-to-front
     cp $bringChromium $out/bin/bring-chromium-to-front
     cp $bringTerminal $out/bin/bring-terminal-to-front
-    cp $xinits $out/bin/my-xinits
   '';
 }

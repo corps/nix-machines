@@ -1,4 +1,0 @@
-#! @bash@/bin/bash
-
-PATH=@setxkbmap@/bin:$PATH
-setxkbmap -option altwin:ctrl_alt_win
