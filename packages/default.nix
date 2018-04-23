@@ -3,7 +3,7 @@ self: super:
 # Good examples at https://github.com/yegortimoshenko/overlay/blob/master/pkgs/default.nix
 let callPackage = super.newScope self; in rec {
   dropbox_uploader = callPackage ./dropbox_uploader {};
-  ngrok = callPackage ./ngrok.nix {};
+  ngrok = callPackage ./ngrok {};
   xhelpers = callPackage ./xhelpers.nix {};
   rip-song = callPackage ./rip-song.nix { inherit dropbox_uploader; };
   freeciv = callPackage ./freeciv.nix {};
