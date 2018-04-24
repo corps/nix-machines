@@ -4,5 +4,7 @@
   "prettier",
   "tiddlywiki",
   "sudo-prompt",
-  "qrcode-svg"
+  "qrcode-svg",
+  "wait-port",
+  "http-proxy"
 ]

@@ -1,14 +1,17 @@
-{ callPackage, writeScriptBin, bash }:
+{ callPackage, writeScriptBin, bash, npmPackages, nodejs }:
 
 let
-package = (callPackage ./npm-package.nix {}).package;
+bin = ./bin;
 in
 
 writeScriptBin "tiddly" ''
 #! /usr/bin/env ${bash}/bin/bash
 
-package=${package}/lib/node_modules/tiddly/
-PATH=$package/node_modules/.bin:$PATH
+export NODE_PATH=${npmPackages.tiddlywiki}/lib/node_modules:$NODE_PATH
+export NODE_PATH=${npmPackages.http-proxy}/lib/node_modules:$NODE_PATH
+export NODE_PATH=${npmPackages.wait-port}/lib/node_modules:$NODE_PATH
+export PATH=${npmPackages.tiddlywiki}/bin:$PATH
+export PATH=${nodejs}/bin:$PATH
 
-exec $package/bin/tiddly
+exec ${bin}/tiddly
 ''

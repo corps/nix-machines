@@ -9,18 +9,23 @@ let callPackage = super.newScope self; in rec {
   freeciv = callPackage ./freeciv.nix {};
   my_neovim = callPackage ./vim {};
   fetch_from_github = callPackage ./fetch-from-github.nix {};
-  uglifyjs = (callPackage ./uglifyjs {})."uglify-js-3.1.0";
   jupyter = callPackage ./jupyter {};
   universal-ctags = callPackage ./universal-ctags.nix {};
-  prettier = (callPackage ./prettier {})."prettier-1.7.4";
-  js-beautify = (callPackage ./js-beautify {})."js-beautify-1.7.4";
-  qrcode-svg = callPackage ./qrcode-svg.nix {};
+
+  npmPackages = callPackage ./npm-packages {};
+
+  js-beautify = npmPackages."js-beautify";
+  prettier = npmPackages.prettier;
+  uglifyjs = npmPackages."uglify-js";
+  qrcode-svg = npmPackages."qrcode-svg";
+
   canto-input = callPackage ./mac_cantonese {};
   iterm2 = callPackage ./iterm2.nix {};
   bensrs = callPackage ./bensrs.nix {};
   corpsLib = super.callPackage ./lib {};
   make-tmpfs = callPackage ./make-tmpfs.nix {};
   tiddly = callPackage ./tiddly {};
+  upgrade-packages = callPackage ./upgrade-packages {};
 }
 
   #   inherit (super.darwin.apple_sdk.frameworks) Carbon Cocoa ApplicationServices;

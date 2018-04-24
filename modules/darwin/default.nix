@@ -1,3 +1,5 @@
+{ config, lib, pkgs, ... }:
+
 {
   imports = [
     ./keybindings.nix
@@ -9,6 +11,10 @@
     ./workspaces.nix
     ./nativeapps.nix
     ./tiddly.nix
+  ];
+
+  environment.systemPackages = with pkgs; [
+    upgrade-packages
   ];
 
   environment.variables.EDITOR = "vim";
