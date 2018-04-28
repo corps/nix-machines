@@ -43,9 +43,8 @@ in {
 
         # for the color scheme
         "vim-srcery"
+
         # "vim-surround"
-        # "vim-repeat"
-        # "vimwiki"
       ];
     }];
   };

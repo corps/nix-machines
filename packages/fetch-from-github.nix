@@ -6,7 +6,7 @@ substituteAll rec {
     set -e
 
     branch=''${2:-master}
-    rev=''${3:-$(@git@/bin/git ls-remote https://github.com/$1 $branch --refs | head -1 | cut -f 1)}
+    rev=''${3:-$(@git@/bin/git ls-remote git@github.com:$1 $branch --refs | head -1 | cut -f 1)}
 
     repoName=$1
     IFS='/' read owner repo <<< "$repoName"
