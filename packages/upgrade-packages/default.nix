@@ -5,7 +5,7 @@ packagesSrcRoot = toString ./..;
 in
 
 writeScriptBin "upgrade-packages" ''
-  #! ${bash}/bin/bash  
+  #! ${bash}/bin/bash
   set -e
   set -o pipefail
 
@@ -13,17 +13,18 @@ writeScriptBin "upgrade-packages" ''
 
   cd ${packagesSrcRoot}
 
-  IFS=", "
+  shopt -s nullglob
+  shopt -s globstar
 
-  echo $1
   if [[ -z "$1" ]]
   then
-    files=**/upgrade.sh
+    files=*/upgrade.sh
   else
-    files=$1*/**/upgrade.sh
+    files=$1*/upgrade.sh
   fi
 
-  read -p "Upgrade $files? (Yy/Nn): " -n 1 -r
+  echo Found $files
+  read -p "Upgrade? (Yy/Nn): " -n 1 -r
   echo
 
   if [[ $REPLY =~ ^[Yy]$ ]]
