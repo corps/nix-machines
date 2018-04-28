@@ -16,6 +16,9 @@ in
     ./modules/darwin
   ];
 
+  # TODO: Add IgnoreUnknown UseKeychain
+  # UseKeychain yes into ssh/config file.  maybe generate them from here.
+
   system.defaults.dockEx."workspaces-edge-delay" = "0.0";
 
   environment.systemPackages = with pkgs; [
