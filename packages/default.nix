@@ -26,6 +26,8 @@ let callPackage = super.newScope self; in rec {
   make-tmpfs = callPackage ./make-tmpfs.nix {};
   tiddly = callPackage ./tiddly {};
   upgrade-packages = callPackage ./upgrade-packages {};
+
+  fetch_from_pypi = callPackage ./fetch-from-pypi.nix {};
 }
 
   #   inherit (super.darwin.apple_sdk.frameworks) Carbon Cocoa ApplicationServices;

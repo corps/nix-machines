@@ -31,4 +31,11 @@
   system.defaults.finder._FXShowPosixPathInTitle = true;
 
   services.supervisord.enable = true;
+
+  system.activationScripts.extraActivation.text = ''
+    (
+      set +e
+      vim --headless +UpdateRemotePlugins +q
+    )
+  '';
 }
