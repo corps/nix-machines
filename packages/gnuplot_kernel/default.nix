@@ -4,18 +4,17 @@ with python.pkgs;
 
 let
 
-metakernel = buildPythonPackage rec {
-  version = "0.20.7";
-  pname = "metakernel";
-  name = "${pname}-${version}";
+metakernel-package = import ./metakernel-package.nix;
+gnuplot-package = import ./gnuplot-package.nix { inherit fetchFromGitHub; } ;
 
-  format = "wheel";
+metakernel = buildPythonPackage rec {
+  inherit (metakernel-package) version pname format;
+  name = "${pname}-${version}";
 
   propagatedBuildInputs = [ pexpect notebook ];
 
   src = fetchPypi {
-    inherit pname version format;
-    sha256 = "0z3fgv3z1lmswq9x4rp7zximcjb0brdpsvw7xd4phwf7law9vali";
+    inherit (metakernel-package) pname version format sha256;
   };
 };
 
@@ -32,12 +31,7 @@ gnuplot_kernel = buildPythonPackage rec {
 
   propagatedBuildInputs = [ metakernel ];
 
-  src = fetchFromGitHub {
-    owner = "has2k1";
-    repo = "gnuplot_kernel";
-    rev = "3ac9763d72c59995a67f76f728b6d7d9d18c0490";
-    sha256 = "0fy8yaf6pqkz0ili5w3b8mz3xqbbz34dfjhsgnzy42bxdg109v32";
-  };
+  src = gnuplot-package;
 };
 
 env = python.withPackages (ps: with ps; [ gnuplot_kernel notebook ]);
