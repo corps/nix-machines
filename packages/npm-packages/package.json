@@ -1,0 +1,10 @@
+[
+  "js-beautify",
+  "uglify-js",
+  "prettier",
+  "tiddlywiki",
+  "sudo-prompt",
+  "qrcode-svg",
+  "wait-port",
+  "http-proxy"
+]

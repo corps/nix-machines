@@ -1,13 +1,17 @@
-{ stdenv, wmctrl, substituteAll, bash, wget, setxkbmap }:
+{ stdenv, wmctrl, writeScript, bash, wget, setxkbmap }:
 
 let
 
-bringToFrontScript = { window, name ? window }: substituteAll {
-  src = ./bring-to-front.sh;
-  name = "bring-${name}-to-front";
-  isExecutable = true;
-  inherit wmctrl window bash;
-};
+bringToFrontScript = { window, name ? window }: writeScript "bring-${name}-to-front" ''
+#! ${bash}/bin/bash
+
+PATH=${wmctrl}/bin:$PATH
+if [ `wmctrl -l | grep -c "${window}" != 0 ]
+then
+  [[ -e /Applications/Utilities/XQuartz.app ]] && open /Applications/Utilities/XQuartz.app/
+  wmctrl -a "${window}"
+fi
+'';
 
 in
 

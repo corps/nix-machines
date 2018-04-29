@@ -19,17 +19,12 @@ writeKernelFile = json@{ name, argv, ...}:
     });
   };
 
-ihaskell = callPackage ./ihaskell.nix {};
-bash_kernel = callPackage ./bash_kernel.nix {};
-gnuplot_kernel = callPackage ./gnuplot_kernel.nix {};
-nix-kernel = callPackage (fetchFromGitHub {
-  owner = "corps";
-  repo = "nix-kernel";
-  rev = "ae99b3dacadead82efebe97d31439bd021acd980";
-  sha256 = "1vc71ak2ag64ky2w6hxfxxivwvik1409iiqiihj6mdwrys9ryvdv";
-}) {};
+ihaskell = callPackage ../ihaskell {};
+bash_kernel = callPackage ../bash_kernel {};
+gnuplot_kernel = callPackage ../gnuplot_kernel {};
+nix-kernel = callPackage ../nix-kernel { inherit callPackage; };
 
-purescript-kernel = callPackage ./purescript.nix {
+purescript-kernel = callPackage ../purescript-kernel {
   npmPackages = [
     "moment"
     "bignumber.js"
