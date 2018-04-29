@@ -62,5 +62,8 @@ if ! check fileExists "$HOME/.config/nixpkgs/overlays/nix-machines"; then
   ln -s $DIR/packages $HOME/.config/nixpkgs/overlays/nix-machines
 fi
 
+NIXPKGS_URL=`nix-instantiate --eval --strict --expr 'with (import <nixpkgs> {}); import ./packages/darwin-nixpkgs { inherit lib; }' | sed "s/^\([\"']\)\(.*\)\1\$/\2/g"`
+
+export NIX_PATH=nixpkgs=$NIXPKGS_URL:$NIX_PATH
 
 exec darwin-rebuild switch $@
