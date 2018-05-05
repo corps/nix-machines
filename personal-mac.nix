@@ -35,6 +35,8 @@ in
 
   nixpkgs.config.vim.ftNix = false;
 
+  nativeApps.vscode.install = true;
+
   system.symlinks."${home}/.gitconfig" = gitConfig;
   system.symlinks."${home}/Library/Preferences/com.googlecode.iterm2.plist" =
     toString ./dotfiles/com.googlecode.iterm2.plist;
