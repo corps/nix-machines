@@ -45,4 +45,9 @@ in
   system.symlinks."${home}/.gitconfig" = gitConfig;
   system.symlinks."${home}/Library/Preferences/com.googlecode.iterm2.plist" =
     toString ./dotfiles/com.googlecode.iterm2.plist;
+
+  system.symlinks."${home}/Library/Application\ Support/Code/User/settings.json" =
+    toString ./dotfiles/vscode/settings.json;
+  system.symlinks."${home}/Library/Application\ Support/Code/User/keybindings.json" =
+    toString ./dotfiles/vscode/keybindings.json;
 }
