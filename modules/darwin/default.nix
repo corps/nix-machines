@@ -45,4 +45,8 @@
       vim --headless +UpdateRemotePlugins +q
     )
   '';
+
+  nix.package = pkgs.nix;
+  services.nix-daemon.enable = true;
+  system.activationScripts.checks.text = lib.mkForce "";
 }
