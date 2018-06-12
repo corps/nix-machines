@@ -37,6 +37,11 @@ in
 
   nativeApps.vscode.install = true;
 
+  services.khd.khdConfig = ''
+    shift + cmd - 0x2C : open -a Webstorm
+    shift + cmd - 0x2B : open -a Visual\ Studio\ Code
+  '';
+
   system.symlinks."${home}/.gitconfig" = gitConfig;
   system.symlinks."${home}/Library/Preferences/com.googlecode.iterm2.plist" =
     toString ./dotfiles/com.googlecode.iterm2.plist;
