@@ -23,6 +23,7 @@ in
     jupyter my_neovim fetch_from_github uglifyjs autossh fzy
     imagemagick wget universal-ctags ag pkgs.nodePackages.node2nix js-beautify gnupg
     qrcode-svg iterm2 bensrs make-tmpfs fetch_from_pypi git-dropbox
+    mitmproxy
   ];
 
   nativeApps.vscode.install = true;

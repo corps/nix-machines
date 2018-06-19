@@ -26,6 +26,7 @@ in
     jupyter my_neovim fetch_from_github uglifyjs xhelpers autossh fzy
     imagemagick wget universal-ctags ag pkgs.nodePackages.node2nix js-beautify gnupg
     qrcode-svg iterm2 bensrs fetch_from_pypi git-dropbox
+    mitmproxy
   ];
 
   system.inputPlugins = [ pkgs.canto-input ];
