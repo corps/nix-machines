@@ -41,6 +41,14 @@ function isDarwin() {
   [[ $(uname -s) =~ "Darwin" ]]
 }
 
+function isLinux() {
+  [[ $(uname -s) =~ "Linux" ]]
+}
+
+function isWsl() {
+  ls /mnt/c/ || ls /c/ &> /dev/null
+}
+
 function fileExists() {
   [ -e "$1" ]
 }
