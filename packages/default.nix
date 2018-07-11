@@ -29,6 +29,8 @@ let callPackage = super.newScope self; in rec {
 
   fetch_from_pypi = callPackage ./fetch-from-pypi.nix {};
   git-dropbox = callPackage ./git-dropbox.nix {};
+
+  wintmp = callPackage ./wintmp.nix {};
 }
 
   #   inherit (super.darwin.apple_sdk.frameworks) Carbon Cocoa ApplicationServices;
