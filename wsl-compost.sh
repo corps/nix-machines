@@ -29,6 +29,12 @@ if ! check existsOnPath choco.exe; then
   exit 1
 fi
 
+if check fileExists /etc/bash.bashrc; then
+  if ! check fileExists /etc/bashrc; then
+    echoRun sudo ln -s /etc/bash.bashrc /etc/bashrc
+  fi
+fi
+
 if ! check fileExists /etc/nix/nix.conf; then
   echoRun sudo mkdir -p /etc/nix/
   echoRun sudo cp $DIR/dotfiles/dos.nix.conf /etc/nix/nix.conf
@@ -56,4 +62,5 @@ fi
 NIXPKGS_URL=`nix-instantiate --eval --strict --expr 'with (import <nixpkgs> {}); import ./packages/dos-nixpkgs { inherit lib; }' | sed "s/^\([\"']\)\(.*\)\1\$/\2/g"`
 export NIX_PATH=nixpkgs=$NIXPKGS_URL:$NIX_PATH
 
-# exec darwin-rebuild switch $@
+nix-build ./nix-wsl -A installer
+exec ./result/bin/wsl-installer
