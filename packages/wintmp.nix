@@ -6,9 +6,9 @@ writeScriptBin "wintmp" ''
   set -e
 
   base=$(basename $1)
-  tmp=$WINHOME/WinTemp
+  hash=$(echo $1 | cksum | cut -f 1 -d ' ')
+  tmp=$WINHOME/WinTemp/$base-$hash
   mkdir -p $tmp
-  tmp=$(mktemp -p "$tmp" -d)
   cp $1 $tmp/$base
   wslpath -w $tmp/$base
 ''
