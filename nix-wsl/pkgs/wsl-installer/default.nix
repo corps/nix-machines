@@ -43,6 +43,7 @@ stdenv.mkDerivation {
     wsl-rebuild switch -I "user-wsl-config=$config"
 
     cp "${toString ./ActivateSystem.vbs}" "$startup/ActivateSystem.vbs"
+    cp "${toString ./AAWslRunD.vbs}" "$startup/AAWslRunD.vbs"
     exit
   '';
 }

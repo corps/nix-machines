@@ -23,9 +23,6 @@ in
 
   programs.bash.enable = true;
   programs.autohotkey.enable = true;
-  programs.autohotkey.scripts = [
-    ../../dotfiles/surface-keyboard.ahk
-  ];
 
   system.activationScripts.preUserActivation.text = setupWin;
   system.activationScripts.extraUserActivation.text = ''

@@ -26,6 +26,18 @@ let
     }
     ../../pkgs/wsl-rebuild.sh;
 
+  wsl-run = writeProgram "wsl-run"
+    {
+      inherit (stdenv) shell;
+    }
+    ../../pkgs/wsl-run.sh;
+
+  wsl-rund = writeProgram "wsl-rund"
+    {
+      inherit (stdenv) shell;
+    }
+    ../../pkgs/wsl-rund.sh;
+
 in
 
 {
@@ -35,6 +47,8 @@ in
       [ # Include nix-tools by default
         wsl-option
         wsl-rebuild
+        wsl-run
+        wsl-rund
       ];
 
   };
