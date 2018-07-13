@@ -32,8 +32,6 @@ stdenv.mkDerivation {
       chmod u+w "$config"
     fi
 
-    set -x
-
     export WINHOME=$(wslpath $(cmd.exe /c 'echo %USERPROFILE%' | tr -d '\r\n'))
     startup="$WINHOME/AppData/Roaming/Microsoft/Windows/Start Menu/Programs/Startup"
 
@@ -44,7 +42,7 @@ stdenv.mkDerivation {
 
     wsl-rebuild switch -I "user-wsl-config=$config"
 
-    echo $(perl -p -e 's/\n/\r\n/' < "${toString ./ActivateSystem.vbs}") > "$startup/ActivateSystem.vbs"
+    cp "${toString ./ActivateSystem.vbs}" "$startup/ActivateSystem.vbs"
     exit
   '';
 }
