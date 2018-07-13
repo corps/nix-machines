@@ -13,7 +13,7 @@ in
 {
   imports = [
     ./nixpkgs.nix
-    ./chocolatey.nix
+    ./autohotkeys.nix
   ];
 
   environment.extraInit = setupWin;

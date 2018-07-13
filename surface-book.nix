@@ -10,4 +10,8 @@
     universal-ctags ag pkgs.nodePackages.node2nix
     gnupg qrcode-svg fetch_from_pypi git-dropbox wintmp
   ];
+
+  programs.autohotkey.scripts = [
+    ./dotfiles/surface-keyboard.ahk
+  ];
 }

@@ -59,8 +59,8 @@ if ! check fileExists "$HOME/.config/nixpkgs/overlays/nix-machines"; then
   echoRun ln -s $DIR/packages $HOME/.config/nixpkgs/overlays/nix-machines
 fi
 
-NIXPKGS_URL=`nix-instantiate --eval --strict --expr 'with (import <nixpkgs> {}); import ./packages/dos-nixpkgs { inherit lib; }' | sed "s/^\([\"']\)\(.*\)\1\$/\2/g"`
-export NIX_PATH=nixpkgs=$NIXPKGS_URL:$NIX_PATH
+NIXPKGS_URL=`nix-instantiate --eval --strict --expr 'with (import <nixpkgs> {}); import ./packages/wsl-nixpkgs { inherit lib; }' | sed "s/^\([\"']\)\(.*\)\1\$/\2/g"`
+# export NIX_PATH=nixpkgs=$NIXPKGS_URL:$NIX_PATH
 
 nix-build ./nix-wsl -A installer
 exec ./result/bin/wsl-installer

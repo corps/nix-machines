@@ -28,7 +28,6 @@ in
         [ # Include default path <wsl-config>.
           "wsl=${toString ../..}"
           "wsl-config=$HOME/.nixpkgs/wsl-configuration.nix"
-          "/nix/var/nix/profiles/per-user/root/channels"
           "$HOME/.nix-defexpr/channels"
         ];
       description = ''
