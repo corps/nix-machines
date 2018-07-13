@@ -3,7 +3,7 @@
 let
 
 setupWin = ''
-export WINHOME=$(echo $PATH | grep -o -E "[^:]*\/Users\/[^\/]*" | head -n 1)
+export WINHOME=$(wslpath $(cmd.exe /c 'echo %USERPROFILE%' | tr -d '\r\n'))
 MNTC=$(echo $WINHOME | grep -o -e "[^U]*\/" | head -n 1)
 export MNTC=$(echo $MNTC | rev | cut -c 2- | rev)
 '';
@@ -22,8 +22,10 @@ in
   environment.variables.LANG = "en_US.UTF-8";
 
   programs.bash.enable = true;
-  programs.chocolatey.config = toString ../../packages/chocolatey/packages.config;
-  programs.chocolatey.enable = true;
+  programs.autohotkey.enable = true;
+  programs.autohotkey.scripts = [
+    ../../dotfiles/surface-keyboard.ahk
+  ];
 
   system.activationScripts.preUserActivation.text = setupWin;
   system.activationScripts.extraUserActivation.text = ''

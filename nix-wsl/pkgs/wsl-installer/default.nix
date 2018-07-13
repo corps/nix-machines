@@ -14,7 +14,6 @@ stdenv.mkDerivation {
   preferLocalBuild = true;
 
   unpackPhase = ":";
-  
   installPhase = ''
     mkdir -p $out/bin
     echo "$shellHook" > $out/bin/wsl-installer
@@ -33,11 +32,19 @@ stdenv.mkDerivation {
       chmod u+w "$config"
     fi
 
+    set -x
+
+    export WINHOME=$(wslpath $(cmd.exe /c 'echo %USERPROFILE%' | tr -d '\r\n'))
+    startup="$WINHOME/AppData/Roaming/Microsoft/Windows/Start Menu/Programs/Startup"
+
     export NIX_PATH=${nixPath}
     system=$($nix/bin/nix-build '<wsl>' -I "user-wsl-config=$config" -A system --no-out-link)
     export PATH=$system/sw/bin:$PATH
 
+
     wsl-rebuild switch -I "user-wsl-config=$config"
+
+    echo $(perl -p -e 's/\n/\r\n/' < "${toString ./ActivateSystem.vbs}") > "$startup/ActivateSystem.vbs"
     exit
   '';
 }

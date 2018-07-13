@@ -23,7 +23,7 @@ in {
       example = literalExample "[ pkgs.nix-repl pkgs.vim ]";
       description = ''
         The set of packages that appear in
-        /run/current-system/sw.  These packages are
+        /nix/current-system/sw.  These packages are
         automatically available to all users, and are
         automatically updated every time you rebuild the system
         configuration.  (The latter is the main difference with
@@ -53,14 +53,14 @@ in {
       type = types.listOf types.str;
       default = [];
       example = [ "doc" "info" "devdoc" ];
-      description = "List of additional package outputs to be symlinked into <filename>/run/current-system/sw</filename>.";
+      description = "List of additional package outputs to be symlinked into <filename>/nix/current-system/sw</filename>.";
     };
 
     environment.pathsToLink = mkOption {
       type = types.listOf types.str;
       default = [];
       example = [ "/share/doc" ];
-      description = "List of directories to be symlinked in <filename>/run/current-system/sw</filename>.";
+      description = "List of directories to be symlinked in <filename>/nix/current-system/sw</filename>.";
     };
 
     environment.loginShell = mkOption {
@@ -148,7 +148,7 @@ in {
     environment.profiles =
       [ # Use user, default and system profiles.
         "$HOME/.nix-profile"
-        "/run/current-system/sw"
+        "/nix/current-system/sw"
         "/nix/var/nix/profiles/default"
       ];
 
