@@ -15,4 +15,8 @@
   programs.autohotkey.scripts = [
     ./dotfiles/surface-keyboard.ahk
   ];
+
+  # system.activationScripts.extraActivation.text = ''
+  # sed -i 's$<listen>.*</listen>$<listen>tcp:host=localhost,port=0</listen>$' /etc/dbus-1/session.conf
+  # '';
 }
