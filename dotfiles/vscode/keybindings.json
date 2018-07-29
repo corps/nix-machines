@@ -47,5 +47,15 @@
   {
     "key": "cmd+[",
     "command": "workbench.action.navigateBack"
+  },
+  {
+    "key": "alt+enter",
+    "command": "-editor.action.selectAllMatches",
+    "when": "editorFocus && findWidgetVisible"
+  },
+  {
+    "key": "alt+enter",
+    "command": "-debug.openBreakpointToSide",
+    "when": "breakpointsFocused"
   }
 ]

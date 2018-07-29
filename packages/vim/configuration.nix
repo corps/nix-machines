@@ -41,8 +41,14 @@ in {
 
         "vim-polyglot"
 
+        "nerdtree"
+
         # for the color scheme
         "vim-srcery"
+
+        "neovim-haskell"
+
+        "vim-hindent"
 
         # "vim-surround"
       ];

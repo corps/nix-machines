@@ -158,4 +158,24 @@ in {
     name = "vim-ruby";
     src = pluginSrc ./plugins/vim-ruby.vim-ruby.nix;
   };
+
+  nerdtree = buildVimPlugin {
+    name = "nerdtree";
+    src = pluginSrc ./plugins/scrooloose.nerdtree.nix;
+  };
+
+  neovim-haskell = buildVimPlugin {
+    name = "neovim-haskell";
+    src = pluginSrc ./plugins/neovimhaskell.haskell-vim.nix;
+  };
+
+  vim-hindent = buildVimPlugin {
+    name = "vim-hindent";
+    src = pluginSrc ./plugins/alx741.vim-hindent.nix;
+  };
+
+  intero = buildVimPlugin {
+    name = "intero";
+    src = pluginSrc ./plugins/parsonsmatt.intero-neovim.nix;
+  };
 }
