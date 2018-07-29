@@ -50,6 +50,7 @@ in {
 
         "vim-hindent"
 
+        "neco-ghc"
         # "vim-surround"
       ];
     }];

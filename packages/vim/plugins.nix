@@ -178,4 +178,9 @@ in {
     name = "intero";
     src = pluginSrc ./plugins/parsonsmatt.intero-neovim.nix;
   };
+
+  neco-ghc = buildVimPlugin {
+    name = "neco-ghc";
+    src = pluginSrc ./plugins/eagletmt.neco-ghc.nix;
+  };
 }

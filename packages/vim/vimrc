@@ -45,11 +45,8 @@ augroup interoMaps
   au FileType haskell nnoremap <silent> <leader>iov :InteroOpen<CR><C-W>H
   au FileType haskell nnoremap <silent> <leader>ih :InteroHide<CR>
 
-  " Reloading (pick one)
   " Automatically reload on save
   au BufWritePost *.hs InteroReload
-  " Manually save and reload
-  au FileType haskell nnoremap <silent> <leader>wr :w \| :InteroReload<CR>
 
   " Load individual modules
   au FileType haskell nnoremap <silent> <leader>il :InteroLoadCurrentModule<CR>
@@ -68,6 +65,14 @@ augroup interoMaps
   " Prompts you to enter targets (no silent):
   au FileType haskell nnoremap <leader>ist :InteroSetTargets<SPACE>
 augroup END
+
+" Disable haskell-vim omnifunc
+let g:haskellmode_completion_ghc = 0
+
+" neco-ghc
+autocmd FileType haskell setlocal omnifunc=necoghc#omnifunc
+let g:necoghc_enable_detailed_browse = 1
+let g:necoghc_use_stack = 1
 
 " Intero starts automatically. Set this if you'd like to prevent that.
 let g:intero_start_immediately = 0
