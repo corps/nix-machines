@@ -46,11 +46,12 @@ in {
         # for the color scheme
         "vim-srcery"
 
+        # Haskell
         "neovim-haskell"
-
         "vim-hindent"
-
+        "intero"
         "neco-ghc"
+
         # "vim-surround"
       ];
     }];

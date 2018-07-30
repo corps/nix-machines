@@ -40,9 +40,9 @@ augroup interoMaps
   au FileType haskell nnoremap <silent> <leader>ik :InteroKill<CR>
 
   " Open intero/GHCi split horizontally
-  au FileType haskell nnoremap <silent> <leader>io :InteroOpen<CR>
+  " au FileType haskell nnoremap <silent> <leader>io :InteroOpen<CR>
   " Open intero/GHCi split vertically
-  au FileType haskell nnoremap <silent> <leader>iov :InteroOpen<CR><C-W>H
+  au FileType haskell nnoremap <silent> <leader>io :InteroOpen<CR><C-W>H
   au FileType haskell nnoremap <silent> <leader>ih :InteroHide<CR>
 
   " Automatically reload on save

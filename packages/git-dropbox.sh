@@ -3,7 +3,12 @@
 set -e
 set -o pipefail
 
-DROPBOX_DIR=$HOME/Dropbox
+if [ -z ${WINHOME+x} ]; then
+  DROPBOX_DIR=$HOME/Dropbox
+else
+  DROPBOX_DIR=$WINHOME/Dropbox
+fi
+
 DROPBOX_GIT_DIR=$DROPBOX_DIR/git
 
 

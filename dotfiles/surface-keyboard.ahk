@@ -9,10 +9,17 @@ else
 return
 
 <^+E::
-if WinExist("ahk_exe ubuntu.exe")
-    WinActivate, ahk_exe ubuntu.exe
+if WinExist("Cmder")
+    WinActivate, Cmder
 else
-    Run "C:\Users\recur\AppData\Local\Microsoft\WindowsApps\ubuntu.exe"
+    Run "C:\tools\cmder\Cmder.exe"
+return
+
+<^+/::
+if WinExist("ahk_exe idea64.exe")
+    WinActivate, ahk_exe idea64.exe
+else
+    Run "C:\Program Files\JetBrains\IntelliJ IDEA 2018.1.6\bin\idea64.exe"
 return
 
 <^+'::
