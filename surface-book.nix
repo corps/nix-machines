@@ -16,6 +16,8 @@
     ./dotfiles/surface-keyboard.ahk
   ];
 
+  system.symlinks."$HOME/.dir_colors" = toString ./dotfiles/dircolors.256dark;
+
   # system.activationScripts.extraActivation.text = ''
   # sed -i 's$<listen>.*</listen>$<listen>tcp:host=localhost,port=0</listen>$' /etc/dbus-1/session.conf
   # '';

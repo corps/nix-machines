@@ -1,11 +1,13 @@
-colorscheme srcery
+colorscheme solarized8
+set background=dark
+let g:airline_theme='soda'
 
 syntax on
 set nocompatible
 filetype plugin on
 
 set vb                          " Visual bell
-set t_Co=256                    " 256 Colors
+" set t_Co=256                    " 256 Colors
 set t_vb=                       " turn off visual bell
 set mouse-=a                     " disable mouse
 set hidden                      " don't abadon buffers
@@ -34,17 +36,7 @@ nmap <leader>,, <Plug>CommentaryLine
 augroup interoMaps
   au!
   " Maps for intero. Restrict to Haskell buffers so the bindings don't collide.
-
-  " Background process and window management
-  au FileType haskell nnoremap <silent> <leader>is :InteroStart<CR>
-  au FileType haskell nnoremap <silent> <leader>ik :InteroKill<CR>
-
   " Open intero/GHCi split horizontally
-  " au FileType haskell nnoremap <silent> <leader>io :InteroOpen<CR>
-  " Open intero/GHCi split vertically
-  au FileType haskell nnoremap <silent> <leader>io :InteroOpen<CR><C-W>H
-  au FileType haskell nnoremap <silent> <leader>ih :InteroHide<CR>
-
   " Automatically reload on save
   au BufWritePost *.hs InteroReload
 
@@ -59,7 +51,7 @@ augroup interoMaps
   au FileType haskell nnoremap <silent> <leader>it :InteroTypeInsert<CR>
 
   " Navigation
-  au FileType haskell nnoremap <silent> <leader>jd :InteroGoToDef<CR>
+  au FileType haskell nnoremap <silent> <leader>b :InteroGoToDef<CR>
 
   " Managing targets
   " Prompts you to enter targets (no silent):
@@ -75,16 +67,11 @@ let g:necoghc_enable_detailed_browse = 1
 let g:necoghc_use_stack = 1
 
 " Intero starts automatically. Set this if you'd like to prevent that.
-let g:intero_start_immediately = 0
-
+let g:intero_start_immediately = 1
 " Enable type information on hover (when holding cursor at point for ~1 second).
 let g:intero_type_on_hover = 1
-
 " Change the intero window size; default is 10.
 let g:intero_window_size = 15
-
-" Sets the intero window to split vertically; default is horizontal
-let g:intero_vertical_split = 1
 
 " OPTIONAL: Make the update time shorter, so the type info will trigger faster.
 set updatetime=1000
@@ -103,18 +90,7 @@ tnoremap <C-w>W <C-\><C-n><C-w>W
 " Fuzzy matching (used instead of ctrlp)
 nnoremap <leader>p :FuzzyOpen<CR>
 
-"Open NERDTree when nvim starts
-autocmd StdinReadPre * let s:std_in=1
-autocmd VimEnter * if argc() == 0 && !exists("s:std_in") | NERDTree | endif
-
-"Toggle NERDTree with Ctrl-N
-map <C-n> :NERDTreeToggle<CR>
-
-"Show hidden files in NERDTree
-let NERDTreeShowHidden=1
-
 let g:syntastic_always_populate_loc_list = 1
-let g:ide_import_on_comletion = v:false
 
 " set incsearch
 " haya14busa/incsearch

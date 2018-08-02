@@ -8,7 +8,7 @@ in {
       names = [
         "denite-nvim"
         "deoplete-nvim"
-        "editorconfig-vim"
+        # "editorconfig-vim"
 
         "vim-commentary"
 
@@ -23,8 +23,8 @@ in {
         "neovim-fuzzy"
         "nvim-typescript"
 
-        "psc-ide-vim"
-        "purescript-vim"
+        # "psc-ide-vim"
+        # "purescript-vim"
 
         # "sourcebeautify-vim"
 
@@ -34,23 +34,25 @@ in {
         "vim-airline-themes"
 
         "vim-buffergator"
-        "vim-eunuch"
+        # "vim-eunuch"
 
-        "vim-fetch"
-        "vim-grepper"
+        # "vim-fetch"
+        # "vim-grepper"
 
         "vim-polyglot"
 
-        "nerdtree"
+        # "nerdtree"
 
         # for the color scheme
-        "vim-srcery"
+        # "vim-srcery"
 
         # Haskell
         "neovim-haskell"
         "vim-hindent"
         "intero"
         "neco-ghc"
+
+        "solarized8"
 
         # "vim-surround"
       ];

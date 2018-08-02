@@ -183,4 +183,9 @@ in {
     name = "neco-ghc";
     src = pluginSrc ./plugins/eagletmt.neco-ghc.nix;
   };
+
+  solarized8 = buildVimPlugin {
+    name = "solarized8";
+    src = pluginSrc ./plugins/lifepillar.vim-solarized8.nix;
+  };
 }

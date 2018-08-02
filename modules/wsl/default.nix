@@ -14,6 +14,7 @@ in
   imports = [
     ./nixpkgs.nix
     ./autohotkeys.nix
+    ./symlinks.nix
   ];
 
   environment.extraInit = setupWin;
