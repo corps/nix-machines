@@ -23,8 +23,9 @@ in {
         "neovim-fuzzy"
         "nvim-typescript"
 
-        # "psc-ide-vim"
-        # "purescript-vim"
+        "psc-ide-vim"
+        "purescript-vim"
+        "syntastic"
 
         # "sourcebeautify-vim"
 
@@ -53,6 +54,7 @@ in {
         "neco-ghc"
 
         "solarized8"
+
 
         # "vim-surround"
       ];

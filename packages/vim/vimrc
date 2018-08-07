@@ -58,6 +58,20 @@ augroup interoMaps
   au FileType haskell nnoremap <leader>ist :InteroSetTargets<SPACE>
 augroup END
 
+au FileType purescript nm <buffer> <silent> <leader>L :Plist<CR>
+au FileType purescript nm <buffer> <silent> <leader>l :Pload!<CR>
+au FileType purescript nm <buffer> <silent> <leader>r :Prebuild!<CR>
+au FileType purescript nm <buffer> <silent> <leader>f :PaddClause<CR>
+au FileType purescript nm <buffer> <silent> <leader>t :PaddType<CR>
+au FileType purescript nm <buffer> <silent> <leader>a :Papply<CR>
+au FileType purescript nm <buffer> <silent> <leader>A :Papply!<CR>
+au FileType purescript nm <buffer> <silent> <leader>C :Pcase!<CR>
+au FileType purescript nm <buffer> <silent> <leader>i :Pimport<CR>
+au FileType purescript nm <buffer> <silent> <leader>qa :PaddImportQualifications<CR>
+au FileType purescript nm <buffer> <silent> <leader>g :Pgoto<CR>
+au FileType purescript nm <buffer> <silent> <leader>p :Pursuit<CR>
+au FileType purescript nm <buffer> <silent> <leader>T :Ptype<CR>
+
 " Disable haskell-vim omnifunc
 let g:haskellmode_completion_ghc = 0
 
@@ -162,8 +176,13 @@ set undodir=~/.vim/undo//
 set undofile
 
 let g:deoplete#enable_at_startup = 1
+let g:deoplete#complete_method = "omnifunc"
+let g:deoplete#omni_patterns = {}
+let g:deoplete#omni_patterns.purescript = ['\w*']
+let g:deoplete#omni#input_patterns = {}
+let g:deoplete#omni#input_patterns.purescript = '[.\w]+'
 
-autocmd Filetype purescript let b:deoplete_disable_auto_complete = 1
+" autocmd Filetype purescript let b:deoplete_disable_auto_complete = 1
 
 let g:neoformat_only_msg_on_error = 1
 let g:neoformat_enabled_typescript = ['prettier']
