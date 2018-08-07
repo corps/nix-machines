@@ -31,6 +31,7 @@ let callPackage = super.newScope self; in rec {
   git-dropbox = callPackage ./git-dropbox.nix {};
 
   wintmp = callPackage ./wintmp.nix {};
+  nix-pkgs-pinner = callPackage ./nix-pkgs-pinner.nix {};
 }
 
   #   inherit (super.darwin.apple_sdk.frameworks) Carbon Cocoa ApplicationServices;

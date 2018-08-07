@@ -2,10 +2,9 @@
 
 {
   imports = [
+    ../shared
     ./keybindings.nix
     ./jupyter.nix
-    ./nixpkgs.nix
-    ./symlinks.nix
     ./supervisord.nix
     ./input-plugins.nix
     ./workspaces.nix
@@ -13,22 +12,13 @@
     ./tiddly.nix
   ];
 
-  environment.systemPackages = with pkgs; [
-    upgrade-packages
-  ];
-
-  environment.variables.EDITOR = "vim";
-  environment.variables.LANG = "en_US.UTF-8";
-
-  programs.bash.enable = true;
-  # programs.bash.enableCompletion = true;
-
   system.defaults.NSGlobalDomain."com.apple.trackpad.trackpadCornerClickBehavior" = 1;
   system.defaults.NSGlobalDomain.NSDocumentSaveNewDocumentsToCloud = false;
   system.defaults.dock.autohide = true;
   system.defaults.dock.orientation = "left";
   system.defaults.finder.AppleShowAllExtensions = true;
   system.defaults.finder._FXShowPosixPathInTitle = true;
+  system.defaults.dockEx."workspaces-edge-delay" = "0.0";
 
   services.supervisord.enable = true;
 
@@ -39,14 +29,10 @@
     "$HOME/.nix-defexpr/channels"
   ];
 
-  system.activationScripts.extraActivation.text = ''
-    (
-      set +e
-      vim --headless +UpdateRemotePlugins +q
-    )
-  '';
+  nixpkgs.config.vim.ftNix = false;
 
   nix.package = pkgs.nix;
+
   services.nix-daemon.enable = true;
-  system.activationScripts.checks.text = lib.mkForce "";
+  services.jupyter.enable = true;
 }
