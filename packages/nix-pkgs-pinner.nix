@@ -1,5 +1,6 @@
 { writeScriptBin, bash, git, nix }:
 
+# Do a thing
 writeScriptBin "nix-pkgs-pinner" ''
   #! ${bash}/bin/bash
 
@@ -15,10 +16,12 @@ writeScriptBin "nix-pkgs-pinner" ''
 
   rev=`git ls-remote git@github.com:$owner/$repo $branch --refs | head -1 | cut -f 1`
   url=https://github.com/$owner/$repo/archive/$rev.tar.gz
+  date=`date`
 
   release_sha256=$(nix-prefetch-url --unpack "$url")
 
   cat <<NIXPKGS | tee $out
+  # Generated from branch $branch on $date
   let pkgs = import <nixpkgs> {}; in
   pkgs.fetchFromGitHub {
     owner = "$owner";
