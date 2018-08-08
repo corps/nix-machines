@@ -18,6 +18,7 @@ let callPackage = super.newScope self; in rec {
   prettier = npmPackages.prettier;
   uglifyjs = npmPackages."uglify-js";
   qrcode-svg = npmPackages."qrcode-svg";
+  watch = npmPackages."watch";
 
   canto-input = callPackage ./mac_cantonese {};
   iterm2 = callPackage ./iterm2.nix {};

@@ -1,4 +1,4 @@
-{ 
+{
   nixpkgs ? <nixpkgs>,
   configuration ? <wsl-config>,
   system ? builtins.currentSystem,
@@ -18,7 +18,7 @@ packages = { config, lib, pkgs, ... }: {
 eval = pkgs.lib.evalModules {
   specialArgs = { modulesPath = ./modules; };
   check = true;
-  modules = [ 
+  modules = [
     configuration
     packages
     ./modules/system
@@ -37,4 +37,3 @@ in
   system = eval.config.system.build.toplevel;
   installer = pkgs.callPackage ./pkgs/wsl-installer {};
 }
-     

@@ -18,6 +18,7 @@
     fetch_from_pypi
     git-dropbox
     mitmproxy
+    watch
   ];
 
   programs.bash.enable = true;

@@ -1,27 +1,30 @@
-{ writeScriptBin, bash, curl, jq, nix }:
+{ writeScriptBin, bash, git, nix }:
 
 writeScriptBin "nix-pkgs-pinner" ''
   #! ${bash}/bin/bash
 
-  export PATH=${curl}/bin:${jq}/bin:${nix}/bin:$PATH
+  set -e
+  set -o pipefail
 
-  set -eufo pipefail
+  export PATH=${git}/bin:${nix}/bin:$PATH
 
-  FILE=$1
-  PROJECT=$2
-  BRANCH=''${3:-master}
+  branch=''${1:-nixos-unstable}
+  out=''${2:-pinned.nix}
+  owner=NixOS
+  repo=nixpkgs-channels
 
-  OWNER=$(jq -r '.[$project].owner' --arg project "$PROJECT" < "$FILE")
-  REPO=$(jq -r '.[$project].repo' --arg project "$PROJECT" < "$FILE")
+  rev=`git ls-remote git@github.com:$owner/$repo $branch --refs | head -1 | cut -f 1`
+  url=https://github.com/$owner/$repo/archive/$rev.tar.gz
 
-  REV=$(curl "https://api.github.com/repos/$OWNER/$REPO/branches/$BRANCH" | jq -r '.commit.sha')
-  SHA256=$(nix-prefetch-url --unpack "https://github.com/$OWNER/$REPO/archive/$REV.tar.gz")
-  TJQ=$(jq '.[$project] = {owner: $owner, repo: $repo, rev: $rev, sha256: $sha256}' \
-    --arg project "$PROJECT" \
-    --arg owner "$OWNER" \
-    --arg repo "$REPO" \
-    --arg rev "$REV" \
-    --arg sha256 "$SHA256" \
-    < "$FILE")
-  [[ $? == 0 ]] && echo "''${TJQ}" >| "$FILE"
+  release_sha256=$(nix-prefetch-url --unpack "$url")
+
+  cat <<NIXPKGS | tee $out
+  let pkgs = import <nixpkgs> {}; in
+  pkgs.fetchFromGitHub {
+    owner = "$owner";
+    repo = "$repo";
+    rev = "$rev";
+    sha256 = "$release_sha256";
+  }
+  NIXPKGS
 ''
