@@ -69,7 +69,7 @@ au FileType purescript nm <buffer> <silent> <leader>C :Pcase!<CR>
 au FileType purescript nm <buffer> <silent> <leader>i :Pimport<CR>
 au FileType purescript nm <buffer> <silent> <leader>qa :PaddImportQualifications<CR>
 au FileType purescript nm <buffer> <silent> <leader>g :Pgoto<CR>
-au FileType purescript nm <buffer> <silent> <leader>p :Pursuit<CR>
+au FileType purescript nm <buffer> <silent> <leader>P :Pursuit<CR>
 au FileType purescript nm <buffer> <silent> <leader>T :Ptype<CR>
 
 " Disable haskell-vim omnifunc
