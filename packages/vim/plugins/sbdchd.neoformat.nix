@@ -2,6 +2,6 @@
 fetchFromGitHub {
   owner = "sbdchd";
   repo = "neoformat";
-  rev = "d5c333b1247b3f6aa6569ce292309ab1d2fa0839";
-  sha256 = "05xraj3wqgy868vrc0csgd321ippfdc2819p696qndjh2xk7sdjl";
+  rev = "f20e73193f2260d4437d160759d6b623a74a5a35";
+  sha256 = "0460v5h82zsgslqxkiwf2qbkah15hf3p33ddvcipfqg0rnrbwynp";
 }

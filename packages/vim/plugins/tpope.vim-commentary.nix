@@ -2,6 +2,6 @@
 fetchFromGitHub {
   owner = "tpope";
   repo = "vim-commentary";
-  rev = "54e5676988e6eeaa05b41730b6b056026ad0ef13";
-  sha256 = "1ww4a9f2jxjl81rmwh09z3bc58qjnws8097xykliacl1ka602hf1";
+  rev = "141d9d32a9fb58fe474fcc89cd7221eb2dd57b3a";
+  sha256 = "0nncs32ayfhr557aiynq7b0sc7rxqwv7xanram53x1wvmfy14zf0";
 }

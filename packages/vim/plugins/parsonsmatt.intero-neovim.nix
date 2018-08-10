@@ -2,6 +2,6 @@
 fetchFromGitHub {
   owner = "parsonsmatt";
   repo = "intero-neovim";
-  rev = "51999e8abfb096960ba0bc002c49be1ef678e8a9";
-  sha256 = "1igc8swgbbkvyykz0ijhjkzcx3d83yl22hwmzn3jn8dsk6s4an8l";
+  rev = "9bb546e37adc1ffda28ff33922c506c15ed67b10";
+  sha256 = "173kc8xrbmkhrc9ssaz6h5w1zisxsgz4bibihgj9bx60ibn4kaa7";
 }

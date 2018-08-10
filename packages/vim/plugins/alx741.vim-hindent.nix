@@ -2,6 +2,6 @@
 fetchFromGitHub {
   owner = "alx741";
   repo = "vim-hindent";
-  rev = "bc9c9166c953e483ac932de4bb27c3c413a70340";
-  sha256 = "092jwvfmd2vdchfak8fd7xh3wj04h681qm64f6x9gf94sbfvz9q6";
+  rev = "f8e84c199fd00a3ccaf5bbbc97786bde9a4faa13";
+  sha256 = "1y4nnz38zal1ffs5n751dn9p9apk8q7pq3cw79r5z6fsdp942ai6";
 }

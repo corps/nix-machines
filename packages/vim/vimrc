@@ -5,6 +5,14 @@ let g:airline_theme='soda'
 syntax on
 set nocompatible
 filetype plugin on
+filetype plugin indent on
+
+let purescript_indent_if = 2
+let purescript_indent_case = 2
+let purescript_indent_let = 2
+let purescript_indent_where = 2
+let purescript_indent_do = 2
+let purescript_indent_in = 2
 
 set vb                          " Visual bell
 " set t_Co=256                    " 256 Colors
@@ -22,7 +30,7 @@ tnoremap <Esc> <C-\><C-n>
 
 set hlsearch history=10000
 
-au FileType haskell,vhdl,ada            setlocal commentstring=--\ %s
+au FileType haskell,vhdl,ada,purescript setlocal commentstring=--\ %s
 au FileType vim                         setlocal commentstring="\ %s
 au FileType c,cpp,java,go,typescript    setlocal commentstring=//\ %s
 au FileType sh,make,ruby                setlocal commentstring=#\ %s
