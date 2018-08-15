@@ -16,6 +16,13 @@ in
     ./autohotkeys.nix
   ];
 
+  nix.nixPath = [ # Include default path <wsl-config>.
+    "wsl=${toString ../../nix-wsl}"
+    "wsl-config=$HOME/.nixpkgs/wsl-configuration.nix"
+    ("nixpkgs=" + (import ../../packages/wsl-nixpkgs { inherit lib; }))
+    "$HOME/.nix-defexpr/channels"
+  ];
+
   environment.extraInit = setupWin;
   programs.autohotkey.enable = true;
 

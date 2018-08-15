@@ -12,13 +12,7 @@ let callPackage = super.newScope self; in rec {
   jupyter = callPackage ./jupyter {};
   universal-ctags = callPackage ./universal-ctags.nix {};
 
-  npmPackages = callPackage ./npm-packages {};
-
-  js-beautify = npmPackages."js-beautify";
-  prettier = npmPackages.prettier;
-  uglifyjs = npmPackages."uglify-js";
-  qrcode-svg = npmPackages."qrcode-svg";
-  watch = npmPackages."watch";
+  nodeTools = callPackage ./nodeTools {};
 
   canto-input = callPackage ./mac_cantonese {};
   iterm2 = callPackage ./iterm2.nix {};

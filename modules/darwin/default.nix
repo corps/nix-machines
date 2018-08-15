@@ -12,6 +12,10 @@
     ./tiddly.nix
   ];
 
+  environment.systemPackages = with pkgs; [
+    mitmproxy
+  ];
+
   system.defaults.NSGlobalDomain."com.apple.trackpad.trackpadCornerClickBehavior" = 1;
   system.defaults.NSGlobalDomain.NSDocumentSaveNewDocumentsToCloud = false;
   system.defaults.dock.autohide = true;

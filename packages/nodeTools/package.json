@@ -1,0 +1,22 @@
+{
+  "name": "npm-packages",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "dependencies": {
+    "http-proxy": "^1.17.0",
+    "prettier": "^1.14.2",
+    "qrcode-svg": "^1.0.0",
+    "tiddlywiki": "^5.1.17",
+    "sudo-prompt": "^8.2.0",
+    "uglify-js": "^3.4.7",
+    "wait-port": "^0.2.2",
+    "watch": "^1.0.2"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC"
+}

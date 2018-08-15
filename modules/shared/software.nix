@@ -4,11 +4,9 @@
   environment.systemPackages = with pkgs; [
     upgrade-packages
     nix-pkgs-pinner
-    nix-repl
-    prettier
     rip-song
     fetch_from_github
-    uglifyjs
+    nodeTools
     autossh
     fzy
     wget
@@ -17,8 +15,6 @@
     gnupg
     fetch_from_pypi
     git-dropbox
-    mitmproxy
-    watch
   ];
 
   programs.bash.enable = true;
