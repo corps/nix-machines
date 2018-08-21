@@ -14,18 +14,18 @@ stdenv.mkDerivation {
     baseNameOf path != "result" &&
     baseNameOf path != "upgrade.sh" &&
     baseNameOf path != "default.nix" &&
-    baseNameOf path != "npm.log"
+    baseNameOf path != "npm.log" &&
+    baseNameOf path != ".gitignore"
   ) ./.;
 
   buildPhase = ''
-    echo 1111
     HOME=$PWD npm install
   '';
 
   installPhase = ''
-    mkdir $out
-    cp -r ./ $out/
-    ln -s $out/node_modules/.bin $out/bin
+    mkdir -p $out/nodeTools
+    cp -r node_modules $out/nodeTools/
+    ln -s $out/nodeTools/node_modules/.bin $out/bin
   '';
 }
 

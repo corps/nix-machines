@@ -2,6 +2,6 @@
 fetchFromGitHub {
   owner = "corps";
   repo = "docstore";
-  rev = "7f41a8bd3a6e2af6689b90ddd98864d9eefe9049";
-  sha256 = "1a6rz1bqsmy4xk267i8yzpvzgq6nwffx391cbzq2f4i81nd3xj6k";
+  rev = "aa01dfbdc892b3c63155dc989e7ad406c91dc340";
+  sha256 = "0pym8s45qfb0qy1346kjhg3nmqlhzfw6c2f32ija0mdv610linrg";
 }
