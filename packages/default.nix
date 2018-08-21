@@ -25,6 +25,8 @@ let callPackage = super.newScope self; in rec {
   fetch_from_pypi = callPackage ./fetch-from-pypi.nix {};
   git-dropbox = callPackage ./git-dropbox.nix {};
 
+  docstore = callPackage ./docstore {};
+
   wintmp = callPackage ./wintmp.nix {};
   nix-pkgs-pinner = callPackage ./nix-pkgs-pinner.nix {};
 }

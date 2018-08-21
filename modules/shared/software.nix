@@ -15,6 +15,7 @@
     gnupg
     fetch_from_pypi
     git-dropbox
+    docstore
   ];
 
   programs.bash.enable = true;
