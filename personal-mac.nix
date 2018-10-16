@@ -21,8 +21,6 @@
   '';
 
   system.symlinks."$HOME/.gitconfig" = ./dotfiles/gitconfig;
-  system.symlinks."$HOME/Library/Preferences/com.googlecode.iterm2.plist" =
-    toString ./dotfiles/com.googlecode.iterm2.plist;
   system.symlinks."$HOME/Library/Application\ Support/Code/User/settings.json" =
     toString ./dotfiles/vscode/settings.json;
   system.symlinks."$HOME/Library/Application\ Support/Code/User/keybindings.json" =
