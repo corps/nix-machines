@@ -32,7 +32,7 @@ in
   options = {
     nativeApps = {
       vscode.install = mkOption { 
-        default = false;
+        default = true;
         type = types.bool;
         description = "Install VsCode";
       };

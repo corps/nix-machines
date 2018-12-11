@@ -30,7 +30,7 @@ if ! check isXcodeInstalled; then
 fi
 
 if ! check fileExists /nix; then
-  curl https://nixos.org/nix/install | sh
+  sh <(curl https://nixos.org/nix/install) --daemon
 
   if isDarwin; then
     . /nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh
@@ -66,4 +66,5 @@ NIXPKGS_URL=`nix-instantiate --eval --strict --expr 'with (import <nixpkgs> {});
 
 export NIX_PATH=nixpkgs=$NIXPKGS_URL:$NIX_PATH
 
+echo $NIX_PATH
 exec darwin-rebuild switch $@

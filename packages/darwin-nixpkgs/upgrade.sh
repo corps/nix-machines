@@ -14,7 +14,7 @@ DIR="$( cd -P "$( dirname "$SOURCE" )" && pwd )"
 
 cd $DIR
 
-ref=`git ls-remote git@github.com:NixOS/nixpkgs master --refs | head -1 | cut -f 1`
+ref=`git ls-remote git@github.com:NixOS/nixpkgs release-18.09 --refs | head -1 | cut -f 1`
 
 url=https://github.com/NixOS/nixpkgs/archive/$ref.tar.gz
 echo "$url" > url

@@ -22,7 +22,6 @@ writeKernelFile = json@{ name, argv, ...}:
 ihaskell = callPackage ../ihaskell {};
 bash_kernel = callPackage ../bash_kernel {};
 gnuplot_kernel = callPackage ../gnuplot_kernel {};
-nix-kernel = callPackage ../nix-kernel { inherit callPackage; };
 
 purescript-kernel = callPackage ../purescript-kernel {
   npmPackages = [
@@ -39,28 +38,6 @@ purescript-kernel = callPackage ../purescript-kernel {
 kernels = {
   python3 = null;
 
-  purescript-webpacker = {
-    language = "purescript";
-    display_name = "Purescript";
-    argv = [
-      "${purescript-kernel}/purescript/kernel"
-    ];
-  };
-  nix = {
-    language = "nix";
-    display_name = "Nix";
-    argv = [
-      "${nix-kernel}/bin/nix-kernel"
-      "-f"
-    ];
-  };
-  haskell = {
-    language = "haskell";
-    display_name = "Haskell";
-    argv = [
-      "${ihaskell}/bin/ihaskell"
-    ];
-  };
   gnuplot = {
     language = "gnuplot";
     display_name = "gnuplot";

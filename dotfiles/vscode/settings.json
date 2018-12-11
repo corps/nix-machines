@@ -3,4 +3,6 @@
     "editor.tabSize": 2,
     "purescript.addNpmPath": true,
     "purescript.addPscPackageSources": true,
+    "workbench.editor.enablePreview": false,
+    "workbench.editor.enablePreviewFromQuickOpen": false,
 }
