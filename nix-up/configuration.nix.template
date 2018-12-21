@@ -1,0 +1,8 @@
+{ config, pkgs, ... }:
+
+{
+  imports = [
+  ];
+
+  system.stateVersion = 1;
+}

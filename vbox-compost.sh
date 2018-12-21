@@ -64,3 +64,11 @@ if ! check fileExists ./packages/pinned/nixos-18.09/; then
     )
 fi
 
+if ! check fileExists ~/.nix-defexpr/channels/nixpkgs; then
+  nix-channel --add http://nixos.org/channels/nixpkgs-unstable nixpkgs
+  nix-channel --update
+fi
+
+export NIX_PATH=nixpkgs=$DIR/packages/pinned/nixos-18.09:$NIX_PATH
+nix-build ./nix-up -A installer
+exec ./result/bin/up-installer
