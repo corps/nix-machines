@@ -13,8 +13,8 @@ with lib;
   system.activationScripts.preUserActivation.text = mkBefore ''
     upPath=$(NIX_PATH=${concatStringsSep ":" config.nix.nixPath} nix-instantiate --eval -E '<up>' 2> /dev/null) || true
 
-    if ! test -L /etc/bashrc && ! grep -q /etc/static/bashrc /etc/bashrc; then
-	echo 'if test -e /etc/static/bashrc; then . /etc/static/bashrc; fi' | sudo tee -a /etc/bashrc
+    if ! test -L /etc/profile.d/nix.sh && ! grep -q /etc/static/bashrc /etc/profile.d/nix.sh; then
+      echo 'if test -e /etc/static/bashrc; then . /etc/static/bashrc; fi' | sudo tee -a /etc/profile.d/nix.sh
     fi
   '';
 }
