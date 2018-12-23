@@ -19,7 +19,7 @@ in
   nix.nixPath = [ # Include default path <wsl-config>.
     "wsl=${toString ../../nix-wsl}"
     "wsl-config=$HOME/.nixpkgs/wsl-configuration.nix"
-    ("nixpkgs=" + (import ../../packages/wsl-nixpkgs { inherit lib; }))
+    ("nixpkgs=" + (toString ../../packages/pinned/nixos-18.09))
     "$HOME/.nix-defexpr/channels"
   ];
 

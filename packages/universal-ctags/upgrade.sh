@@ -1,5 +1,5 @@
 #! /usr/bin/env nix-shell
-#! nix-shell -i bash -p gitAndTools.git
+#! nix-shell -i bash -p fetch_from_github
 
 set -e
 set -o pipefail
@@ -14,8 +14,9 @@ DIR="$( cd -P "$( dirname "$SOURCE" )" && pwd )"
 
 cd $DIR
 
-ref=`git ls-remote git@github.com:NixOS/nixpkgs master --refs | head -1 | cut -f 1`
+expression=`fetch-from-github universal-ctags/ctags`
+expression=${expression::-1}
+echo $expression
+echo "{ fetchFromGitHub }:" > package.nix
+echo "$expression" >> package.nix
 
-url=https://github.com/NixOS/nixpkgs/archive/$ref.tar.gz
-echo "$url" > url
-nix-prefetch-url --unpack "$url"

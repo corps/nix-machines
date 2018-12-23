@@ -10,7 +10,7 @@ let callPackage = super.newScope self; in rec {
   my_neovim = callPackage ./vim {};
   fetch_from_github = callPackage ./fetch-from-github.nix {};
   jupyter = callPackage ./jupyter {};
-  universal-ctags = callPackage ./universal-ctags.nix {};
+  universal-ctags = callPackage ./universal-ctags {};
 
   nodeTools = callPackage ./nodeTools {};
 

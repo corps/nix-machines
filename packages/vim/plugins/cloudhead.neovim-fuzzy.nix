@@ -2,6 +2,6 @@
 fetchFromGitHub {
   owner = "cloudhead";
   repo = "neovim-fuzzy";
-  rev = "ecb394cc3ca26d120d20ff31b5b2be9ea3f783b6";
-  sha256 = "1lwhq3wwj7zw9z50i0vf7yv4jsfh5b3gq8jpjq1i823daxfvj87y";
+  rev = "c177209678477d091ee4576e231c5b80b44514d0";
+  sha256 = "069phpy1p8dindi6whddsb9x5zyw1adzsnv7br7q955hf6x9bxxj";
 }

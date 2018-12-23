@@ -2,6 +2,6 @@
 fetchFromGitHub {
   owner = "mhartington";
   repo = "nvim-typescript";
-  rev = "a99425f736844cafb8a6ca9243329597d3901cae";
-  sha256 = "1i5sckby49vck0f7q64vcnxjdqqmzp40yzfwb6icvy1rrsybq4wr";
+  rev = "de424a7fce2248735f448b6051cc4094c8fd7d39";
+  sha256 = "1q9lml9s8ki7qnym0bm0w6n5qv2xb20zvilpqnyamkfpc7fbxxm0";
 }

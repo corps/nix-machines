@@ -28,7 +28,7 @@
 
   nix.nixPath = [
     "darwin-config=$HOME/.nixpkgs/darwin-configuration.nix"
-    ("nixpkgs=" + (import ../../packages/darwin-nixpkgs { inherit lib; }))
+    ("nixpkgs=" + (toString ../../packages/pinned/nixpkgs-18.09-darwin))
     "/nix/var/nix/profiles/per-user/root/channels"
     "$HOME/.nix-defexpr/channels"
   ];

@@ -40,27 +40,10 @@ if ! check fileExists /etc/nix/nix.conf; then
   echoRun sudo cp $DIR/dotfiles/dos.nix.conf /etc/nix/nix.conf
 fi
 
-if ! check fileExists /nix; then
-  curl https://nixos.org/nix/install | sh
-  . $HOME/.nix-profile/etc/profile.d/nix.sh
-fi
-
-check existsOnPath nix-env || exitWithMessage 1 "Cannot find nix executables on path."
-
-if ! check fileExists "$HOME/Development/nix-machines"; then
-  mkdir -p $HOME/Development
-  pushd $HOME/Development
-  git clone git@github.com:corps/nix-machines.git
-  popd
-fi
-
-if ! check fileExists "$HOME/.config/nixpkgs/overlays/nix-machines"; then
-  echoRun mkdir -p $HOME/.config/nixpkgs/overlays
-  echoRun ln -s $DIR/packages $HOME/.config/nixpkgs/overlays/nix-machines
-fi
-
-NIXPKGS_URL=`nix-instantiate --eval --strict --expr 'with (import <nixpkgs> {}); import ./packages/wsl-nixpkgs { inherit lib; }' | sed "s/^\([\"']\)\(.*\)\1\$/\2/g"`
-# export NIX_PATH=nixpkgs=$NIXPKGS_URL:$NIX_PATH
+setupNix
+ensureRepo "nix-machines"
+ensureOverlay
+readyPinned nixos-18.09
 
 nix-build ./nix-wsl -A installer
 exec ./result/bin/wsl-installer
