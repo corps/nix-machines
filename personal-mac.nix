@@ -6,11 +6,10 @@
   ];
 
   environment.systemPackages = with pkgs; [
-    ngrok 
-    jupyter 
+    ngrok
+    jupyter
     imagemagick
-    iterm2 
-    bensrs 
+    bensrs
   ];
 
   system.inputPlugins = [ pkgs.canto-input ];

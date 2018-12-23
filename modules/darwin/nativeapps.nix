@@ -31,10 +31,16 @@ in
 {
   options = {
     nativeApps = {
-      vscode.install = mkOption { 
-        default = false;
+      vscode.install = mkOption {
+        default = true;
         type = types.bool;
         description = "Install VsCode";
+      };
+
+      iterm2.install = mkOption {
+        default = true;
+        type = types.bool;
+        description = "Install iTerm";
       };
     };
   };
