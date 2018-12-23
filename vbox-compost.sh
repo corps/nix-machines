@@ -22,53 +22,16 @@ source utils.sh
 
 check isNonRootUser || exitWithMessage 1 "Do not run as root."
 
-if ! check fileExists /nix; then
-  sh <(curl https://nixos.org/nix/install) --daemon
-
-  if isDarwin; then
-    . /nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh
-  else
-    . $HOME/.nix-profile/etc/profile.d/nix.sh
+if check fileExists /etc/bash.bashrc; then
+  if ! check fileExists /etc/bashrc; then
+    echoRun sudo ln -s /etc/bash.bashrc /etc/bashrc
   fi
 fi
 
-check existsOnPath nix-env || exitWithMessage 1 "Cannot find nix executables on path."
+setupNix
+ensureRepo "nix-machines"
+ensureOverlay
+readyPinned nixos-18.09
 
-if ! check fileExists "$HOME/Development/nix-machines"; then
-  mkdir -p $HOME/Development
-  pushd $HOME/Development
-  git clone git@github.com:corps/nix-machines.git
-  popd
-fi
-
-if ! check fileExists "$HOME/.config/nixpkgs/overlays/nix-machines"; then
-  mkdir -p $HOME/.config/nixpkgs/overlays
-  ln -s $DIR/packages $HOME/.config/nixpkgs/overlays/nix-machines
-fi
-
-export PATH=$(nix-build '<nixpkgs>' -A wget --no-out-link --show-trace)/bin/:$PATH
-
-# Check and materialize the pinned nixpkgs cache.
-if ! check fileExists ./packages/pinned/nixos-18.09/; then
-    (
-    set -o pipefail
-    set -x
-    cd ./packages/pinned
-    ref=$(basename "$(readlink ./nixos-18.09)" | cut -d '-' -f 3)
-    url=https://github.com/NixOS/nixpkgs-channels/archive/$ref.tar.gz
-
-    wget "$url"
-    tar -xzf $ref.tar.gz
-
-    rm $ref.tar.gz
-    )
-fi
-
-if ! check fileExists ~/.nix-defexpr/channels/nixpkgs; then
-  nix-channel --add http://nixos.org/channels/nixpkgs-unstable nixpkgs
-  nix-channel --update
-fi
-
-export NIX_PATH=nixpkgs=$DIR/packages/pinned/nixos-18.09:$NIX_PATH
 nix-build ./nix-up -A installer
 exec ./result/bin/up-installer

@@ -58,25 +58,70 @@ function versionMatches() {
   [[ $versionOut =~ "$2" ]]
 }
 
-function versionAtleast() {
-  local IFS='.'
-  local expected got
+function readyPinned() {
+  local wget=$(nix-build '<nixpkgs>' -A wget --no-out-link --show-trace)/bin/wget
+  local channelName="$1"
+  local pathName=${2:-nixpkgs}
+  local pinnedRoot=${3:-$DIR/packages/pinned}
+  local ref
+  local url
 
-  version=$($1 --version)
-  [[ "$version" =~ ([0-9]+\.?([0-9]+\.?)*) ]] && version="$BASH_REMATCH"
+  if ! check fileExists $pinnedRoot/$channelName; then
+    (
+    set -o pipefail
+    set -x
+    cd $pinnedRoot
 
-  read -a expected <<< "$2"
-  read -a got <<< "$version"
+    ref=$(basename "$(readlink ./$channelName)" | cut -d '-' -f 3)
+    url=https://github.com/NixOS/nixpkgs-channels/archive/$ref.tar.gz
 
-  while [[ -n "$expected" || -n "$got" ]]; do
-    [[ ! -n "$got" ]] && return 1;
-    [[ ! -n "$expected" ]] && return 0;
-    [[ "$expected" -gt "$got" ]] && return 1;
-    [[ "$expected" -lt "$got" ]] && return 0;
+    $wget "$url"
+    tar -xzf $ref.tar.gz
 
-    got=("${got[@]:1}")
-    expected=("${expected[@]:1}")
-  done
+    rm $ref.tar.gz
+    )
+  fi
+
+  export NIX_PATH="$pathName=$pinnedRoot/$channelName:$NIX_PATH"
+}
+
+function ensureOverlay() {
+  local overlayName=${1:-nix-machines}
+  local packagesDir=${2:-$DIR/packages}
+
+  local overlayDir="$HOME/.config/nixpkgs/overlays/$overlayName"
+
+  mkdir -p $HOME/.config/nixpkgs/overlays
+  rm -rf "$overlayDir"
+  ln -s "$packagesDir" "$overlayDir"
+}
+
+function setupNix() {
+  if ! check fileExists /nix; then
+    sh <(curl https://nixos.org/nix/install) --daemon
+    . /nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh
+  fi
+
+  if ! check fileExists ~/.nix-defexpr/channels/nixpkgs; then
+    nix-channel --add http://nixos.org/channels/nixpkgs-unstable nixpkgs
+    nix-channel --update
+  fi
+
+
+  check existsOnPath nix-env || exitWithMessage 1 "Cannot find nix executables on path."
+}
+
+function ensureRepo() {
+  local repo="$1"
+  local owner=${2:-corps}
+
+  if ! check fileExists "$HOME/Development/$repo"; then
+    mkdir -p $HOME/Development
+    (
+    cd $HOME/Development
+    git clone git@github.com:$owner/$repo.git
+    )
+  fi
 }
 
 function await() {
@@ -135,4 +180,25 @@ function isLink() {
 function exitWithMessage() {
   echo "$2"
   exit $1
+}
+
+function versionAtleast() {
+  local IFS='.'
+  local expected got
+
+  version=$($1 --version)
+  [[ "$version" =~ ([0-9]+\.?([0-9]+\.?)*) ]] && version="$BASH_REMATCH"
+
+  read -a expected <<< "$2"
+  read -a got <<< "$version"
+
+  while [[ -n "$expected" || -n "$got" ]]; do
+    [[ ! -n "$got" ]] && return 1;
+    [[ ! -n "$expected" ]] && return 0;
+    [[ "$expected" -gt "$got" ]] && return 1;
+    [[ "$expected" -lt "$got" ]] && return 0;
+
+    got=("${got[@]:1}")
+    expected=("${expected[@]:1}")
+  done
 }

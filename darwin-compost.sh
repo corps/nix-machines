@@ -29,42 +29,18 @@ if ! check isXcodeInstalled; then
   exit 1
 fi
 
-if ! check fileExists /nix; then
-  sh <(curl https://nixos.org/nix/install) --daemon
-
-  if isDarwin; then
-    . /nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh
-  else
-    . $HOME/.nix-profile/etc/profile.d/nix.sh
-  fi
-fi
-
-check existsOnPath nix-env || exitWithMessage 1 "Cannot find nix executables on path."
-
+setupNix
 if ! check existsOnPath darwin-rebuild; then
   bash <(curl https://raw.githubusercontent.com/LnL7/nix-darwin/master/bootstrap.sh)
   . /etc/bashrc
 fi
 
-if ! check fileExists "$HOME/Development/nix-machines"; then
-  mkdir -p $HOME/Development
-  pushd $HOME/Development
-  git clone git@github.com:corps/nix-machines.git
-  popd
-fi
+ensureRepo "nix-machines"
 
 if ! check isLink "/etc/nix/nix.conf"; then
   echo -e "$YELLOW /etc/nix/nix.conf is not a link.  sudo rm it and link to /etc/static/nix/nix.conf"
 fi
 
-if ! check fileExists "$HOME/.config/nixpkgs/overlays/nix-machines"; then
-  mkdir -p $HOME/.config/nixpkgs/overlays
-  ln -s $DIR/packages $HOME/.config/nixpkgs/overlays/nix-machines
-fi
-
-NIXPKGS_URL=`nix-instantiate --eval --strict --expr 'with (import <nixpkgs> {}); import ./packages/darwin-nixpkgs { inherit lib; }' | sed "s/^\([\"']\)\(.*\)\1\$/\2/g"`
-
-export NIX_PATH=nixpkgs=$NIXPKGS_URL:$NIX_PATH
-
-echo $NIX_PATH
+ensureOverlay
+readyPinned nixpkgs-18.09-darwin
 exec darwin-rebuild switch $@
