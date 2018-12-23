@@ -1,7 +1,9 @@
-{ writeScriptBin }:
+{ pkgs ? import <nixpkgs> {}
+, writeScriptBin ? pkgs.writeScriptBin
+}:
 writeScriptBin "fetch-from-pypi" ''
 #! /usr/bin/env nix-shell
-#! nix-shell -i python3 -p 'python3.withPackages(ps: with ps; [ requests toolz ])'
+#! nix-shell -i python3 -p "python3.withPackages (ps: with ps; [ requests toolz ])"
 
 INDEX = "https://pypi.io/pypi"
 import requests

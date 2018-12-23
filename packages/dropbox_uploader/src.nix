@@ -1,6 +1,6 @@
 { fetchFromGitHub }: fetchFromGitHub {
   owner = "andreafabrizi";
   repo = "Dropbox-Uploader";
-  rev = "33e87ee15ac6b92f9533a8b028c5a3416328088c";
-  sha256 = "11b2hz3vliaagc052rfdyr2xsmhmyzi2vmydrz4jh9wsrrva62qy";
+  rev = "b362ebf91bdf3619509210ed28b6201d7b189c69";
+  sha256 = "1cgdhn3iwf6rshma8gxxahgbjvji2dlyf0vycxndq0xb7k5q3k76";
 }
