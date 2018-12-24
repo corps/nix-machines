@@ -8,6 +8,12 @@ else
     Run "C:\Users\recur\AppData\Local\Brave\Brave.exe"
 return
 
+<^+J::
+SetTitleMatchMode, 2
+if WinExist("OneNote")
+    WinActivate ;
+return
+
 <^+E::
 if WinExist("Cmder")
     WinActivate, Cmder

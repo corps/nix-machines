@@ -6,11 +6,11 @@
   ];
 
   environment.systemPackages = with pkgs; [
-    fetch_from_pypi 
+    fetch_from_pypi
     wintmp
-    terminator 
-    font-manager 
-    xorg.libXrender 
+    terminator
+    font-manager
+    xorg.libXrender
     jre8
   ];
 
