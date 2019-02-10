@@ -5,7 +5,7 @@
 if WinExist("ahk_exe Brave.exe")
     WinActivate, ahk_exe Brave.exe
 else
-    Run "C:\Users\recur\AppData\Local\Brave\Brave.exe"
+    Run "C:\Program Files (x86)\BraveSoftware\Brave-Browser\Application\brave.exe"
 return
 
 <^+J::
