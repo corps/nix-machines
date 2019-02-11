@@ -48,10 +48,10 @@ in {
         # "vim-srcery"
 
         # Haskell
-        "neovim-haskell"
-        "vim-hindent"
-        "intero"
-        "neco-ghc"
+        # "neovim-haskell"
+        # "vim-hindent"
+        # "intero"
+        # "neco-ghc"
 
         "solarized8"
 

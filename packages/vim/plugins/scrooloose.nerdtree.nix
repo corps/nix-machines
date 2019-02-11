@@ -2,6 +2,6 @@
 fetchFromGitHub {
   owner = "scrooloose";
   repo = "nerdtree";
-  rev = "72c3656799289d4635520c28e17f737066ce19d6";
-  sha256 = "1dy77vjj2prn0cl2k3cf7bd240nvh95m6h6lpv0zshjzjap7m1fx";
+  rev = "8cc154d4b0cf28f73815050b9782e6ac5a4d733d";
+  sha256 = "0cfasf1g4xns1pasriy14k16w6v2j7cb2zbxh62d6cra0jra70i0";
 }

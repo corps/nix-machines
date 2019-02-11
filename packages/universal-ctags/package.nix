@@ -2,6 +2,6 @@
 fetchFromGitHub {
   owner = "universal-ctags";
   repo = "ctags";
-  rev = "321eeac839e4e81eab6ab981690c2891e64435d4";
-  sha256 = "0psq4zx2kg45955w1rw370viccvz3y5zl8ij3lg303zzzwpwziwv";
+  rev = "f61fd4c3a30c0ff30e2090ee404869230fb1dc71";
+  sha256 = "0kpkjydda0xclgfvsak1zf41vnxwawpl09hlri6mi3nhpb1r38wl";
 }

@@ -2,6 +2,6 @@
 fetchFromGitHub {
   owner = "neomake";
   repo = "neomake";
-  rev = "b0f92079211f6c81de36ec07eacc0321af8a5825";
-  sha256 = "1p88ry3gmfpsxhlq063q4y8sqf94fli09sj1p5g7x7yiry58z1hv";
+  rev = "4f107c2481be0d624f182a8b02e993f5578a189c";
+  sha256 = "019q3db1929sa3hxvp550p927jj2r7s6if2r7mihcwjan5kkfbcf";
 }
