@@ -12,6 +12,9 @@ in {
 
         "vim-commentary"
 
+        "LanguageClient-neovim"
+        "rust-vim"
+
         "incsearch-fuzzy-vim"
         "incsearch-vim"
 
@@ -21,10 +24,6 @@ in {
         "neomake"
 
         "neovim-fuzzy"
-        "nvim-typescript"
-
-        "psc-ide-vim"
-        "purescript-vim"
         "syntastic"
 
         # "sourcebeautify-vim"

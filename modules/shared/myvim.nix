@@ -23,7 +23,7 @@ in
     system.activationScripts.extraUserActivation.text = ''
       (
         set +e
-        vim --headless +UpdateRemotePlugins +q
+        vim --headless +UpdateRemotePlugins +PlugInstall +qa
       )
     '';
   };

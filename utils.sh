@@ -59,7 +59,7 @@ function versionMatches() {
 }
 
 function readyPinned() {
-  local wget=$(nix-build '<nixpkgs>' -A wget --no-out-link --show-trace)/bin/wget
+  local wget=$(nix-build '<nixpkgs>' -A wget --no-out-link --show-trace || echo /run/current-system/sw/)/bin/wget
   local channelName="$1"
   local pathName=${2:-nixpkgs}
   local pinnedRoot=${3:-$DIR/packages/pinned}

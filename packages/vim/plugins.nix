@@ -9,6 +9,16 @@ in {
     src = pluginSrc ./plugins/purescript-contrib.purescript-vim.nix;
   };
 
+  # LanguageClient-neovim = buildVimPlugin {
+  #   name = "LanguageClient-neovim";
+  #   src = pluginSrc ./plugins/autozimu.LanguageClient-neovim.nix;
+  # };
+
+  rust-vim = buildVimPlugin {
+    name = "rust-vim";
+    src = pluginSrc ./plugins/rust-lang.rust.vim.nix;
+  };
+
   psc-ide-vim = buildVimPlugin {
     name = "psc-ide-vim";
     src = pluginSrc ./plugins/FrigoEU.psc-ide-vim.nix;
