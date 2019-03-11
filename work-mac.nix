@@ -9,7 +9,6 @@
     ngrok 
     jupyter 
     imagemagick
-    iterm2 
     bensrs 
   ];
 
