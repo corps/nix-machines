@@ -43,4 +43,7 @@ fi
 
 ensureOverlay
 readyPinned nixpkgs-18.09-darwin
+
+export NIX_PATH=darwin-config=$HOME/.nixpkgs/darwin-configuration.nix:$NIX_PATH
+export NIX_PATH=$NIX_PATH:$HOME/.nix-defexpr/channels
 exec darwin-rebuild switch $@

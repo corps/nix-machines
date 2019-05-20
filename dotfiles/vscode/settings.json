@@ -5,4 +5,5 @@
     "purescript.addPscPackageSources": true,
     "workbench.editor.enablePreview": false,
     "workbench.editor.enablePreviewFromQuickOpen": false,
+    "editor.formatOnSave": true,
 }
