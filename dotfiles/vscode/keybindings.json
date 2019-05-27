@@ -57,5 +57,14 @@
     "key": "alt+enter",
     "command": "-debug.openBreakpointToSide",
     "when": "breakpointsFocused"
+  },
+  {
+    "key": "cmd+b",
+    "command": "workbench.action.toggleSidebarVisibility",
+    "when": "!editorTextFocus"
+  },
+  {
+    "key": "cmd+b",
+    "command": "-workbench.action.toggleSidebarVisibility"
   }
 ]
