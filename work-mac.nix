@@ -6,18 +6,17 @@
   ];
 
   environment.systemPackages = with pkgs; [
-    ngrok 
-    jupyter 
+    ngrok
+    jupyter
     imagemagick
-    iterm2 
-    bensrs 
+    bensrs
   ];
 
   services.khd.khdConfig = ''
     shift + cmd - 0x29 : open -a Slack
     shift + cmd - 0x2C : open -a Webstorm
-    shift + cmd - 0x2F : open -a RubyMine
-    shift + cmd - 0x2B : open -a Visual\ Studio\ Code
+    shift + cmd - 0x2F : open -a Pycharm
+    shift + cmd - 0x2B : open -a PyCharm\ CE
   '';
 
   system.inputPlugins = [ pkgs.canto-input ];
