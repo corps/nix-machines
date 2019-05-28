@@ -17,6 +17,8 @@
   services.khd.khdConfig = ''
     shift + cmd - 0x2C : open -a Webstorm
     shift + cmd - 0x2B : open -a Visual\ Studio\ Code
+    shift + cmd - 0x25 : open -a stickies
+    shift + cmd - 0x28 : open -a nvALT
   '';
 
   system.symlinks."$HOME/.gitconfig" = ./dotfiles/gitconfig;

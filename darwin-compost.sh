@@ -42,7 +42,7 @@ if ! check isLink "/etc/nix/nix.conf"; then
 fi
 
 ensureOverlay
-readyPinned nixpkgs-18.09-darwin
+readyPinned nixpkgs-19.03-darwin
 
 export NIX_PATH=darwin-config=$HOME/.nixpkgs/darwin-configuration.nix:$NIX_PATH
 export NIX_PATH=$NIX_PATH:$HOME/.nix-defexpr/channels

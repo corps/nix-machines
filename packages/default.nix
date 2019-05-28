@@ -28,6 +28,12 @@ let callPackage = super.newScope self; in rec {
 
   wintmp = callPackage ./wintmp.nix {};
   nix-pkgs-pinner = callPackage ./nix-pkgs-pinner.nix {};
+
+  alacritty = callPackage ./alacritty ({
+    inherit (self.darwin) cf-private;
+    inherit (self.darwin.apple_sdk.frameworks) AppKit CoreFoundation CoreGraphics CoreServices
+      CoreText Foundation OpenGL;
+  });
 }
 
   #   inherit (super.darwin.apple_sdk.frameworks) Carbon Cocoa ApplicationServices;

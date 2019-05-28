@@ -31,7 +31,7 @@ fi
 setupNix
 ensureRepo "nix-machines"
 ensureOverlay
-readyPinned nixos-18.09
+readyPinned nixos-19.03
 
 nix-build ./nix-up -A installer
 exec ./result/bin/up-installer

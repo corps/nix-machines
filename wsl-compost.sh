@@ -43,7 +43,7 @@ fi
 setupNix
 ensureRepo "nix-machines"
 ensureOverlay
-readyPinned nixos-18.09
+readyPinned nixos-19.03
 
 nix-build ./nix-wsl -A installer
 exec ./result/bin/wsl-installer
