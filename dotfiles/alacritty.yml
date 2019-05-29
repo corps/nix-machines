@@ -1,0 +1,8 @@
+window:
+  decorations: none
+  title: Alacritty
+
+background_opacity: 0.7
+
+key_bindings:
+  - { key: N,      mods: Command, action: SpawnNewInstance            }

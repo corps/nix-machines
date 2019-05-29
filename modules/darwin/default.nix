@@ -14,6 +14,8 @@
 
   environment.systemPackages = with pkgs; [
     mitmproxy
+    alacritty
+    activate-window
   ];
 
   system.defaults.NSGlobalDomain."com.apple.trackpad.trackpadCornerClickBehavior" = 1;
@@ -29,6 +31,7 @@
   nix.nixPath = [
     "darwin-config=$HOME/.nixpkgs/darwin-configuration.nix"
     ("nixpkgs=" + (toString ../../packages/pinned/nixpkgs-19.03-darwin))
+    ("unstable=" + (toString ../../packages/pinned/nixos-unstable))
     "/nix/var/nix/profiles/per-user/root/channels"
     "$HOME/.nix-defexpr/channels"
   ];

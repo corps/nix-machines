@@ -26,4 +26,5 @@
     toString ./dotfiles/vscode/settings.json;
   system.symlinks."$HOME/Library/Application\ Support/Code/User/keybindings.json" =
     toString ./dotfiles/vscode/keybindings.json;
+  system.symlinks."$HOME/.config/alacritty/alacritty.yml" = toString ./dotfiles/alacritty.yml;
 }
