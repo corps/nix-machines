@@ -7,5 +7,6 @@
     ./nixpkgs.nix
     ./environment.nix
     ./symlinks.nix
+    ./user-profile.nix
   ];
 }

@@ -16,6 +16,7 @@
     fetch_from_pypi
     git-dropbox
     docstore
+    jq
   ];
 
   programs.bash.enable = true;
