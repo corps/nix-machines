@@ -4,7 +4,7 @@ self: super:
 let callPackage = super.newScope self; in rec {
   dropbox_uploader = callPackage ./dropbox_uploader {};
   ngrok = callPackage ./ngrok {};
-  xhelpers = callPackage ./xhelpers.nix {};
+  bring-to-front = callPackage ./bring-to-front.nix {};
   rip-song = callPackage ./rip-song.nix { inherit dropbox_uploader; };
   # freeciv = callPackage ./freeciv.nix {};
   my_neovim = callPackage ./vim {};
