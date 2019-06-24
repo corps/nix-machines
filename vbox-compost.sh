@@ -28,7 +28,6 @@ if check fileExists /etc/bash.bashrc; then
   fi
 fi
 
-set -x
 setupNix
 ensureRepo "nix-machines"
 ensureOverlay

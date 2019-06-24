@@ -1,0 +1,9 @@
+// Control is SWAPPED with Win-keys
+partial modifier_keys
+xkb_symbols "alt_ctrl_cmd" {
+    key <LWIN> {        [       Alt_L               ]       };
+    key <LCTL> {       [       Super_L         ]       };
+    key <LALT> {       [       Control_L         ]       };
+    modifier_map Control { <LALT>, <RALT> };
+    modifier_map Mod4 { <LCTL> };
+};
