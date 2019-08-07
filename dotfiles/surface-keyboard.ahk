@@ -22,10 +22,10 @@ else
 return
 
 <^+/::
-if WinExist("ahk_exe idea64.exe")
-    WinActivate, ahk_exe idea64.exe
+if WinExist("ahk_exe rubymine64.exe")
+    WinActivate, ahk_exe rubymine64.exe
 else
-    Run "C:\Program Files\JetBrains\IntelliJ IDEA 2018.1.6\bin\idea64.exe"
+    Run "C:\Program Files\JetBrains\RubyMine 2019.1\bin\rubymine64.exe"
 return
 
 <^+'::
