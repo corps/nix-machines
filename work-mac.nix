@@ -10,6 +10,7 @@
     jupyter
     imagemagick
     bensrs
+    redis
   ];
 
   services.khd.khdConfig = ''

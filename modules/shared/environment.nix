@@ -2,5 +2,5 @@
 
 {
   environment.variables.EDITOR = "vim";
-  environment.variables.LANG = "en_US.UTF-8";
+  # environment.variables.LANG = "en_US.UTF-8";
 }

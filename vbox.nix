@@ -8,5 +8,6 @@
   environment.systemPackages = with pkgs; [
     ngrok
     bring-to-front
+    redis
   ];
 }
