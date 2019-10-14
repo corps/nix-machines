@@ -2,6 +2,6 @@
 fetchFromGitHub {
   owner = "editorconfig";
   repo = "editorconfig-vim";
-  rev = "68f8136d2b018bfa9b23403e87d3d65bc942cbc3";
-  sha256 = "1bf82b8dsqfhscv6r111fjihjq1d1p4l999h30pir2rs05wyiz16";
+  rev = "c718cefc51ccdaf7bd27c4c1ae2de55103434241";
+  sha256 = "0jid9nb9hysv87rm1khzyiy58dnajb0xzhysvzj8nhm9wj68y070";
 }

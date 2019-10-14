@@ -2,6 +2,6 @@
 fetchFromGitHub {
   owner = "tpope";
   repo = "vim-eunuch";
-  rev = "10da325fb032a1acfa9222d273459f53bad30ba4";
-  sha256 = "125n4amz3vmc83yv76vidsnma5w2braa69dcpj858ahnzhh329qj";
+  rev = "e066a0999e442d9d96f24ad9d203b1bd030ef72e";
+  sha256 = "12n7fzgppiwqhqnxlbxmky1m1flb82kr4zlyggysgzz1lqb122zf";
 }

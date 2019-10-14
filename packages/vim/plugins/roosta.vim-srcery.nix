@@ -2,6 +2,6 @@
 fetchFromGitHub {
   owner = "roosta";
   repo = "vim-srcery";
-  rev = "06e2c82ea8b32106ea86e2de4069d8fb60814aae";
-  sha256 = "1qb6kpk1ias5sjvacnpb5hdsf4gcq9xpv8r4jwn9gr8z51v4i4y3";
+  rev = "3a0fef7ef1d8bd0fe31aacaed8bb10996913b317";
+  sha256 = "1n8xf82p4c6r9ahv6v0ljpry966zppnmdlbn3darz3x4b88iigdg";
 }

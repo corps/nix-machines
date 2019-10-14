@@ -2,6 +2,6 @@
 fetchFromGitHub {
   owner = "pangloss";
   repo = "vim-javascript";
-  rev = "7b978de215d864cf6138275e237a5c1d055556a1";
-  sha256 = "03r8bg0d29myrqysci1aziibjs1526idj79ya824pr165189w42f";
+  rev = "b6c8c8419240bdd29b5eb51a47d488fd390deed5";
+  sha256 = "0p56av0zmig4rpsq4w4armnccyd713xdm5lwrck3cip55c39382f";
 }

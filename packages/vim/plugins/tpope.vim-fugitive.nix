@@ -2,6 +2,6 @@
 fetchFromGitHub {
   owner = "tpope";
   repo = "vim-fugitive";
-  rev = "8899468c092c8dff806b1563ca4a7b055ae54007";
-  sha256 = "1q6ha294rp2phv19j5067lnr1f1qb1bxsrczn7425kd268a90pqk";
+  rev = "06e34204af04643d96d30132de6ba9066368de15";
+  sha256 = "1322pr6zv2yv1y9gvwb8d7an4iyvi4yxbbivy1y8hl9pcy8ni989";
 }

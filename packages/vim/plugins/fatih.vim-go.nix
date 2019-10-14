@@ -2,6 +2,6 @@
 fetchFromGitHub {
   owner = "fatih";
   repo = "vim-go";
-  rev = "c45bdfc93f170de92d15a23d04697bcd8f63526a";
-  sha256 = "0hac7qzhg260lpypy8nag9nn8by5jpfds9w4nz94rny8pk1bg1av";
+  rev = "17c53d38f17b0978323868ac12573f33a6fb8100";
+  sha256 = "1fal9w1xkwbsidj9rskxkl7406n92rwghas6vw5nx3v95pn8lb7k";
 }

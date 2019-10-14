@@ -2,6 +2,6 @@
 fetchFromGitHub {
   owner = "FrigoEU";
   repo = "psc-ide-vim";
-  rev = "6d4a3cc27e9782b703f6dd61ef5fdf27054bac0f";
-  sha256 = "19w0cvrka3klxbh9z1yq873v92rhmxdj68bdnqxzwybf24hgsk9g";
+  rev = "5fb4e329e5c0c7d80f0356ab4028eee9c8bd3465";
+  sha256 = "0gzbxsq6wh8d9z9vyrff4hdpc66yg9y8hnxq4kjrz9qrccc75c1f";
 }
