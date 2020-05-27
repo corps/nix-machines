@@ -1,7 +1,8 @@
-remove mod1 = Alt_L
-remove mod4 = Super_L
-remove Control = Control_L
-
-add mod1 = Super_L
-add mod4 = Control_L
-add Control = Alt_L
+clear control
+clear mod1
+keycode 37 = Alt_L Meta_L
+keycode 105 = Alt_R Meta_R
+keycode 64 = Control_L
+keycode 108 = Control_R
+add control = Control_L Control_R
+add mod1 = Alt_L Meta_L
