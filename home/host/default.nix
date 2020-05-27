@@ -7,7 +7,10 @@
     EDITOR = "nvim";
   };
 
-  environment.systemPackages = with pkgs; [ neovim ];
+  environment.systemPackages = with pkgs; [
+    neovim 
+    xorg.xmodmap
+  ];
 
   # Enable the X11 windowing system.
   services.xserver.enable = true;

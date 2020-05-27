@@ -12,7 +12,7 @@ in {
         # "LanguageClient-neovim"
         # "rust-vim"
         "vim-commentary"
-	"vim-beancount"
+      	"vim-beancount"
         "incsearch-fuzzy-vim"
         "incsearch-vim"
         "indent-guide"

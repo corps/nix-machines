@@ -32,8 +32,25 @@ if ! check fileExists ~/.config/nixpkgs/home.nix; then
   echoRun ln -sf $DIR/home/home.nix ~/.config/nixpkgs/home.nix
 fi
 
-ensureRepo "nix-machines"
-ensureRepo "dotfiles"
-ensureOverlay
+if ! check fileExists ~/.config/nixpkgs/config.nix; then
+  echoRun ln -sf $DIR/home/config.nix ~/.config/nixpkgs/config.nix
+fi
 
-home-manager switch
+if ! check fileExists ~/.profile.nix-machines; then
+  echo "source $DIR/home/profile" >> ~/.profile
+  touch ~/.profile.nix-machines
+fi
+
+if ! check fileExists ~/.bashrc.nix-machines; then
+  echo "source $DIR/home/bashrc" >> ~/.bashrc
+  touch ~/.bashrc.nix-machines
+fi
+
+echoRun ln -sf $DIR/home/Xmodmap ~/.Xmodmap
+
+echoRun ensureRepo "nix-machines"
+echoRun ensureRepo "dotfiles"
+echoRun ensureOverlay
+
+echoRun home-manager switch
+echoRun sudo nixos-rebuild switch

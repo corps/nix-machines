@@ -1,0 +1,2 @@
+. ~/.nix-profile/etc/profile.d/hm-session-vars.sh
+export PATH=$HOME/bin:$PATH

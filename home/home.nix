@@ -1,5 +1,13 @@
 { config, pkgs, ... }:
 
+let compost = pkgs.writeScriptBin "compost" ''
+#! ${pkgs.bash}/bin/bash
+cd $HOME/nix-machines
+exec ./home-compost.sh
+'';
+
+in
+
 {
   # Let Home Manager install and manage itself.
   programs.home-manager.enable = true;
@@ -15,6 +23,8 @@
     ngrok
     bring-to-front
     make-tmpfs
+    dropbox
+    compost
   ];
 
   programs.git = {

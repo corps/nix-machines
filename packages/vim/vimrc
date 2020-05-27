@@ -12,12 +12,11 @@ set grepprg=grep\ -nH\ $*
 set shortmess=a
 set shell=bash
 set gdefault
-set colorcolumn=100
-set textwidth=100
 set showmatch
 set matchtime=5
 set laststatus=2 linebreak
 set wrap
+set tw=0
 set showbreak=«
 set scrolloff=5
 set sidescrolloff=5
@@ -41,8 +40,8 @@ set undodir=~/.vim/undo//
 set undofile
 set number
 
-highlight WhitespaceEOL ctermbg=red guibg=red
-match WhitespaceEOL /\s\+$/
+" highlight WhitespaceEOL ctermbg=red guibg=red
+" match WhitespaceEOL /\s\+$/
 set wildmode=longest,list:longest,full
 
 colorscheme solarized8
