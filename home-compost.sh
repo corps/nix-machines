@@ -47,6 +47,7 @@ if ! check fileExists ~/.bashrc.nix-machines; then
 fi
 
 echoRun ln -sf $DIR/home/Xmodmap ~/.Xmodmap
+echoRun ln -sf $DIR/home/xinitrc ~/.xinitrc
 
 echoRun ensureRepo "nix-machines"
 echoRun ensureRepo "dotfiles"
