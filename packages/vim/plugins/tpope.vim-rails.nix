@@ -2,6 +2,6 @@
 fetchFromGitHub {
   owner = "tpope";
   repo = "vim-rails";
-  rev = "6e0a002ada9ef098a584e3eb1a8049acae109092";
-  sha256 = "01a0rq8mvh6s3xigm2gjcc5dx7adcc72sijn1pz50vfhyda54b8m";
+  rev = "a13a6527f9a463612fb54d3587d4f2918648cd45";
+  sha256 = "0vdjiqrm52f2q2sk6695favb00jh28pap6kasybq884p07zyg0an";
 }

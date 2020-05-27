@@ -9,52 +9,35 @@ in {
         "denite-nvim"
         "deoplete-nvim"
         # "editorconfig-vim"
-
+        # "LanguageClient-neovim"
+        # "rust-vim"
         "vim-commentary"
-
-        "LanguageClient-neovim"
-        "rust-vim"
-
+	"vim-beancount"
         "incsearch-fuzzy-vim"
         "incsearch-vim"
-
         "indent-guide"
-
         "neoformat"
         "neomake"
-
         "neovim-fuzzy"
         "syntastic"
-
         # "sourcebeautify-vim"
-
         "supertab"
-
         "vim-airline"
         "vim-airline-themes"
-
         "vim-buffergator"
         # "vim-eunuch"
-
         # "vim-fetch"
         # "vim-grepper"
-
         "vim-polyglot"
-
         # "nerdtree"
-
         # for the color scheme
         # "vim-srcery"
-
         # Haskell
         # "neovim-haskell"
         # "vim-hindent"
         # "intero"
         # "neco-ghc"
-
         "solarized8"
-
-
         # "vim-surround"
       ];
     }];

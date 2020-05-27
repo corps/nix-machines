@@ -2,6 +2,6 @@
 fetchFromGitHub {
   owner = "vim-ruby";
   repo = "vim-ruby";
-  rev = "1c70532339889b7794a52b956f389b4f9ab9b3eb";
-  sha256 = "1rj06j71f08b1may9pm27xf6k19bcw3jq3jbwndd975qram7zcr0";
+  rev = "fd49b25e08618b58db678c3f8ce6e443b1ad04e7";
+  sha256 = "086pzicqal2cmvbrzy09d93c7cz5scgjcqc9xn4cw19dn55irllp";
 }

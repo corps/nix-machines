@@ -2,6 +2,6 @@
 fetchFromGitHub {
   owner = "vim-airline";
   repo = "vim-airline";
-  rev = "297ca3d00406064004be5f2a9923fe8c2406e6e9";
-  sha256 = "1fmd0rjgrhsngpml885lybzibrpsszcc80iwm6qvydddhcp35jdi";
+  rev = "c744fb81b657417512af20063a36e7cb1ecd4f5c";
+  sha256 = "1x55gkqgvy9k2wmcs5y1jmzqni6xd7fjh5269c3465br3hhzlgh2";
 }

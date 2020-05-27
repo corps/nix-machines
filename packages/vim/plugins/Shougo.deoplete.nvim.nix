@@ -2,6 +2,6 @@
 fetchFromGitHub {
   owner = "Shougo";
   repo = "deoplete.nvim";
-  rev = "70a11ee67f3c4353e48aad69812c34b5c8489f07";
-  sha256 = "1zwhsk30nq5p82px2z4gri8pxgkri26x488fi20pdkpabgg5dh8g";
+  rev = "8aef99a951686488c03070d1cf1a2155837f5f1b";
+  sha256 = "0rhni3hix26flls9i1ajwnpfdynkvqxll5rhi1256pvhy2nizamq";
 }

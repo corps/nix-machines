@@ -2,6 +2,6 @@
 fetchFromGitHub {
   owner = "gibiansky";
   repo = "IHaskell";
-  rev = "5e44fe50ab8a99a9e23915e27d5bc59fcedeb30d";
-  sha256 = "05661v6drnyrz7j2xinqvrfrbynq3bz0mf1b7lp7n2j0f5hnnhg8";
+  rev = "a992ad83702e55b774de234d77ffd2682d842682";
+  sha256 = "123kbmkpbh978x9c30igxz2xlr9842lddfgnkxbidwzscbccqrh8";
 }

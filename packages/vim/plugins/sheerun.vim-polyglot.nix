@@ -2,6 +2,6 @@
 fetchFromGitHub {
   owner = "sheerun";
   repo = "vim-polyglot";
-  rev = "f95026252c5a31242903a98c741887696dfbb11f";
-  sha256 = "0lzzlrwcic3vbn6rk3vcakwg6fl6nkvhamxcind6jx43pr1ylwwv";
+  rev = "df34b4b4fa809804965086385f41630213297cf0";
+  sha256 = "10gymi98wpj4dq8dpfpraiji7msnzwxmd8lichcynfn6vgs3gf1m";
 }

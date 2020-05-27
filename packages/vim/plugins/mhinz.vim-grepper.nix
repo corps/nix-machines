@@ -2,6 +2,6 @@
 fetchFromGitHub {
   owner = "mhinz";
   repo = "vim-grepper";
-  rev = "8b783474b64fa01b813f9c4a24f240c7c3378726";
-  sha256 = "1mrqdg0hq4gvzng959dk6hbgh19sxzgg959i6k39c7phdd1f1fm9";
+  rev = "dde6a660c7dd4e02b331da238ea477770073aca2";
+  sha256 = "0c411yg2s6wb8141lqpgasg7iwgvfwy88z6l0c0gccmk8knypxhm";
 }

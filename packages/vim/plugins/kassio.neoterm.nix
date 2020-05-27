@@ -2,6 +2,6 @@
 fetchFromGitHub {
   owner = "kassio";
   repo = "neoterm";
-  rev = "f6c22fda80455b52957b3fd11d94acc44db21250";
-  sha256 = "1r1fx958qhbs8xq31wrp5jyfvqjrs611xywv7avpwy9991rh33xv";
+  rev = "667f02bc417d2a4669502d1fc6876684882d8ba9";
+  sha256 = "0xa4w935hfbs8nqw4aqw7ihasw4rlsqjx2i92pi1x5w8d40jnws1";
 }

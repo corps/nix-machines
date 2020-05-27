@@ -115,10 +115,9 @@ function ensureRepo() {
   local repo="$1"
   local owner=${2:-corps}
 
-  if ! check fileExists "$HOME/Development/$repo"; then
-    mkdir -p $HOME/Development
+  if ! check fileExists "$HOME/$repo" && ! check fileExists "$HOME/Development/$repo"; then
     (
-    cd $HOME/Development
+    cd $HOME
     git clone git@github.com:$owner/$repo.git
     )
   fi
