@@ -44,6 +44,7 @@ in
     datagrip
     jq
     clone-all-from
+    docker-compose
   ]);
 
   programs.git = {
