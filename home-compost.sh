@@ -24,12 +24,17 @@ check isNonRootUser || exitWithMessage 1 "Do not run as root."
 
 if ! check fileExists ~/.config/nixpkgs/home.nix; then
   if ! check fileExists ~/.nix-defexpr/channels/home-manager; then
-    nix-channel --add https://github.com/rycee/home-manager/archive/release-20.03.tar.gz home-manager
-    nix-channel --update
+    echoRun nix-channel --add https://github.com/rycee/home-manager/archive/release-20.03.tar.gz home-manager
+    echoRun nix-channel --update
   fi
 
-  nix-shell '<home-manager>' -A install
+  echoRun nix-shell '<home-manager>' -A install
   echoRun ln -sf $DIR/home/home.nix ~/.config/nixpkgs/home.nix
+fi
+
+if ! check fileExists ~/.nix-defexpr/channels/unstable; then
+  echoRun nix-channel --add https://nixos.org/channels/nixos-unstable unstable
+  echoRun nix-channel --update
 fi
 
 if ! check fileExists ~/.config/nixpkgs/config.nix; then

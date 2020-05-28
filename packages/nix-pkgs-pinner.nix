@@ -22,12 +22,11 @@ writeScriptBin "nix-pkgs-pinner" ''
 
   cat <<NIXPKGS | tee $out
   # Generated from branch $branch on $date
-  let pkgs = import <nixpkgs> {}; in
-  pkgs.fetchFromGitHub {
-    owner = "$owner";
-    repo = "$repo";
+  builtins.fetchGit {
+    name = "nixpkgs-pinned";
+    url = "https://github.com/$owner/$repo";
     rev = "$rev";
-    sha256 = "$release_sha256";
+    ref = "refs/heads/$branch";
   }
   NIXPKGS
 ''

@@ -6,7 +6,14 @@ cd $HOME/nix-machines
 exec ./home-compost.sh
 '';
 
+webstorm = (import <unstable> {}).jetbrains.webstorm;
+ruby-mine = (import <unstable> {}).jetbrains.ruby-mine;
+datagrip = (import <unstable> {}).jetbrains.datagrip;
 bring-firefox-to-front = pkgs.bring-to-front-desktop "Firefox" "${pkgs.firefox}/bin/firefox";
+bring-konsole-to-front = pkgs.bring-to-front-desktop "Konsole" "${pkgs.konsole}/bin/konsole";
+bring-webstorm-to-front = pkgs.bring-to-front-desktop "webstorm-proj" "${webstorm}/bin/webstorm";
+bring-rubymine-to-front = pkgs.bring-to-front-desktop "ruby-mine-proj" "${ruby-mine}/bin/ruby-mine";
+bring-datagrip-to-front = pkgs.bring-to-front-desktop "datagrip-proj" "${datagrip}/bin/datagrip";
 
 in
 
@@ -14,7 +21,7 @@ in
   # Let Home Manager install and manage itself.
   programs.home-manager.enable = true;
 
-  home.packages = with pkgs; [
+  home.packages = (with pkgs; [
     htop
     my_neovim
     upgrade-packages
@@ -28,7 +35,11 @@ in
     dropbox
     compost
     bring-firefox-to-front
-  ];
+    bring-konsole-to-front
+    webstorm
+    ruby-mine
+    datagrip
+  ]);
 
   programs.git = {
     enable = true;
