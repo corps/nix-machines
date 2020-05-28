@@ -36,9 +36,14 @@ in
     compost
     bring-firefox-to-front
     bring-konsole-to-front
+    bring-webstorm-to-front
+    bring-rubymine-to-front
+    bring-datagrip-to-front
     webstorm
     ruby-mine
     datagrip
+    jq
+    clone-all-from
   ]);
 
   programs.git = {

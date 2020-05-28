@@ -16,6 +16,7 @@ let callPackage = super.newScope self; in rec {
   nix-pkgs-pinner = callPackage ./nix-pkgs-pinner.nix {};
   alacritty = (import <unstable> { overlays = []; }).alacritty;
   activate-window = callPackage ./activate-window.nix {};
+  clone-all-from = callPackage ./clone-all-from.nix {};
 
   bring-to-front-desktop = callPackage ./bring-to-front-desktop.nix {};
 }

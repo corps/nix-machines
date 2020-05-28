@@ -12,6 +12,8 @@
     xorg.xmodmap
   ];
 
+  time.timeZone = "America/Los_Angeles";
+
   # Enable the X11 windowing system.
   services.xserver.enable = true;
   services.xserver.layout = "us";
@@ -28,7 +30,7 @@
 
   users.users.home = {
     isNormalUser = true;
-    extraGroups = [ "wheel" "networkmanager" ];
+    extraGroups = [ "wheel" "networkmanager" "docker" ];
   };
 
   networking.interfaces.wlp2s0.useDHCP = true;
@@ -39,4 +41,10 @@
       psk = "stopcownight";
     };
   };
+
+  virtualisation.docker.enable = true;
+
+  virtualisation.virtualbox.host.enable = true;
+  virtualisation.virtualbox.host.addNetworkInterface = true;
+  virtualisation.virtualbox.guest.enable = true;
 }
