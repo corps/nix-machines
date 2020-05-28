@@ -16,6 +16,8 @@ let callPackage = super.newScope self; in rec {
   nix-pkgs-pinner = callPackage ./nix-pkgs-pinner.nix {};
   alacritty = (import <unstable> { overlays = []; }).alacritty;
   activate-window = callPackage ./activate-window.nix {};
+
+  bring-to-front-desktop = callPackage ./bring-to-front-desktop.nix {};
 }
   #   inherit (super.darwin.apple_sdk.frameworks) Carbon Cocoa ApplicationServices;
   #   imagemagick = super.imagemagick;

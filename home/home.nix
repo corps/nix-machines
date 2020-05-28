@@ -6,6 +6,8 @@ cd $HOME/nix-machines
 exec ./home-compost.sh
 '';
 
+bring-firefox-to-front = pkgs.bring-to-front-desktop "Firefox" "${pkgs.firefox}/bin/firefox";
+
 in
 
 {
@@ -25,6 +27,7 @@ in
     make-tmpfs
     dropbox
     compost
+    bring-firefox-to-front
   ];
 
   programs.git = {
