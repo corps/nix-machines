@@ -34,12 +34,19 @@
   };
 
   networking.interfaces.wlp2s0.useDHCP = true;
-  networking.interfaces.wlp2s0.ip4 = [ { address = (import ./port.nix); prefixLength = 24; } ];
+  # networking.interfaces.wlp2s0.ip4 = [ { address = (import ./port.nix); prefixLength = 24; } ];
   networking.wireless.enable = true;
   networking.wireless.networks = {
     grillspace2 = {
       psk = "stopcownight";
     };
+    ORBI46 = {
+      psk = "braveflute410";
+    };
+    fire = {
+      psk = "montana93";
+    };
+    ihgconnect = {};
   };
 
   virtualisation.docker.enable = true;

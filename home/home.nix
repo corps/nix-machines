@@ -45,6 +45,8 @@ in
     jq
     clone-all-from
     docker-compose
+    gnumake
+    zoom-us
   ]);
 
   programs.git = {
