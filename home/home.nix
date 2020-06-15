@@ -47,6 +47,7 @@ in
     docker-compose
     gnumake
     zoom-us
+    postgresql
   ]);
 
   programs.git = {

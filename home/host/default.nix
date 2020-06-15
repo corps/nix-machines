@@ -10,6 +10,9 @@
   environment.systemPackages = with pkgs; [
     neovim 
     xorg.xmodmap
+    mkcert
+    p11-kit
+    davfs2
   ];
 
   time.timeZone = "America/Los_Angeles";
@@ -54,4 +57,15 @@
   virtualisation.virtualbox.host.enable = true;
   virtualisation.virtualbox.host.addNetworkInterface = true;
   virtualisation.virtualbox.guest.enable = true;
+
+  networking.extraHosts =
+    ''
+      127.0.0.1 janus.development.local
+      127.0.0.1 metis.development.local
+    '';
+
+
+    security.pki.certificateFiles = (if builtins.pathExists "/home/home/.local/share/mkcert/rootCA.pem" then [
+      /home/home/.local/share/mkcert/rootCA.pem
+    ] else []);
 }
