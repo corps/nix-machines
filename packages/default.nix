@@ -19,6 +19,7 @@ let callPackage = super.newScope self; in rec {
   clone-all-from = callPackage ./clone-all-from.nix {};
 
   bring-to-front-desktop = callPackage ./bring-to-front-desktop.nix {};
+  ucsf-vpn = callPackage ./ucsf-vpn.nix {};
 }
   #   inherit (super.darwin.apple_sdk.frameworks) Carbon Cocoa ApplicationServices;
   #   imagemagick = super.imagemagick;

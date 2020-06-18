@@ -13,6 +13,10 @@
     mkcert
     p11-kit
     davfs2
+    dpkg
+    binutils
+    patchelf
+    openconnect
   ];
 
   time.timeZone = "America/Los_Angeles";

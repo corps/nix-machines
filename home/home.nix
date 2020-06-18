@@ -48,6 +48,7 @@ in
     gnumake
     zoom-us
     postgresql
+    ucsf-vpn
   ]);
 
   programs.git = {
