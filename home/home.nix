@@ -72,8 +72,8 @@ in
     profiles = {
       myprofile = {
         settings = {
-	  "general.smoothScroll" = false;
-	};
+          "general.smoothScroll" = false;
+        };
       };
     };
   };
@@ -82,6 +82,21 @@ in
     enable = true;
     defaultCacheTtl = 1800;
     enableSshSupport = true;
+  };
+
+  programs.ssh = {
+    enable = true;
+    matchBlocks = {
+      "cbc-master timur magma janus metis archimedes magma-stage metis-stage timur-stage archimedes-stage janus-stage" = {
+        hostname = "%h.ucsf.edu";
+        user = "zcollins";
+      };
+
+      "cbc-support" = {
+        hostname = "%h.ucsf.edu";
+        user = "zcollins";
+      };
+    };
   };
 
   # This value determines the Home Manager release that your
