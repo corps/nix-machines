@@ -9,6 +9,7 @@ exec ./home-compost.sh
 webstorm = (import <unstable> {}).jetbrains.webstorm;
 ruby-mine = (import <unstable> {}).jetbrains.ruby-mine;
 datagrip = (import <unstable> {}).jetbrains.datagrip;
+act = (import <unstable> {}).act;
 bring-firefox-to-front = pkgs.bring-to-front-desktop "Firefox" "${pkgs.firefox}/bin/firefox";
 bring-konsole-to-front = pkgs.bring-to-front-desktop "Konsole" "${pkgs.konsole}/bin/konsole";
 bring-webstorm-to-front = pkgs.bring-to-front-desktop "webstorm-proj" "${webstorm}/bin/webstorm";
@@ -49,6 +50,7 @@ in
     zoom-us
     postgresql
     ucsf-vpn
+    act
   ]);
 
   programs.git = {
