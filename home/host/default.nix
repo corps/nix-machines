@@ -69,7 +69,7 @@
     '';
 
 
-    security.pki.certificateFiles = (if builtins.pathExists "/home/home/.local/share/mkcert/rootCA.pem" then [
-      /home/home/.local/share/mkcert/rootCA.pem
-    ] else []);
+  security.pki.certificateFiles = (if builtins.pathExists "/home/home/.local/share/mkcert/rootCA.pem" then [
+    /home/home/.local/share/mkcert/rootCA.pem
+  ] else []);
 }
