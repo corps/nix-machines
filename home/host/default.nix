@@ -66,6 +66,8 @@
     ''
       127.0.0.1 janus.development.local
       127.0.0.1 metis.development.local
+      127.0.0.1 timur.development.local
+      127.0.0.1 magma.development.local
     '';
 
 
