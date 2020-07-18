@@ -1,5 +1,20 @@
 { config, pkgs, ... }:
 
+let 
+  ngrokConfig = pkgs.writeText "ngrok.yml" (pkgs.lib.generators.toYAML {} {
+    tunnels = {
+      http = {
+        proto = "http";
+        addr = 3000;
+        inspect = false;
+        # hostname = "*.me.com";
+      };
+    };
+  });
+
+  ngrok = pkgs.callPackage ../packages/ngrok {};
+in
+
 {
   environment.variables = {
     EDITOR = "nvim";
@@ -14,6 +29,7 @@
     binutils
     patchelf
     openconnect
+    ngrok
   ];
 
   time.timeZone = "America/Los_Angeles";
@@ -31,4 +47,13 @@
   networking.extraHosts =
     ''
     '';
+
+  systemd.services."ngrok" = {
+    description = "Ngrok reverse proxy";
+    wantedBy = [ "multi-user.target" ];
+    # restartTriggers = [];
+    serviceConfig = { 
+      ExecStart = "${ngrok}/bin/ngrok start -config /etc/secrets/ngrok.yml -config ${ngrokConfig} --all";
+    };
+  };
 }
