@@ -1,6 +1,0 @@
-[4794:4794:0620/233246.328564:ERROR:sandbox_linux.cc(368)] InitializeSandbox() called with multiple threads in process gpu-process.
-[4794:4794:0620/233246.675158:ERROR:buffer_manager.cc(488)] [.DisplayCompositor]GL ERROR :GL_INVALID_OPERATION : glBufferData: <- error from previous GL command
-[4761:4786:0620/233247.187709:ERROR:cert_verify_proc_nss.cc(969)] CERT_PKIXVerifyCert for hostmar.co failed err=-8181
-[4761:4776:0620/233247.187940:ERROR:ssl_client_socket_impl.cc(947)] handshake failed; returned -1, SSL error code 1, net_error -201
-[4761:4786:0620/233247.337690:ERROR:cert_verify_proc_nss.cc(969)] CERT_PKIXVerifyCert for hostmar.co failed err=-8181
-[4761:4776:0620/233247.337866:ERROR:ssl_client_socket_impl.cc(947)] handshake failed; returned -1, SSL error code 1, net_error -201
