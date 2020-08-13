@@ -22,6 +22,8 @@ source utils.sh
 
 check isNonRootUser || exitWithMessage 1 "Do not run as root."
 
+HOME_NIX=${HOME_NIX-:$DIR/home/home.nix}
+
 if ! check fileExists ~/.config/nixpkgs/home.nix; then
   if ! check fileExists ~/.nix-defexpr/channels/home-manager; then
     echoRun nix-channel --add https://github.com/rycee/home-manager/archive/release-20.03.tar.gz home-manager
@@ -29,7 +31,7 @@ if ! check fileExists ~/.config/nixpkgs/home.nix; then
   fi
 
   echoRun nix-shell '<home-manager>' -A install
-  echoRun ln -sf $DIR/home/home.nix ~/.config/nixpkgs/home.nix
+  echoRun ln -sf $HOME_NIX ~/.config/nixpkgs/home.nix
 fi
 
 if ! check fileExists ~/.nix-defexpr/channels/unstable; then
@@ -43,11 +45,15 @@ fi
 
 if ! check fileExists ~/.profile.nix-machines; then
   echo "source $DIR/home/profile" >> ~/.profile
+  echo "export HOME_NIX='$HOME_NIX'" >> ~/.profile
+  echo "export NO_REBUILD=$NO_REBUILD" >> ~/.profile
   touch ~/.profile.nix-machines
 fi
 
 if ! check fileExists ~/.bashrc.nix-machines; then
   echo "source $DIR/home/bashrc" >> ~/.bashrc
+  echo "export HOME_NIX='$HOME_NIX'" >> ~/.bashrc
+  echo "export NO_REBUILD=$NO_REBUILD" >> ~/.bashrc
   touch ~/.bashrc.nix-machines
 fi
 
@@ -59,4 +65,7 @@ echoRun ensureRepo "dotfiles"
 echoRun ensureOverlay
 
 echoRun home-manager switch
-echoRun sudo nixos-rebuild switch
+
+if [[ -z "$NO_REBUILD" ]]; then
+  echoRun sudo nixos-rebuild switch
+fi
