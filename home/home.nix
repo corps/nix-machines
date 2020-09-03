@@ -97,7 +97,7 @@ in
   programs.ssh = {
     enable = true;
     matchBlocks = {
-      "cbc-master timur magma janus metis archimedes magma-stage metis-stage timur-stage archimedes-stage janus-stage" = {
+      "cbc-master timur magma janus metis archimedes magma-stage metis-stage timur-stage archimedes-stage janus-stage iliad iliad-stage" = {
         hostname = "%h.ucsf.edu";
         user = "zcollins";
       };

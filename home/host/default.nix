@@ -41,9 +41,11 @@
   };
 
   networking.interfaces.wlp2s0.useDHCP = true;
-  # networking.interfaces.wlp2s0.ip4 = [ { address = (import ./port.nix); prefixLength = 24; } ];
   networking.wireless.enable = true;
   networking.wireless.networks = {
+    projector = {
+      psk = "ramenonice";
+    };
     grillspace2 = {
       psk = "stopcownight";
     };
@@ -57,6 +59,7 @@
   };
 
   virtualisation.docker.enable = true;
+  virtualisation.docker.liveRestore = false;
 
   virtualisation.virtualbox.host.enable = true;
   virtualisation.virtualbox.host.addNetworkInterface = true;
