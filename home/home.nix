@@ -6,18 +6,19 @@ cd $HOME/nix-machines
 exec ./home-compost.sh
 '';
 
-webstorm = (import <unstable> {}).jetbrains.webstorm;
-ruby-mine = (import <unstable> {}).jetbrains.ruby-mine;
-datagrip = (import <unstable> {}).jetbrains.datagrip;
-pycharm = (import <unstable> {}).jetbrains.pycharm-professional;
-act = (import <unstable> {}).act;
+unstable = import <unstable> {};
+webstorm = unstable.jetbrains.webstorm;
+ruby-mine = unstable.jetbrains.ruby-mine;
+datagrip = unstable.jetbrains.datagrip;
+pycharm = unstable.jetbrains.pycharm-professional;
+act = unstable.act;
 bring-firefox-to-front = pkgs.bring-to-front-desktop "Firefox" "${pkgs.firefox}/bin/firefox";
 bring-konsole-to-front = pkgs.bring-to-front-desktop "Konsole" "${pkgs.konsole}/bin/konsole";
 bring-webstorm-to-front = pkgs.bring-to-front-desktop "webstorm-proj" "${webstorm}/bin/webstorm";
 bring-rubymine-to-front = pkgs.bring-to-front-desktop "ruby-mine-proj" "${ruby-mine}/bin/ruby-mine";
 bring-datagrip-to-front = pkgs.bring-to-front-desktop "datagrip-proj" "${datagrip}/bin/datagrip";
 bring-pycharm-to-front = pkgs.bring-to-front-desktop "pycharm-proj" "${pycharm}/bin/pycharm-professional";
-chefdk = (import <unstable> {}).chefdk;
+chefdk = unstable.chefdk;
 
 in
 
@@ -57,6 +58,7 @@ in
     postgresql
     ucsf-vpn
     act
+    kazam
   ]);
 
   programs.git = {
@@ -105,6 +107,11 @@ in
       "cbc-support" = {
         hostname = "%h.ucsf.edu";
         user = "zcollins";
+      };
+      
+      "comboslice" = {
+        hostname = "10.0.0.14";
+        user = "home";
       };
     };
   };

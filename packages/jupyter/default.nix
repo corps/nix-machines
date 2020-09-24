@@ -1,9 +1,9 @@
-{ writeText, writeTextFile, fetchFromGitHub, python35, newScope,
+{ writeText, writeTextFile, fetchFromGitHub, python37, newScope,
   lib, symlinkJoin, writeScriptBin, bash, pkgs }:
 
 let
 
-python = import ./python-packages.nix python35;
+python = import ./python-packages.nix python37;
 jupyter = (python.withPackages (ps: [ ps.notebook ]));
 scope = pkgs // {
   inherit python jupyter;

@@ -21,6 +21,8 @@
 
   time.timeZone = "America/Los_Angeles";
 
+  hardware.opengl.enable = true;
+
   # Enable the X11 windowing system.
   services.xserver.enable = true;
   services.xserver.layout = "us";
@@ -71,6 +73,7 @@
       127.0.0.1 metis.development.local
       127.0.0.1 timur.development.local
       127.0.0.1 magma.development.local
+      169.230.251.90 remote.ucsf.edu
     '';
 
 
