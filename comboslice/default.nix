@@ -16,6 +16,10 @@ let
 in
 
 {
+  imports = [
+    ../modules/nixos/docker-services.nix
+  ];
+
   environment.variables = {
     EDITOR = "nvim";
   };
