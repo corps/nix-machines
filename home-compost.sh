@@ -44,14 +44,14 @@ if ! check fileExists ~/.config/nixpkgs/config.nix; then
 fi
 
 if ! check fileExists ~/.profile.nix-machines; then
-  echo "source $DIR/home/profile" >> ~/.profile
+  echo "source $(dirname $HOME_NIX)/profile" >> ~/.profile
   echo "export HOME_NIX='$HOME_NIX'" >> ~/.profile
   echo "export NO_REBUILD=$NO_REBUILD" >> ~/.profile
   touch ~/.profile.nix-machines
 fi
 
 if ! check fileExists ~/.bashrc.nix-machines; then
-  echo "source $DIR/home/bashrc" >> ~/.bashrc
+  echo "source $(dirname $HOME_NIX)/bashrc" >> ~/.bashrc
   echo "export HOME_NIX='$HOME_NIX'" >> ~/.bashrc
   echo "export NO_REBUILD=$NO_REBUILD" >> ~/.bashrc
   touch ~/.bashrc.nix-machines

@@ -6,6 +6,12 @@ cd $HOME/nix-machines
 exec ./home-compost.sh
 '';
 
+update-channels = pkgs.writeScriptBin "update-channels" ''
+#! ${pkgs.bash}/bin/bash
+nix-channel --update
+sudo nix-channel --update
+'';
+
 in
 
 {
@@ -31,6 +37,7 @@ in
     ucsf-vpn
     wget
     curl
+    update-channels
   ]);
 
   programs.git = {
@@ -47,17 +54,7 @@ in
 
   programs.ssh = {
     enable = true;
-    matchBlocks = {
-      "cbc-master timur magma janus metis archimedes magma-stage metis-stage timur-stage archimedes-stage janus-stage" = {
-        hostname = "%h.ucsf.edu";
-        user = "zcollins";
-      };
-
-      "cbc-support" = {
-        hostname = "%h.ucsf.edu";
-        user = "zcollins";
-      };
-    };
+    matchBlocks = {};
   };
 
   # This value determines the Home Manager release that your

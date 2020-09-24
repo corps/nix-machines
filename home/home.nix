@@ -6,6 +6,12 @@ cd $HOME/nix-machines
 exec ./home-compost.sh
 '';
 
+update-channels = pkgs.writeScriptBin "update-channels" ''
+#! ${pkgs.bash}/bin/bash
+nix-channel --update
+sudo nix-channel --update
+'';
+
 unstable = import <unstable> {};
 webstorm = unstable.jetbrains.webstorm;
 ruby-mine = unstable.jetbrains.ruby-mine;
@@ -39,6 +45,7 @@ in
     make-tmpfs
     dropbox
     compost
+    update-channels
     signal-desktop
     bring-firefox-to-front
     bring-konsole-to-front
