@@ -10,8 +10,9 @@ IN=$1
 
 export PATH="${perl}/bin:${ffmpeg}/bin:$PATH"
 
-true $${SD_PARAMS:="-25dB:d=0.7"};
-true $${MIN_FRAGMENT_DURATION:="1"};
+true ''${SD_PARAMS:="-25dB:d=0.7"};
+true ''${SR_PARAMS:="1:0:-25dB:leave_silence=1"};
+true ''${MIN_FRAGMENT_DURATION:="1"};
 export MIN_FRAGMENT_DURATION
 
 if [ -z "$IN" ]; then
@@ -26,7 +27,7 @@ fi
 
 echo "Determining split points..." >& 2
 
-SPLITS=$(ffmpeg -nostats -v repeat+info -i "$${IN}" -af silencedetect="$${SD_PARAMS}" -vn -sn  -f s16le  -y /dev/null \
+SPLITS=$(ffmpeg -nostats -v repeat+info -i "''${IN}" -af silencedetect="''${SD_PARAMS}" -vn -sn  -f s16le  -y /dev/null \
          |& grep '\[silencedetect.*silence_start:' \
          | awk '{print $5}' \
          | perl -ne '
@@ -42,5 +43,9 @@ SPLITS=$(ffmpeg -nostats -v repeat+info -i "$${IN}" -af silencedetect="$${SD_PAR
 )
 
 echo "Splitting points are $SPLITS"
-ffmpeg -v warning -i "$IN" -c copy -map 0 -f segment -segment_times "$SPLITS" "$${IN%.mp3}-%03d.mp3"
+ffmpeg -v warning -i "$IN" -c copy -map 0 -f segment -segment_times "$SPLITS" "''${IN%.mp3}-%03d.mp3"
+
+for file in ''${IN%.mp3}-*.mp3; do
+  ffmpeg -i $file -af silenceremove=''${SR_PARAMS} nosilence-$file
+done
 ''
