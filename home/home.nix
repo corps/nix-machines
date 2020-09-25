@@ -66,6 +66,7 @@ in
     ucsf-vpn
     act
     kazam
+    make-splits
   ]);
 
   programs.git = {
