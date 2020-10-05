@@ -18,6 +18,7 @@ dockerService = {
 
     cmd = mkOption {
       type = types.string;
+      default = "";
     };
 
     options = mkOption {
@@ -50,8 +51,8 @@ in
   config.systemd.services = builtins.listToAttrs (map (k: {
     name = k;
     value = let 
-      dsConf = config.dockerServices[k]; 
-      optionsJoined = lib.concatStringsSep " " dsConfig.options;
+      dsConf = config.dockerServices."${k}"; 
+      optionsJoined = lib.concatStringsSep " " dsConf.options;
       runOptions = "--name ${k} ${optionsJoined} ${dsConf.image}:${dsConf.tag} ${dsConf.cmd}";
     in {
       description = "Wrapped service running ${dsConf.image}:${dsConf.tag}";

@@ -60,4 +60,13 @@ in
       ExecStart = "${ngrok}/bin/ngrok start -config /etc/secrets/ngrok.yml -config ${ngrokConfig} --all";
     };
   };
+
+  dockerServices.watchtower = {
+    image = "containrrr/watchtower";
+    tag = "latest";
+    cmd = "";
+    options = [
+      "-v /var/run/docker.sock:/var/run/docker.sock"
+    ];
+  };
 }
