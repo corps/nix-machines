@@ -25,6 +25,7 @@ bring-rubymine-to-front = pkgs.bring-to-front-desktop "ruby-mine-proj" "${ruby-m
 bring-datagrip-to-front = pkgs.bring-to-front-desktop "datagrip-proj" "${datagrip}/bin/datagrip";
 bring-pycharm-to-front = pkgs.bring-to-front-desktop "pycharm-proj" "${pycharm}/bin/pycharm-professional";
 chefdk = unstable.chefdk;
+# beancount = unstable.beancount;
 
 in
 
@@ -67,6 +68,7 @@ in
     act
     kazam
     make-splits
+    beancount
   ]);
 
   programs.git = {

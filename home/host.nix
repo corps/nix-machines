@@ -76,6 +76,8 @@
       169.230.251.90 remote.ucsf.edu
     '';
 
+  networking.nameservers = [ "10.0.0.14" "1.1.1.1" "8.8.8.8" "8.8.4.4" ];
+
 
   security.pki.certificateFiles = (if builtins.pathExists "/home/home/.local/share/mkcert/rootCA.pem" then [
     /home/home/.local/share/mkcert/rootCA.pem
