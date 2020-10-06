@@ -70,6 +70,7 @@ in
     make-splits
     beancount
     csvtool
+    bc
   ]);
 
   programs.git = {
