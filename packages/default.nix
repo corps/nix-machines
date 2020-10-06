@@ -21,6 +21,7 @@ let callPackage = super.newScope self; in rec {
   bring-to-front-desktop = callPackage ./bring-to-front-desktop.nix {};
   ucsf-vpn = callPackage ./ucsf-vpn.nix {};
   make-splits = callPackage ./make-splits.nix {};
+  csvtool = callPackage ./csvtool.nix {};
 }
   #   inherit (super.darwin.apple_sdk.frameworks) Carbon Cocoa ApplicationServices;
   #   imagemagick = super.imagemagick;

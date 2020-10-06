@@ -69,6 +69,7 @@ in
     kazam
     make-splits
     beancount
+    csvtool
   ]);
 
   programs.git = {
