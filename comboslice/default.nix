@@ -48,9 +48,22 @@ in
   virtualisation.docker.enable = true;
 
   networking.hostName = "comboslice";
-  networking.extraHosts =
-    ''
+
+  services.dnsmasq = {
+    enable = true;
+    resolveLocalQueries = true;
+    servers = [
+      ''/local/10.0.0.14''
+      ''1.1.1.1''
+      ''8.8.8.8''
+      ''8.8.4.4''
+    ];
+
+    extraConfig = ''
+      address=/local/10.0.0.14
     '';
+  };
+
 
   systemd.services."ngrok" = {
     description = "Ngrok reverse proxy";
