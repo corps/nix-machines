@@ -82,4 +82,13 @@ in
       "-v /var/run/docker.sock:/var/run/docker.sock"
     ];
   };
+
+  dockerServices.dropbox = {
+    image = "oddlid/dropbox";
+    tag = "latest";
+    cmd = "";
+    options = [
+      "-v /dbox:/home/dropbox/Dropbox"
+    ];
+  };
 }
