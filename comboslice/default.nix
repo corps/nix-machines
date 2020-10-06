@@ -106,10 +106,10 @@ in
     };
     extraConfig = {
       gitlab = {
-        email_from = "gitlab-no-reply@example.com";
-        email_display_name = "Example GitLab";
-        email_reply_to = "gitlab-no-reply@example.com";
-        default_projects_features = { builds = false; };
+        # email_from = "gitlab-no-reply@example.com";
+        # email_display_name = "Example GitLab";
+        # email_reply_to = "gitlab-no-reply@example.com";
+        # default_projects_features = { builds = false; };
       };
     };
   };
