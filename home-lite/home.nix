@@ -19,6 +19,7 @@ in
   programs.home-manager.enable = true;
 
   home.packages = (with pkgs; [
+    add-bin-to-path
     htop
     my_neovim
     upgrade-packages
