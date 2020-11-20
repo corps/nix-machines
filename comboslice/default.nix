@@ -25,6 +25,7 @@ in
   };
 
   environment.systemPackages = with pkgs; [
+    add-bin-to-path
     neovim 
     mkcert
     p11-kit

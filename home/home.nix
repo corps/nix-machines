@@ -25,6 +25,7 @@ bring-rubymine-to-front = pkgs.bring-to-front-desktop "ruby-mine-proj" "${ruby-m
 bring-datagrip-to-front = pkgs.bring-to-front-desktop "datagrip-proj" "${datagrip}/bin/datagrip";
 bring-pycharm-to-front = pkgs.bring-to-front-desktop "pycharm-proj" "${pycharm}/bin/pycharm-professional";
 chefdk = unstable.chefdk;
+# beancount = unstable.beancount;
 
 in
 
@@ -34,6 +35,7 @@ in
 
   home.packages = (with pkgs; [
     htop
+    add-bin-to-path
     my_neovim
     upgrade-packages
     fetch_from_pypi
@@ -67,6 +69,9 @@ in
     act
     kazam
     make-splits
+    beancount
+    csvtool
+    bc
   ]);
 
   programs.git = {

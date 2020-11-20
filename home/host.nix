@@ -51,6 +51,9 @@
     grillspace2 = {
       psk = "stopcownight";
     };
+    magichands = {
+      psk = "libbysibby";
+    };
     ORBI46 = {
       psk = "braveflute410";
     };
@@ -73,8 +76,11 @@
       127.0.0.1 metis.development.local
       127.0.0.1 timur.development.local
       127.0.0.1 magma.development.local
+      127.0.0.1 polyphemus.development.local
       169.230.251.90 remote.ucsf.edu
     '';
+
+  networking.nameservers = [ "10.0.0.14" "1.1.1.1" "8.8.8.8" "8.8.4.4" ];
 
 
   security.pki.certificateFiles = (if builtins.pathExists "/home/home/.local/share/mkcert/rootCA.pem" then [
