@@ -1,11 +1,11 @@
 #! /usr/bin/env bash
 
-bin=$1
-tmp=$(mktemp)
-
-if [[ -z "$bin" ]]; then
+if [[ -z "$1" ]]; then
   exit
 fi
+
+bin=$(readlink -f $1)
+tmp=$(mktemp)
 
 bname=$(basename $bin)
 
