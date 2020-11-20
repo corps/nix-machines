@@ -34,6 +34,7 @@ in
     patchelf
     openconnect
     ngrok
+    beancount
   ];
 
   time.timeZone = "America/Los_Angeles";
@@ -134,11 +135,15 @@ in
   };
 
   dockerServices.dropbox = {
-    image = "oddlid/dropbox";
+    image = "otherguy/dropbox";
     tag = "latest";
     cmd = "";
     options = [
-      "-v /dbox:/home/dropbox/Dropbox"
+      "-e TZ=America/Los_Angeles"
+      "-e DROPBOX_UID=1000"
+      "-e DROPBOX_GID=100"
+      "-v /dbox:/opt/dropbox/Dropbox"
+      "-v /dbox.settings:/opt/dropbox/.dropbox"
     ];
   };
 }
