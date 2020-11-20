@@ -35,6 +35,7 @@ in
 
   home.packages = (with pkgs; [
     htop
+    add-bin-to-path
     my_neovim
     upgrade-packages
     fetch_from_pypi

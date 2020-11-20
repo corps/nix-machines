@@ -22,6 +22,7 @@ let callPackage = super.newScope self; in rec {
   ucsf-vpn = callPackage ./ucsf-vpn.nix {};
   make-splits = callPackage ./make-splits.nix {};
   csvtool = callPackage ./csvtool.nix {};
+  add-bin-to-path = callPackage ./add-bin-to-path.nix {};
 }
   #   inherit (super.darwin.apple_sdk.frameworks) Carbon Cocoa ApplicationServices;
   #   imagemagick = super.imagemagick;

@@ -51,6 +51,9 @@
     grillspace2 = {
       psk = "stopcownight";
     };
+    magichands = {
+      psk = "libbysibby";
+    };
     ORBI46 = {
       psk = "braveflute410";
     };
