@@ -1,0 +1,8 @@
+#! /usr/bin/env bash
+set -e
+set -o pipefail
+
+file=$1
+shift
+$@ || true
+fswatch -o $file | xargs -n1 -I{} $@

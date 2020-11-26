@@ -25,6 +25,7 @@ in
   };
 
   environment.systemPackages = with pkgs; [
+    fava
     neovim 
     mkcert
     p11-kit
@@ -82,6 +83,13 @@ in
       sslCertificateKey = /home/home/.local/share/mkcert/_wildcard.comboslice.local-key.pem;
       locations."/".proxyPass = "http://unix:/run/gitlab/gitlab-workhorse.socket";
     };
+
+    virtualHosts."fava.comboslice.local" = {
+      forceSSL = true;
+      sslCertificate = /home/home/.local/share/mkcert/_wildcard.comboslice.local.pem;
+      sslCertificateKey = /home/home/.local/share/mkcert/_wildcard.comboslice.local-key.pem;
+      locations."/".proxyPass = "http://localhost:5000";
+    };
   };
 
   services.gitlab = {
@@ -124,6 +132,28 @@ in
       ExecStart = "${ngrok}/bin/ngrok start -config /etc/secrets/ngrok.yml -config ${ngrokConfig} --all";
     };
   };
+
+  systemd.services."accounting-deploy" = {
+    description = "Updates the accounting file";
+    path = [ pkgs.bash pkgs.fswatch ];
+    serviceConfig = {
+      Type="simple";
+      User="home";
+      Group="users";
+      ExecStart = "/home/home/.nix-profile/bin/run-on-change /var/touch/project-1 /run/current-system/sw/bin/git -C /home/home/accounting pull";
+    };
+  };
+
+  systemd.services."accounting-fava" = {
+    description = "Fava server for accounting";
+    path = [ pkgs.fava ];
+    serviceConfig = {
+      Type="simple";
+      User="home";
+      Group="users";
+      ExecStart = "/usr/bin/env fava /home/home/accounting/master.bean";
+    };
+  };
   
   dockerServices.watchtower = {
     image = "containrrr/watchtower";
@@ -146,4 +176,6 @@ in
       "-v /dbox.settings:/opt/dropbox/.dropbox"
     ];
   };
+
+  boot.kernel.sysctl = { "fs.inotify.max_user_watches" = 65536; };
 }
