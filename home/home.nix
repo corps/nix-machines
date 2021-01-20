@@ -1,4 +1,4 @@
-{ config, pkgs, ... }:
+{ config, lib, pkgs, ... }:
 
 let compost = pkgs.writeScriptBin "compost" ''
 #! ${pkgs.bash}/bin/bash
@@ -131,8 +131,8 @@ in
 
   programs.vscode = {
     enable = true;
-    userSettings = {};
-    # keybindings = {};
+    userSettings = lib.importJSON ../dotfiles/settings.json;
+    keybindings = lib.importJSON ../dotfiles/keybindings.json;
     extensions = [ 
       unstable.vscode-extensions.vscodevim.vim 
     ];

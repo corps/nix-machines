@@ -60,6 +60,10 @@
     fire = {
       psk = "montana93";
     };
+    ssgooz = {
+      psk = "mebejefe";
+    };
+    HHonors = {};
     ihgconnect = {};
   };
 
@@ -77,7 +81,6 @@
       127.0.0.1 timur.development.local
       127.0.0.1 magma.development.local
       127.0.0.1 polyphemus.development.local
-      169.230.251.90 remote.ucsf.edu
     '';
 
   networking.nameservers = [ "10.0.0.14" "1.1.1.1" "8.8.8.8" "8.8.4.4" ];
