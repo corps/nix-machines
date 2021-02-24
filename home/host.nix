@@ -80,6 +80,7 @@
       127.0.0.1 metis.development.local
       127.0.0.1 timur.development.local
       127.0.0.1 magma.development.local
+      127.0.0.1 vulcan.development.local
       127.0.0.1 polyphemus.development.local
     '';
 

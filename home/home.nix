@@ -126,6 +126,11 @@ in
         hostname = "10.0.0.14";
         user = "home";
       };
+
+      "cc-dsco1" = {
+        hostname = "169.230.134.238";
+        user = "zach";
+      };
     };
   };
 
