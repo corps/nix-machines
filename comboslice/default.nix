@@ -135,17 +135,20 @@ in
 
   systemd.services."accounting-deploy" = {
     description = "Updates the accounting file";
-    path = [ pkgs.bash pkgs.fswatch ];
+    wantedBy = [ "multi-user.target" ];
+    path = [ pkgs.bash pkgs.git ];
     serviceConfig = {
       Type="simple";
       User="home";
       Group="users";
-      ExecStart = "/home/home/.nix-profile/bin/run-on-change /var/touch/project-1 /run/current-system/sw/bin/git -C /home/home/accounting pull";
+      WorkingDirectory="/home/home/accounting";
+      ExecStart = "/home/home/.nix-profile/bin/run-on-git-update /run/wrappers/bin/sudo systemctl restart accounting-fava";
     };
   };
 
   systemd.services."accounting-fava" = {
     description = "Fava server for accounting";
+    wantedBy = [ "multi-user.target" ];
     path = [ pkgs.fava ];
     serviceConfig = {
       Type="simple";
@@ -161,6 +164,21 @@ in
     cmd = "";
     options = [
       "-v /var/run/docker.sock:/var/run/docker.sock"
+      "-v /home/home/.docker/config.json:/config.json"
+      "-e 'WATCHTOWER_NOTIFICATIONS=email'"
+      "-e 'WATCHTOWER_NOTIFICATION_EMAIL_FROM=recursive.cookie.jar@gmail.com'"
+      "-e 'WATCHTOWER_NOTIFICATION_EMAIL_TO=recursive.cookie.jar@gmail.com'"
+      "-e 'WATCHTOWER_NOTIFICATION_EMAIL_SERVER=smtp.gmail.com'"
+      "-e 'WATCHTOWER_NOTIFICATION_EMAIL_SERVER_PORT=587'"
+      "-e 'WATCHTOWER_NOTIFICATION_EMAIL_SERVER_USER=recursive.cookie.jar@gmail.com'"
+      "-e 'WATCHTOWER_NOTIFICATION_EMAIL_SERVER_PASSWORD=${import /secrets/gmail/app_password.nix}'"
+      "-e 'WATCHTOWER_NOTIFICATION_EMAIL_SUBJECTTAG=comboslice'"
+      "-e 'WATCHTOWER_CLEANUP=1'"
+      "-e 'WATCHTOWER_POLL_INTERVAL=1500'"
+      "-e 'WATCHTOWER_NO_STARTUP_MESSAGE=1'"
+      "-e 'WATCHTOWER_INCLUDE_STOPPED=1'"
+      "-e 'WATCHTOWER_INCLUDE_RESTARTING=1'"
+      "-e 'WATCHTOWER_NO_RESTART=1'"
     ];
   };
 
@@ -178,4 +196,45 @@ in
   };
 
   boot.kernel.sysctl = { "fs.inotify.max_user_watches" = 65536; };
+
+  nix.gc.automatic = true;
+  
+  system.autoUpgrade = {
+    enable = true;
+    allowReboot = true;
+  };
+
+  security.sudo.extraRules = [
+    { groups = [ "wheel" ];
+      commands = [ { command = "/run/current-system/sw/bin/systemctl"; options = [ "SETENV" "NOPASSWD" ]; } ]; }
+  ];
+
+  services.dockerRegistry = {
+    enable = true;
+    port = 5050;
+    enableGarbageCollect = true;
+  };
+
+   systemd.services.gitlab-runner.path = [
+    "/run/wrappers" # /run/wrappers/bin/su
+    "/" # /bin/sh
+  ];
+  
+  services.gitlab-runner = {
+    enable = true;
+    concurrent = 1;
+
+    services.shell = {
+        buildsDir = "/var/lib/gitlab-runner/builds";
+          executor = "shell";
+          environmentVariables = {
+              ENV = "/etc/profile";
+              USER = "root";
+              NIX_REMOTE = "daemon";
+              PATH = "/nix/var/nix/profiles/default/bin:/nix/var/nix/profiles/default/sbin:/bin:/sbin:/usr/bin:/usr/sbin";
+              NIX_SSL_CERT_FILE = "/nix/var/nix/profiles/default/etc/ssl/certs/ca-bundle.crt";
+          };
+          registrationConfigFile = "/secrets/gitlab/runner-env";
+      };
+  };
 }

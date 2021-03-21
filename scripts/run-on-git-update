@@ -1,0 +1,16 @@
+#! /usr/bin/env bash
+set -e
+set -o pipefail
+
+git pull
+$@ || true
+
+while true; do
+  sleep 10
+  git fetch
+  
+  if git log HEAD..origin/master | grep commit; then
+    git pull
+    $@ || true
+  fi
+done

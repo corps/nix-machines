@@ -7,33 +7,38 @@ let
 dockerService = {
   options = {
     image = mkOption {
-      type = types.string;
+      type = types.str;
       description = "Image to use";
     };
     
     tag = mkOption {
-      type = types.string;
+      type = types.str;
       default = "latest";
     };
 
     cmd = mkOption {
-      type = types.string;
+      type = types.str;
       default = "";
     };
 
     options = mkOption {
-      type = types.listOf types.string;
+      type = types.listOf types.str;
       default = [];
     };
 
     unit = mkOption {
-      type = types.attrsOf types.string;
+      type = types.attrsOf types.str;
       default = {};
     };
 
     service = mkOption {
-      type = types.attrsOf types.string;
+      type = types.attrsOf types.str;
       default = {};
+    };
+
+    runEvery = mkOption {
+      type = types.nullOr types.int;
+      default = null;
     };
   };
 };
@@ -52,7 +57,13 @@ in
     name = k;
     value = let 
       dsConf = config.dockerServices."${k}"; 
-      optionsJoined = lib.concatStringsSep " " dsConf.options;
+      watchtowerEnabledOptions =
+        if dsConf.runEvery == null then [] else
+        ["'--label=com.centurylinklabs.watchtower.enable=false'"];
+      installOptions = if dsConf.runEvery == null 
+        then {wantedy = ["multi-user.target"]; after = ["docker.service"];}
+        else {};
+      optionsJoined = lib.concatStringsSep " " (dsConf.options ++ watchtowerEnabledOptions);
       runOptions = "--name ${k} ${optionsJoined} ${dsConf.image}:${dsConf.tag} ${dsConf.cmd}";
     in {
       description = "Wrapped service running ${dsConf.image}:${dsConf.tag}";
@@ -65,8 +76,28 @@ in
         WorkingDirectory = "/root";
         Restart = "always";
         RestartSec = "3";
+        ExecStartPre = "-/run/current-system/sw/bin/docker stop ${k}";
+        ExecStop = "/run/current-system/sw/bin/docker stop ${k}";
         ExecStart = "/run/current-system/sw/bin/docker run --rm ${runOptions}";
-      } // dsConf.service;
+      } // dsConf.service // installOptions;
     } // dsConf.unit;
   }) (builtins.attrNames config.dockerServices));
+
+  config.systemd.timers = builtins.listToAttrs (filter (v: v.name != null) (map (k:
+    let
+      dsConf = config.dockerServices."${k}"; 
+      runEvery = dsConf.runEvery;
+    in
+    if runEvery == null then { name = null; } else {
+    name = k;
+    value = {
+      description = "Runs ${k}.service every ${runEvery} seconds";
+      wantedBy = [ "multi-user.target" ];
+      timerConfig = {
+        OnActiveSec= "${runEvery}";
+        Unit= "${k}.service";
+        OnUniActiveSec= "${runEvery}";
+      };
+    };
+  }) (builtins.attrNames config.dockerServices)));
 }
