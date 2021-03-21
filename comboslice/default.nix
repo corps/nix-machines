@@ -5,9 +5,9 @@ let
     tunnels = {
       http = {
         proto = "http";
-        addr = 3000;
+        addr = 9009;
         inspect = false;
-        # hostname = "*.me.com";
+        hostname = "z-tfm.ngrok.io";
       };
     };
   });
@@ -146,6 +146,20 @@ in
     };
   };
 
+  systemd.services."terraforming-mars-deploy" = {
+    description = "Updates the terraforming-mars source";
+    wantedBy = [ "multi-user.target" ];
+    path = [ pkgs.bash pkgs.git ];
+    serviceConfig = {
+      Type="simple";
+      User="home";
+      Group="users";
+      Environment=["BRANCH=main" "PATH=/run/current-system/sw/bin:/home/home/.nix-profile/bin:/run/wrappers/bin"];
+      WorkingDirectory="/home/home/terraforming-mars";
+      ExecStart = "/home/home/.nix-profile/bin/run-on-git-update docker-build-and-push localhost:5050/terraforming-mars";
+    };
+  };
+
   systemd.services."accounting-fava" = {
     description = "Fava server for accounting";
     wantedBy = [ "multi-user.target" ];
@@ -192,6 +206,15 @@ in
       "-e DROPBOX_GID=100"
       "-v /dbox:/opt/dropbox/Dropbox"
       "-v /dbox.settings:/opt/dropbox/.dropbox"
+    ];
+  };
+
+  dockerServices."terraforming-mars" = {
+    image = "localhost:5050/terraforming-mars";
+    tag = "latest";
+    cmd = "";
+    options = [
+      "-p 9009:8080"
     ];
   };
 

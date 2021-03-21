@@ -61,14 +61,12 @@ in
         if dsConf.runEvery == null then [] else
         ["'--label=com.centurylinklabs.watchtower.enable=false'"];
       installOptions = if dsConf.runEvery == null 
-        then {wantedy = ["multi-user.target"]; after = ["docker.service"];}
+        then {wantedBy = ["multi-user.target"]; after = ["docker.service"];}
         else {};
       optionsJoined = lib.concatStringsSep " " (dsConf.options ++ watchtowerEnabledOptions);
       runOptions = "--name ${k} ${optionsJoined} ${dsConf.image}:${dsConf.tag} ${dsConf.cmd}";
     in {
       description = "Wrapped service running ${dsConf.image}:${dsConf.tag}";
-      wantedBy = [ "multi-user.target" ];
-      after = [ "docker.service" ];
       requires = [ "docker.service" ];
       serviceConfig = {
         Type = "simple";
@@ -79,8 +77,8 @@ in
         ExecStartPre = "-/run/current-system/sw/bin/docker stop ${k}";
         ExecStop = "/run/current-system/sw/bin/docker stop ${k}";
         ExecStart = "/run/current-system/sw/bin/docker run --rm ${runOptions}";
-      } // dsConf.service // installOptions;
-    } // dsConf.unit;
+      } // dsConf.service;
+    } // dsConf.unit // installOptions;
   }) (builtins.attrNames config.dockerServices));
 
   config.systemd.timers = builtins.listToAttrs (filter (v: v.name != null) (map (k:

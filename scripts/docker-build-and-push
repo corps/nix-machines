@@ -1,0 +1,6 @@
+#! /usr/bin/env bash
+set -e
+set -o pipefail
+
+docker build . --tag $1
+exec docker push $1

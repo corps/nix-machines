@@ -3,13 +3,14 @@ set -e
 set -o pipefail
 
 git pull
+branch=${BRANCH:master}
 $@ || true
 
 while true; do
   sleep 10
   git fetch
   
-  if git log HEAD..origin/master | grep commit; then
+  if git log HEAD..origin/$branch | grep commit; then
     git pull
     $@ || true
   fi
