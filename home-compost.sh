@@ -23,10 +23,11 @@ source utils.sh
 check isNonRootUser || exitWithMessage 1 "Do not run as root."
 
 HOME_NIX=${HOME_NIX-:$DIR/home/home.nix}
+export NIX_PATH="$HOME/.nix-defexpr/channels:$NIX_PATH"
 
 if ! check fileExists ~/.config/nixpkgs/home.nix; then
   if ! check fileExists ~/.nix-defexpr/channels/home-manager; then
-    echoRun nix-channel --add https://github.com/rycee/home-manager/archive/release-20.03.tar.gz home-manager
+    echoRun nix-channel --add https://github.com/rycee/home-manager/archive/release-20.09.tar.gz home-manager
     echoRun nix-channel --update
   fi
 
@@ -40,28 +41,27 @@ if ! check fileExists ~/.nix-defexpr/channels/unstable; then
 fi
 
 if ! check fileExists ~/.config/nixpkgs/config.nix; then
-  echoRun ln -sf $DIR/home/config.nix ~/.config/nixpkgs/config.nix
+  echoRun ln -sf $DIR/dotfiles/config.nix ~/.config/nixpkgs/config.nix
 fi
 
 if ! check fileExists ~/.profile.nix-machines; then
-  echo "source $(dirname $HOME_NIX)/profile" >> ~/.profile
+  echo "source $DIR/dotfiles/profile" >> ~/.profile
   echo "export HOME_NIX='$HOME_NIX'" >> ~/.profile
   echo "export NO_REBUILD=$NO_REBUILD" >> ~/.profile
   touch ~/.profile.nix-machines
 fi
 
 if ! check fileExists ~/.bashrc.nix-machines; then
-  echo "source $(dirname $HOME_NIX)/bashrc" >> ~/.bashrc
+  echo "source $DIR/dotfiles/bashrc" >> ~/.bashrc
   echo "export HOME_NIX='$HOME_NIX'" >> ~/.bashrc
   echo "export NO_REBUILD=$NO_REBUILD" >> ~/.bashrc
   touch ~/.bashrc.nix-machines
 fi
 
-echoRun ln -sf $DIR/home/Xmodmap ~/.Xmodmap
-echoRun ln -sf $DIR/home/xinitrc ~/.xinitrc
+echoRun ln -sf $(dirname $HOME_NIX)/Xmodmap ~/.Xmodmap
+echoRun ln -sf $DIR/dotfiles/xinitrc ~/.xinitrc
 
 echoRun ensureRepo "nix-machines"
-echoRun ensureRepo "dotfiles"
 echoRun ensureOverlay
 
 echoRun home-manager switch
