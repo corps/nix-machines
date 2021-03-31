@@ -13,16 +13,12 @@ sudo nix-channel --update
 '';
 
 unstable = import <unstable> {};
-webstorm = unstable.jetbrains.webstorm;
 ruby-mine = unstable.jetbrains.ruby-mine;
-datagrip = unstable.jetbrains.datagrip;
 pycharm = unstable.jetbrains.pycharm-professional;
 act = unstable.act;
 bring-firefox-to-front = pkgs.bring-to-front-desktop "Firefox" "${pkgs.firefox}/bin/firefox";
 bring-konsole-to-front = pkgs.bring-to-front-desktop "Konsole" "${pkgs.konsole}/bin/konsole";
-bring-webstorm-to-front = pkgs.bring-to-front-desktop "webstorm-proj" "${webstorm}/bin/webstorm";
 bring-rubymine-to-front = pkgs.bring-to-front-desktop "ruby-mine-proj" "${ruby-mine}/bin/ruby-mine";
-bring-datagrip-to-front = pkgs.bring-to-front-desktop "datagrip-proj" "${datagrip}/bin/datagrip";
 bring-pycharm-to-front = pkgs.bring-to-front-desktop "pycharm-proj" "${pycharm}/bin/pycharm-professional";
 chefdk = unstable.chefdk;
 # beancount = unstable.beancount;
@@ -51,14 +47,10 @@ in
     signal-desktop
     bring-firefox-to-front
     bring-konsole-to-front
-    bring-webstorm-to-front
     bring-rubymine-to-front
-    bring-datagrip-to-front
     bring-pycharm-to-front
     pycharm
-    webstorm
     ruby-mine
-    datagrip
     jq
     clone-all-from
     docker-compose
@@ -124,6 +116,11 @@ in
       
       "comboslice" = {
         hostname = "10.0.0.14";
+        user = "home";
+      };
+
+      "excalibur" = {
+        hostname = "10.0.0.115";
         user = "home";
       };
 
