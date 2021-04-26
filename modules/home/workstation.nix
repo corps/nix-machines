@@ -31,6 +31,7 @@ in
     ucsf-vpn
     kazam
     make-splits
+    zoom-us
   ]);
 
   programs.firefox = {

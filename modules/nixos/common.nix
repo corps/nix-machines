@@ -58,6 +58,18 @@
   networking.firewall.allowedTCPPorts = [ 80 443 ];
   # Port ranges could be specified.
 
+  networking.extraHosts =
+    ''
+      127.0.0.1 janus.development.local
+      127.0.0.1 metis.development.local
+      127.0.0.1 timur.development.local
+      127.0.0.1 magma.development.local
+      127.0.0.1 vulcan.development.local
+      127.0.0.1 polyphemus.development.local
+      127.0.0.1 prometheus.development.local
+    '';
+
+
   networking.nameservers = [ "10.0.0.14" "1.1.1.1" "8.8.8.8" "8.8.4.4" ];
 
   # Security
