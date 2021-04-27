@@ -90,6 +90,13 @@ in
       sslCertificateKey = /home/home/.local/share/mkcert/_wildcard.comboslice.local-key.pem;
       locations."/".proxyPass = "http://localhost:5000";
     };
+
+    virtualHosts."benyt.comboslice.local" = {
+      forceSSL = true;
+      sslCertificate = /home/home/.local/share/mkcert/_wildcard.comboslice.local.pem;
+      sslCertificateKey = /home/home/.local/share/mkcert/_wildcard.comboslice.local-key.pem;
+      locations."/".proxyPass = "http://localhost:3009";
+    };
   };
 
   services.gitlab = {
@@ -193,6 +200,16 @@ in
       "-e 'WATCHTOWER_INCLUDE_STOPPED=1'"
       "-e 'WATCHTOWER_INCLUDE_RESTARTING=1'"
       "-e 'WATCHTOWER_NO_RESTART=1'"
+    ];
+  };
+
+  dockerServices.benyt = {
+    image = "ben-srs";
+    tag = "latest";
+    cmd = "";
+    options = [
+      "-p 3009:3009"
+      "'--label=com.centurylinklabs.watchtower.enable=false'"
     ];
   };
 
