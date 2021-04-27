@@ -11,30 +11,16 @@ let
       };
     };
   });
-
-  ngrok = pkgs.callPackage ../packages/ngrok {};
 in
 
 {
   imports = [
-    ../modules/nixos/docker-services.nix
+    ../modules/nixos/server.nix
   ];
-
-  environment.variables = {
-    EDITOR = "nvim";
-  };
 
   environment.systemPackages = with pkgs; [
     fava
     neovim 
-    mkcert
-    p11-kit
-    davfs2
-    dpkg
-    binutils
-    patchelf
-    openconnect
-    ngrok
     beancount
   ];
 
@@ -134,9 +120,8 @@ in
   systemd.services."ngrok" = {
     description = "Ngrok reverse proxy";
     wantedBy = [ "multi-user.target" ];
-    # restartTriggers = [];
     serviceConfig = { 
-      ExecStart = "${ngrok}/bin/ngrok start -config /etc/secrets/ngrok.yml -config ${ngrokConfig} --all";
+      ExecStart = "${pkgs.ngrok}/bin/ngrok start -config /secrets/ngrok/auth.yml -config ${ngrokConfig} --all";
     };
   };
 
@@ -194,7 +179,6 @@ in
       "-e 'WATCHTOWER_NOTIFICATION_EMAIL_SERVER_USER=recursive.cookie.jar@gmail.com'"
       "-e 'WATCHTOWER_NOTIFICATION_EMAIL_SERVER_PASSWORD=${import /secrets/gmail/app_password.nix}'"
       "-e 'WATCHTOWER_NOTIFICATION_EMAIL_SUBJECTTAG=comboslice'"
-      "-e 'WATCHTOWER_CLEANUP=1'"
       "-e 'WATCHTOWER_POLL_INTERVAL=1500'"
       "-e 'WATCHTOWER_NO_STARTUP_MESSAGE=1'"
       "-e 'WATCHTOWER_INCLUDE_STOPPED=1'"
@@ -235,46 +219,34 @@ in
     ];
   };
 
-  boot.kernel.sysctl = { "fs.inotify.max_user_watches" = 65536; };
-
-  nix.gc.automatic = true;
-  
-  system.autoUpgrade = {
-    enable = true;
-    allowReboot = true;
-  };
-
-  security.sudo.extraRules = [
-    { groups = [ "wheel" ];
-      commands = [ { command = "/run/current-system/sw/bin/systemctl"; options = [ "SETENV" "NOPASSWD" ]; } ]; }
-  ];
-
   services.dockerRegistry = {
     enable = true;
     port = 5050;
     enableGarbageCollect = true;
   };
 
-   systemd.services.gitlab-runner.path = [
-    "/run/wrappers" # /run/wrappers/bin/su
-    "/" # /bin/sh
-  ];
+  # systemd.services.gitlab-runner.path = [
+  #   "/run/wrappers" # /run/wrappers/bin/su
+  #   "/" # /bin/sh
+  # ];
   
-  services.gitlab-runner = {
-    enable = true;
-    concurrent = 1;
+  # services.gitlab-runner = {
+  #   enable = false;
+  #   concurrent = 1;
 
-    services.shell = {
-        buildsDir = "/var/lib/gitlab-runner/builds";
-          executor = "shell";
-          environmentVariables = {
-              ENV = "/etc/profile";
-              USER = "root";
-              NIX_REMOTE = "daemon";
-              PATH = "/nix/var/nix/profiles/default/bin:/nix/var/nix/profiles/default/sbin:/bin:/sbin:/usr/bin:/usr/sbin";
-              NIX_SSL_CERT_FILE = "/nix/var/nix/profiles/default/etc/ssl/certs/ca-bundle.crt";
-          };
-          registrationConfigFile = "/secrets/gitlab/runner-env";
-      };
-  };
+  #   services.shell = {
+  #       buildsDir = "/var/lib/gitlab-runner/builds";
+  #         executor = "shell";
+  #         environmentVariables = {
+  #             ENV = "/etc/profile";
+  #             USER = "root";
+  #             NIX_REMOTE = "daemon";
+  #             PATH = "/nix/var/nix/profiles/default/bin:/nix/var/nix/profiles/default/sbin:/bin:/sbin:/usr/bin:/usr/sbin";
+  #             NIX_SSL_CERT_FILE = "/nix/var/nix/profiles/default/etc/ssl/certs/ca-bundle.crt";
+  #         };
+  #         registrationConfigFile = "/secrets/gitlab/runner-env";
+  #     };
+  # };
+
+  networking.firewall.allowedTCPPorts = [ 23 80 443 ];
 }

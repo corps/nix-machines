@@ -85,6 +85,10 @@
   # Virtualization
   virtualisation.docker.enable = true;
   virtualisation.docker.liveRestore = false;
+  virtualisation.docker.autoPrune = {
+    enable = true;
+    dates = "daily";
+  };
 
   time.timeZone = "America/Los_Angeles";
 
