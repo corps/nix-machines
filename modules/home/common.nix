@@ -13,19 +13,14 @@ sudo nix-channel --update
 '';
 
 unstable = import <unstable> {};
-ruby-mine = unstable.jetbrains.ruby-mine;
-pycharm = unstable.jetbrains.pycharm-professional;
-act = unstable.act;
-bring-firefox-to-front = pkgs.bring-to-front-desktop "Firefox" "${pkgs.firefox}/bin/firefox";
-bring-konsole-to-front = pkgs.bring-to-front-desktop "Konsole" "${pkgs.konsole}/bin/konsole";
-bring-rubymine-to-front = pkgs.bring-to-front-desktop "ruby-mine-proj" "${ruby-mine}/bin/ruby-mine";
-bring-pycharm-to-front = pkgs.bring-to-front-desktop "pycharm-proj" "${pycharm}/bin/pycharm-professional";
-chefdk = unstable.chefdk;
 # beancount = unstable.beancount;
 
 in
 
 {
+  home.username = "home";
+  home.homeDirectory = "/home/home";
+ 
   # Let Home Manager install and manage itself.
   programs.home-manager.enable = true;
 
@@ -37,30 +32,15 @@ in
     fetch_from_pypi
     fetch_from_github
     universal-ctags
-    nix-pkgs-pinner
     ngrok
-    bring-to-front
     make-tmpfs
-    dropbox
     compost
     update-channels
-    signal-desktop
-    bring-firefox-to-front
-    bring-konsole-to-front
-    bring-rubymine-to-front
-    bring-pycharm-to-front
-    pycharm
-    ruby-mine
     jq
     clone-all-from
     docker-compose
     gnumake
-    zoom-us
     postgresql
-    ucsf-vpn
-    act
-    kazam
-    make-splits
     beancount
     csvtool
     bc
@@ -84,17 +64,6 @@ in
     enable = true;
   };
 
-  programs.firefox = {
-    enable = true;
-    profiles = {
-      myprofile = {
-        settings = {
-          "general.smoothScroll" = false;
-        };
-      };
-    };
-  };
-
   services.gpg-agent = {
     enable = true;
     defaultCacheTtl = 1800;
@@ -104,16 +73,6 @@ in
   programs.ssh = {
     enable = true;
     matchBlocks = {
-      "cbc-master timur magma janus metis archimedes magma-stage metis-stage timur-stage archimedes-stage janus-stage iliad iliad-stage" = {
-        hostname = "%h.ucsf.edu";
-        user = "zcollins";
-      };
-
-      "cbc-support" = {
-        hostname = "%h.ucsf.edu";
-        user = "zcollins";
-      };
-      
       "comboslice" = {
         hostname = "10.0.0.14";
         user = "home";
@@ -125,31 +84,18 @@ in
       };
 
       "cc-dsco1" = {
-        hostname = "169.230.134.238";
+        hostname = "2.tcp.ngrok.io";
+        port = 10799;
         user = "zach";
       };
     };
   };
 
-  programs.vscode = {
-    enable = true;
-    userSettings = lib.importJSON ../dotfiles/settings.json;
-    keybindings = lib.importJSON ../dotfiles/keybindings.json;
-    extensions = [ 
-      unstable.vscode-extensions.vscodevim.vim 
-    ];
-  };
+  # programs.direnv.enable = true;
+  # programs.direnv.enableNixDirenvIntegration = true;
 
-  programs.direnv.enable = true;
-  programs.direnv.enableNixDirenvIntegration = true;
-
-  # This value determines the Home Manager release that your
-  # configuration is compatible with. This helps avoid breakage
-  # when a new Home Manager release introduces backwards
-  # incompatible changes.
-  #
   # You can update Home Manager without changing this value. See
   # the Home Manager release notes for a list of state version
   # changes in each release.
-  home.stateVersion = "20.03";
+  # home.stateVersion = "20.03";
 }

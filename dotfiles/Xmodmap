@@ -1,7 +1,0 @@
-remove mod1 = Alt_L
-remove mod4 = Super_L
-remove Control = Control_L
-
-add mod1 = Super_L
-add mod4 = Control_L
-add Control = Alt_L

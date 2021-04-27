@@ -10,6 +10,7 @@
   environment.systemPackages = with pkgs; [
     neovim 
     xorg.xmodmap
+    xorg.xrandr
     mkcert
     p11-kit
     davfs2
@@ -18,6 +19,11 @@
     patchelf
     openconnect
   ];
+
+  i18n.inputMethod = {
+    enabled = "fcitx";
+    fcitx.engines = with pkgs.fcitx-engines; [ mozc ];
+  };
 
   time.timeZone = "America/Los_Angeles";
 
