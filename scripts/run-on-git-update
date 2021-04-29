@@ -2,8 +2,10 @@
 set -e
 set -o pipefail
 
+branch=${BRANCH:-master}
+echo "Running for branch $branch"
+
 git pull
-branch=${BRANCH:master}
 $@ || true
 
 while true; do
