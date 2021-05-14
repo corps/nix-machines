@@ -35,6 +35,9 @@
     projector = {
       psk = "ramenonice";
     };
+    Purpleheart = {
+      psk = "monata";
+    };
     grillspace2 = {
       psk = "stopcownight";
     };
