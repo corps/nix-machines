@@ -5,6 +5,7 @@ unstable = import <unstable> {};
 ruby-mine = unstable.jetbrains.ruby-mine;
 pycharm = unstable.jetbrains.pycharm-professional;
 act = unstable.act;
+obsidian = unstable.obsidian;
 bring-firefox-to-front = pkgs.bring-to-front-desktop "Firefox" "${pkgs.firefox}/bin/firefox";
 bring-konsole-to-front = pkgs.bring-to-front-desktop "Konsole" "${pkgs.konsole}/bin/konsole";
 bring-rubymine-to-front = pkgs.bring-to-front-desktop "ruby-mine-proj" "${ruby-mine}/bin/ruby-mine";
@@ -25,6 +26,7 @@ in
     bring-konsole-to-front
     bring-rubymine-to-front
     bring-pycharm-to-front
+    obsidian
     pycharm
     ruby-mine
     gnumake

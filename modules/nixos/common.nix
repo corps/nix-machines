@@ -50,6 +50,9 @@
     ssgooz = {
       psk = "mebejefe";
     };
+    "MyHouse-Guest" = {
+      psk = "airbnb3832";
+    };
     HHonors = {};
     ihgconnect = {};
   };
