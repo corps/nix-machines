@@ -1,4 +1,10 @@
 { config, lib, pkgs, ... }:
+
+let 
+  ucsfpwPath = /home/home/ucsfwpa.pass;
+  ucsfpw = if builtins.pathExists ucsfpwPath then builtins.fromJSON (builtins.readFile ucsfpwPath) else "";
+in
+
 {
   imports = [
     ./docker-services.nix
@@ -30,11 +36,24 @@
     openssh.authorizedKeys.keys = (import ../../authorized-keys.nix).github.corps;
   };
 
+  networking.wireless.userControlled.enable = true;
+
   # networking
   networking.wireless.networks = {
     projector = {
       psk = "ramenonice";
     };
+    UCSFwpa = {
+      auth = ''
+        key_mgmt=WPA-EAP
+        eap=PEAP
+        identity="CAMPUS\zcollins1"
+        password="${ucsfpw}"
+      '';
+
+      priority = 100;
+    };
+    UCSFguest = {};
     grillspace2 = {
       psk = "stopcownight";
     };
@@ -70,6 +89,7 @@
       127.0.0.1 vulcan.development.local
       127.0.0.1 polyphemus.development.local
       127.0.0.1 prometheus.development.local
+      127.0.0.1 grafana.development.local
     '';
 
 
