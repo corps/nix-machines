@@ -53,6 +53,9 @@
     "MyHouse-Guest" = {
       psk = "airbnb3832";
     };
+    "Beans Guest Wi-Fi" = {
+      psk = "321mocha";
+    };
     HHonors = {};
     ihgconnect = {};
   };
