@@ -3,11 +3,18 @@
 let 
   ngrokConfig = pkgs.writeText "ngrok.yml" (pkgs.lib.generators.toYAML {} {
     tunnels = {
-      http = {
+      tfm = {
         proto = "http";
         addr = 9009;
         inspect = false;
         hostname = "z-tfm.ngrok.io";
+      };
+
+      bensrs = {
+        proto = "http";
+        addr = 8083;
+        inspect = false;
+        hostname = "bensrs.ngrok.io";
       };
     };
   });
@@ -122,6 +129,7 @@ in
     wantedBy = [ "multi-user.target" ];
     serviceConfig = { 
       ExecStart = "${pkgs.ngrok}/bin/ngrok start -config /secrets/ngrok/auth.yml -config ${ngrokConfig} --all";
+      Restart="always";
     };
   };
 
@@ -134,7 +142,23 @@ in
       User="home";
       Group="users";
       WorkingDirectory="/home/home/accounting";
+      Restart="always";
       ExecStart = "/home/home/.nix-profile/bin/run-on-git-update /run/wrappers/bin/sudo systemctl restart accounting-fava";
+    };
+  };
+
+  systemd.services."bensrs-deploy" = {
+    description = "Updates the bensrs source";
+    wantedBy = [ "multi-user.target" ];
+    path = [ pkgs.bash pkgs.git ];
+    serviceConfig = {
+      Type="simple";
+      User="home";
+      Group="users";
+      Environment=["BRANCH=master" "PATH=/run/current-system/sw/bin:/home/home/.nix-profile/bin:/run/wrappers/bin"];
+      WorkingDirectory="/home/home/ben-srs";
+      Restart="always";
+      ExecStart = "/home/home/.nix-profile/bin/run-on-git-update docker-build-and-push localhost:5050/bensrs";
     };
   };
 
@@ -148,6 +172,7 @@ in
       Group="users";
       Environment=["BRANCH=main" "PATH=/run/current-system/sw/bin:/home/home/.nix-profile/bin:/run/wrappers/bin"];
       WorkingDirectory="/home/home/terraforming-mars";
+      Restart="always";
       ExecStart = "/home/home/.nix-profile/bin/run-on-git-update docker-build-and-push localhost:5050/terraforming-mars";
     };
   };
@@ -160,6 +185,7 @@ in
       Type="simple";
       User="home";
       Group="users";
+      Restart="always";
       ExecStart = "/usr/bin/env fava /home/home/accounting/master.bean";
     };
   };
@@ -187,28 +213,20 @@ in
     ];
   };
 
-  dockerServices.benyt = {
-    image = "ben-srs";
-    tag = "latest";
-    cmd = "";
-    options = [
-      "-p 3009:3009"
-      "'--label=com.centurylinklabs.watchtower.enable=false'"
-    ];
-  };
+  # "'--label=com.centurylinklabs.watchtower.enable=false'"
 
-  dockerServices.dropbox = {
-    image = "otherguy/dropbox";
-    tag = "latest";
-    cmd = "";
-    options = [
-      "-e TZ=America/Los_Angeles"
-      "-e DROPBOX_UID=1000"
-      "-e DROPBOX_GID=100"
-      "-v /dbox:/opt/dropbox/Dropbox"
-      "-v /dbox.settings:/opt/dropbox/.dropbox"
-    ];
-  };
+  # dockerServices.dropbox = {
+  #   image = "otherguy/dropbox";
+  #   tag = "latest";
+  #   cmd = "";
+  #   options = [
+  #     "-e TZ=America/Los_Angeles"
+  #     "-e DROPBOX_UID=1000"
+  #     "-e DROPBOX_GID=100"
+  #     "-v /dbox:/opt/dropbox/Dropbox"
+  #     "-v /dbox.settings:/opt/dropbox/.dropbox"
+  #   ];
+  # };
 
   dockerServices."terraforming-mars" = {
     image = "localhost:5050/terraforming-mars";
@@ -216,6 +234,16 @@ in
     cmd = "";
     options = [
       "-p 9009:8080"
+    ];
+  };
+
+  dockerServices."bensrs" = {
+    image = "localhost:5050/bensrs";
+    tag = "latest";
+    cmd = "websocketd --port 8083 --staticdir docs --cgidir cgi ./server.sh ";
+    options = [
+      "-p 8083:8083"
+      "-e 'PW=${import /secrets/bensrs/app_password.nix}'"
     ];
   };
 
@@ -248,5 +276,6 @@ in
   #     };
   # };
 
-  networking.firewall.allowedTCPPorts = [ 23 80 443 ];
+  networking.firewall.allowedTCPPorts = [ 23 80 443 53 ];
+  networking.firewall.allowedUDPPorts = [ 53 ];
 }
