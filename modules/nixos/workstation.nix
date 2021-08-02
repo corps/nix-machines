@@ -28,6 +28,8 @@
     fcitx.engines = with pkgs.fcitx-engines; [ mozc ];
   };
 
+  boot.kernel.sysctl."fs.inotify.max_user_instances" = 1048576;
+
   # sound
   sound.enable = true;
   hardware.pulseaudio.enable = true;
