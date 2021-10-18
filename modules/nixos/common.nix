@@ -75,6 +75,9 @@ in
     "Beans Guest Wi-Fi" = {
       psk = "321mocha";
     };
+    "Brutal Poodle" = {
+      psk = "Awesome1111!";
+    };
     HHonors = {};
     ihgconnect = {};
   };
