@@ -2,6 +2,6 @@
 fetchFromGitHub {
   owner = "neovimhaskell";
   repo = "haskell-vim";
-  rev = "b1ac46807835423c4a4dd063df6d5b613d89c731";
-  sha256 = "1vqj3r2v8skffywwgv4093ww7fm540437j5qz7n8q8787bs5w0br";
+  rev = "f35d02204b4813d1dbe8b0e98cc39701a4b8e15e";
+  sha256 = "1q3hf0vr5gpmymmvm208sl0r8nb69m7f3bdrkqrp7fwc2v1ylnz0";
 }

@@ -2,5 +2,5 @@
 {
   imports = [ ../modules/home/workstation.nix ];
   
-  home.stateVersion = "20.03";
+  home.stateVersion = "20.09";
 }

@@ -2,6 +2,6 @@
 fetchFromGitHub {
   owner = "kopischke";
   repo = "vim-fetch";
-  rev = "dd674b50b261275a6a75cab6929b7bb7c5c4acba";
-  sha256 = "1hadfzhzkq2n9k3yga55fsl6nm5mgl2vv975jnxsi4qgz9cwcsgr";
+  rev = "0a6ab17e84c7f4808bf05ec380121bce40b40d21";
+  sha256 = "04srlz3zaiqkv9hz6q3vdkfq02k1wj4p9mg4m8930das4nkl7a05";
 }

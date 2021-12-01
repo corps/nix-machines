@@ -2,6 +2,6 @@
 fetchFromGitHub {
   owner = "jeetsukumaran";
   repo = "vim-buffergator";
-  rev = "947b60dca4d4fc6a041a6ec84b17ca6736d1b916";
-  sha256 = "0g7ymflzfdsj5793s32gc83bidqys5dxmw455viwpqgmgjxnar5c";
+  rev = "0514af606a3b41bbe82c33875179b53300a3cb86";
+  sha256 = "1g1g2agj9dzgrk6ccr4ampyrsqjs4j6gqmvv75avq7q068glglzz";
 }

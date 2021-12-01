@@ -1,6 +1,6 @@
 {
   pname = "metakernel";
-  version = "0.24.4";
+  version = "0.28.1";
   format = "wheel";
-  sha256 = "20cfd84b097fb4aa75a7d20b90bffb2d80a2bfab138cda9dd5f85f35a7519c8e";
+  sha256 = "4c8633f7ac39df9d5311bebe39258087f34d8203e8b7fd8444efe870e98efb6d";
 }

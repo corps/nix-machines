@@ -2,6 +2,6 @@
 fetchFromGitHub {
   owner = "tpope";
   repo = "vim-surround";
-  rev = "f51a26d3710629d031806305b6c8727189cd1935";
-  sha256 = "0aqrqn35xdiy80y7skxfsh3m33n6cdxw6lzz6aspfgzwllx2f0kr";
+  rev = "aeb933272e72617f7c4d35e1f003be16836b948d";
+  sha256 = "1b0bd5m5lv1p4d299mrwjfs2gk0zqwyaqdaid9hs9yqlxnr8s5nf";
 }

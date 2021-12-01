@@ -2,6 +2,6 @@
 fetchFromGitHub {
   owner = "nathanaelkane";
   repo = "vim-indent-guides";
-  rev = "54d889a63716ee2f1818aa2ec5082db47147147b";
-  sha256 = "0ahlbjv2ibhhnf9zqn85b2sh3wf9l0kmg2qmavz3z5fmf8sqljj2";
+  rev = "765084d38bf102a95ab966fb06472e83fa7deff7";
+  sha256 = "0gffchphg5chg3311x0mb8xd4ir8psdmdscqpx37bxz5w9n7qsdp";
 }

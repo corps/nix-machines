@@ -2,6 +2,6 @@
 fetchFromGitHub {
   owner = "rust-lang";
   repo = "rust.vim";
-  rev = "953b10061f595496b35aec84b75c413ee5751a23";
-  sha256 = "1abacayriz439lj4r3s1x92pp3wwxqav3kqsanxq9k6f6p2b2fyb";
+  rev = "4aa69b84c8a58fcec6b6dad6fe244b916b1cf830";
+  sha256 = "07nh8gvkwq91i7qcz0rk5jlc8sb4d3af4zq2892kmmw576zg1wd8";
 }

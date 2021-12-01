@@ -2,6 +2,6 @@
 fetchFromGitHub {
   owner = "Shougo";
   repo = "denite.nvim";
-  rev = "09c22ad10f4adaca9845db106b7a46a80dd6f6ca";
-  sha256 = "1prkahf7793bi4zr60vmjsky33bzn69wjgsfkdhvgjla8kyiwf6v";
+  rev = "7e14c6c4d645c891b07c73d294ba9aadb08a9843";
+  sha256 = "10b4ip39mx0r0xj16lysxr042gsdr0x3vh87yv5c2m5hn5jp9fq9";
 }

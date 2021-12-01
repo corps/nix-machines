@@ -2,6 +2,6 @@
 fetchFromGitHub {
   owner = "eagletmt";
   repo = "neco-ghc";
-  rev = "682869aca5dd0bde71a09ba952acb59c543adf7d";
-  sha256 = "1v7ibi4fp99s4lswz3v0gf4i0h5i5gpj05xpsf4cixwj2zgh206h";
+  rev = "699897c2f4ba82c4fd2be6b93c9a2e8e548efe4e";
+  sha256 = "03g2mky83a5zd54wzjhc1cv4pwkzcadskjm1c7b36k85yw35v88a";
 }

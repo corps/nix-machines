@@ -2,6 +2,6 @@
 fetchFromGitHub {
   owner = "ervandew";
   repo = "supertab";
-  rev = "40fe711e088e2ab346738233dd5adbb1be355172";
-  sha256 = "0l5labq68kyprv63k1q35hz5ly0dd06mf2z202mccnix4mlxf0db";
+  rev = "f0093ae12a9115498f887199809a6114659fc858";
+  sha256 = "1r1ck62raxhwcxjv7hic7jm9b5inm1vdqc51zn4nybclys7grnss";
 }
