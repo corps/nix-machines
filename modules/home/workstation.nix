@@ -9,7 +9,7 @@ obsidian = unstable.obsidian;
 bring-firefox-to-front = pkgs.bring-to-front-desktop "Firefox" "${pkgs.firefox}/bin/firefox";
 bring-konsole-to-front = pkgs.bring-to-front-desktop "Konsole" "${pkgs.konsole}/bin/konsole";
 bring-rubymine-to-front = pkgs.bring-to-front-desktop "ruby-mine-proj" "${ruby-mine}/bin/ruby-mine";
-bring-pycharm-to-front = pkgs.bring-to-front-desktop "pycharm-proj" "${pycharm}/bin/pycharm-professional";
+bring-pycharm-to-front = pkgs.bring-to-front-desktop "airflow" "${pycharm}/bin/pycharm-professional";
 chefdk = unstable.chefdk;
 in
 

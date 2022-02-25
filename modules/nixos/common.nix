@@ -96,6 +96,7 @@ in
       127.0.0.1 polyphemus.development.local
       127.0.0.1 prometheus.development.local
       127.0.0.1 grafana.development.local
+      127.0.0.1 airflow.development.local
     '';
 
 
@@ -121,7 +122,7 @@ in
 
   time.timeZone = "America/Los_Angeles";
 
-  boot.kernel.sysctl = { "fs.inotify.max_user_watches" = 65536; };
+  # boot.kernel.sysctl = { "fs.inotify.max_user_watches" = 65536; };
   
   # Nix
   nix.gc.automatic = true;

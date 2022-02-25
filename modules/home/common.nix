@@ -84,8 +84,8 @@ in
       };
 
       "cc-dsco1" = {
-        hostname = "2.tcp.ngrok.io";
-        port = 10799;
+        hostname = "5.tcp.ngrok.io";
+        port = 21171;
         user = "zach";
       };
     };
