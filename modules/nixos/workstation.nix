@@ -20,7 +20,7 @@
 
   services.xserver.libinput.enable = true;
   services.xserver.libinput.naturalScrolling = true;
-  services.xserver.libinput.dev = null;
+  # services.xserver.libinput.dev = null;
 
   # Input
   i18n.inputMethod = {

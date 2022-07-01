@@ -1,4 +1,4 @@
-{ stdenv, fetchFromGitHub, autoreconfHook, pkgconfig, perl, pythonPackages, libiconv, callPackage }:
+{ stdenv, fetchFromGitHub, autoreconfHook, pkgconfig, perl, pythonPackages, libiconv, callPackage, lib }:
 
 stdenv.mkDerivation rec {
   name = "universal-ctags";
@@ -20,7 +20,7 @@ stdenv.mkDerivation rec {
 
   checkFlags = "units";
 
-  meta = with stdenv.lib; {
+  meta = with lib; {
     description = "A maintained ctags implementation";
     homepage = https://ctags.io/;
     license = licenses.gpl2Plus;

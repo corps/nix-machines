@@ -5,5 +5,5 @@
 
 writeScriptBin "ucsf-vpn" ''
 #! ${stdenv.shell}
-exec sudo openconnect --authgroup="Dual-Factor Pulse Clients" --juniper https://remote.ucsf.edu/openconnect
+exec sudo openconnect --authgroup="Dual-Factor Pulse Clients" --protocol=nc https://remote.ucsf.edu/openconnect
 ''
