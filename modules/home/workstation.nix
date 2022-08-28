@@ -1,16 +1,12 @@
 { config, pkgs, lib, ... }:
 let
-unstable = import <unstable> {};
 
-ruby-mine = unstable.jetbrains.ruby-mine;
-pycharm = unstable.jetbrains.pycharm-professional;
-act = unstable.act;
-obsidian = unstable.obsidian;
+ruby-mine = pkgs.jetbrains.ruby-mine;
+pycharm = pkgs.jetbrains.pycharm-professional;
 bring-firefox-to-front = pkgs.bring-to-front-desktop "Firefox" "${pkgs.firefox}/bin/firefox";
 bring-konsole-to-front = pkgs.bring-to-front-desktop "Konsole" "${pkgs.konsole}/bin/konsole";
 bring-rubymine-to-front = pkgs.bring-to-front-desktop "ruby-mine-proj" "${ruby-mine}/bin/ruby-mine";
 bring-pycharm-to-front = pkgs.bring-to-front-desktop "airflow" "${pycharm}/bin/pycharm-professional";
-chefdk = unstable.chefdk;
 in
 
 {

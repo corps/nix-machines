@@ -35,10 +35,10 @@ if ! check fileExists ~/.config/nixpkgs/home.nix; then
   echoRun ln -sf $HOME_NIX ~/.config/nixpkgs/home.nix
 fi
 
-if ! check fileExists ~/.nix-defexpr/channels/unstable; then
-  echoRun nix-channel --add https://nixos.org/channels/nixos-unstable unstable
-  echoRun nix-channel --update
-fi
+# if ! check fileExists ~/.nix-defexpr/channels/unstable; then
+#  echoRun nix-channel --add https://nixos.org/channels/nixos-unstable unstable
+#  echoRun nix-channel --update
+# fi
 
 if ! check fileExists ~/.config/nixpkgs/config.nix; then
   echoRun ln -sf $DIR/dotfiles/config.nix ~/.config/nixpkgs/config.nix
