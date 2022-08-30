@@ -24,8 +24,8 @@
 
   # Input
   i18n.inputMethod = {
-    enabled = "fcitx";
-    fcitx.engines = with pkgs.fcitx-engines; [ mozc ];
+    enabled = "fcitx5";
+    fcitx5.addons = with pkgs; [ fcitx5-mozc ];
   };
 
   boot.kernel.sysctl."fs.inotify.max_user_instances" = 2147483647;
