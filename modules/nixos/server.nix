@@ -4,10 +4,12 @@
 
   # Packages
   environment.systemPackages = with pkgs; [
+    neovim
   ];
 
   services.openssh.enable = true;
-  networking.firewall.allowedTCPPorts = [ 23 ];
+  # ssh
+  networking.firewall.allowedTCPPorts = [ 22 ];
 
   services.xserver.autorun = false;
   services.xserver.enable = false;

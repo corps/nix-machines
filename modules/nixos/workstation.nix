@@ -6,7 +6,6 @@
   environment.systemPackages = with pkgs; [
     xorg.xmodmap
     xorg.xrandr
-    openconnect
   ];
 
   # Video
@@ -27,8 +26,6 @@
     enabled = "fcitx5";
     fcitx5.addons = with pkgs; [ fcitx5-mozc ];
   };
-
-  boot.kernel.sysctl."fs.inotify.max_user_instances" = 2147483647;
 
   # sound
   sound.enable = true;

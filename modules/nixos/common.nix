@@ -1,10 +1,5 @@
 { config, lib, pkgs, ... }:
 
-let 
-  ucsfpwPath = /home/home/ucsfwpa.pass;
-  ucsfpw = if builtins.pathExists ucsfpwPath then builtins.fromJSON (builtins.readFile ucsfpwPath) else "";
-in
-
 {
   imports = [
     ./docker-services.nix
@@ -37,21 +32,12 @@ in
   };
 
   networking.wireless.userControlled.enable = true;
+  # networking.
 
   # networking
   networking.wireless.networks = {
     projector = {
       psk = "ramenonice";
-    };
-    UCSFwpa = {
-      auth = ''
-        key_mgmt=WPA-EAP
-        eap=PEAP
-        identity="CAMPUS\zcollins1"
-        password="${ucsfpw}"
-      '';
-
-      priority = 100;
     };
     UCSFguest = {};
     grillspace2 = {
@@ -69,12 +55,6 @@ in
     ssgooz = {
       psk = "mebejefe";
     };
-    "MyHouse-Guest" = {
-      psk = "airbnb3832";
-    };
-    "Beans Guest Wi-Fi" = {
-      psk = "321mocha";
-    };
     "Brutal Poodle" = {
       psk = "Awesome1111!";
     };
@@ -86,20 +66,7 @@ in
   networking.firewall.allowedTCPPorts = [ 80 443 ];
   # Port ranges could be specified.
 
-  networking.extraHosts =
-    ''
-      127.0.0.1 janus.development.local
-      127.0.0.1 metis.development.local
-      127.0.0.1 timur.development.local
-      127.0.0.1 magma.development.local
-      127.0.0.1 vulcan.development.local
-      127.0.0.1 polyphemus.development.local
-      127.0.0.1 prometheus.development.local
-      127.0.0.1 grafana.development.local
-      127.0.0.1 airflow.development.local
-    '';
-
-
+  # networking.extraHosts = "";
   networking.nameservers = [ "10.0.0.14" "1.1.1.1" "8.8.8.8" "8.8.4.4" ];
 
   # Security
@@ -122,6 +89,7 @@ in
 
   time.timeZone = "America/Los_Angeles";
 
+  boot.kernel.sysctl."fs.inotify.max_user_instances" = 2147483647;
   # boot.kernel.sysctl = { "fs.inotify.max_user_watches" = 65536; };
   
   # Nix

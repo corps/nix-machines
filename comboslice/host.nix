@@ -9,6 +9,6 @@
   time.timeZone = "America/Los_Angeles";
   networking.hostName = "comboslice";
 
-  networking.firewall.allowedTCPPorts = [ 23 80 443 53 ];
+  networking.firewall.allowedTCPPorts = [ 53 ];
   networking.firewall.allowedUDPPorts = [ 53 ];
 }
