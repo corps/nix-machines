@@ -78,6 +78,7 @@ in
     "Brutal Poodle" = {
       psk = "Awesome1111!";
     };
+    "Hilton Honors" = {};
     HHonors = {};
     ihgconnect = {};
   };

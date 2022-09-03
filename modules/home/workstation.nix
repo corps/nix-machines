@@ -22,13 +22,9 @@ in
     bring-konsole-to-front
     bring-rubymine-to-front
     bring-pycharm-to-front
-    obsidian
     pycharm
     ruby-mine
     gnumake
-    ucsf-vpn
-    kazam
-    make-splits
     zoom-us
   ]);
 
@@ -41,9 +37,5 @@ in
         };
       };
     };
-  };
-
-  programs.vscode = {
-    enable = true;
   };
 }

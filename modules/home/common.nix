@@ -31,18 +31,14 @@ in
     upgrade-packages
     fetch_from_pypi
     fetch_from_github
-    universal-ctags
     ngrok
-    make-tmpfs
     compost
     update-channels
     jq
-    clone-all-from
     docker-compose
     gnumake
     postgresql
     beancount
-    csvtool
     bc
   ]);
 
