@@ -37,7 +37,6 @@ in
     jq
     docker-compose
     gnumake
-    postgresql
     beancount
     bc
   ]);
@@ -46,14 +45,6 @@ in
     enable = true;
     userName = "Zachary Collins";
     userEmail = "recursive.cookie.jar@gmail.com";
-
-    aliases = {
-      bundle-push = "!cd \"$${GIT_PREFIX:-.}\" && if path=\"$(git config remote.\"$1\".url)\" && [ \"$(echo \"$path\" | head -c1)\" = / ]; then git bundle create \"$path\" --all && git fetch \"$1\"; else echo \"Not a bundle remote\"; exit 1; fi #";
-
-      bundle-fetch = "!set -x; cd \"$${GIT_PREFIX:-.}\" && if path=\"$(git config remote.\"$1\".url)\" && [ \"$(echo \"$path\" | head -c1)\" = / ]; then git bundle verify \"$path\" && git fetch \"$1\"; else echo \"Not a bundle remote\"; exit 1; fi #";
-
-      bundle-new = "!cd \"$${GIT_PREFIX:-.}\" && if [ -z \"$${1:-}\" -o -z \"$${2:-}\" ]; then echo \"Usage: git bundle-new <file> <remote name>\"; exit 1; elif [ -e \"$2\" ]; then echo \"File exist\"; exit 1; else git bundle create \"$2\" --all && git remote add -f \"$1\" \"$(realpath \"$2\")\"; fi #";
-    };
   };
 
   programs.chromium = { 
@@ -77,12 +68,6 @@ in
       "excalibur" = {
         hostname = "10.0.0.115";
         user = "home";
-      };
-
-      "cc-dsco1" = {
-        hostname = "5.tcp.ngrok.io";
-        port = 21171;
-        user = "zach";
       };
     };
   };
