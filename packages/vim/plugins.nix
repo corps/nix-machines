@@ -14,6 +14,11 @@ in {
   #   src = pluginSrc ./plugins/autozimu.LanguageClient-neovim.nix;
   # };
 
+  nvim-lspconfig = buildVimPlugin {
+    name = "nvm-lspconfig";
+    src = pluginSrc ./plugins/neovim.nvim-lspconfig.nix;
+  };
+
   rust-vim = buildVimPlugin {
     name = "rust-vim";
     src = pluginSrc ./plugins/rust-lang.rust.vim.nix;

@@ -12,6 +12,7 @@
 , python3 ? pkgs.python3
 , nodePackages ? pkgs.nodePackages
 , nodejs ? pkgs.nodejs
+, srcRoot ? toString ./.
 }:
 
 let
@@ -21,12 +22,16 @@ let
 in
 
 pkgs.writeShellScriptBin "lvim" ''
-export PATH=$PATH:${fzf}/bin:${ripgrep}/bin:${fd}/bin:${nodejs}/bin
-# ${nodePackages."neovim"}
+set -e
+docker build ${srcRoot} --tag lvim
 
-if ! test -f $HOME/.local/bin/lvim; then
-  ${src}/utils/installer/install.sh -l --no-install-dependencies -y
+runOpts="--rm -it --user $(id -u):$(id -g)"
+
+if test -f "$1"; then
+  exec docker run $runOpts -v "$(dirname $1)":/workdir lvim vim "/workdir/$(basename $1)"
+elif test -d "$1"; then
+  exec docker run $runOpts -v "$1":/workdir lvim vim /workdir
+else
+  exec docker run $runOpts -v $HOME:/workdir lvim vim /workdir
 fi
-
-exec $HOME/.local/bin/lvim $@
 ''

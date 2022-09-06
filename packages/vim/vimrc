@@ -1,5 +1,6 @@
 syntax on
 
+set termguicolors
 set background=dark
 set hidden
 set nocompatible
@@ -44,29 +45,18 @@ set number
 " match WhitespaceEOL /\s\+$/
 set wildmode=longest,list:longest,full
 
-colorscheme solarized8
+colorscheme gruvbox
 let g:airline_theme='soda'
 
 filetype plugin on
 filetype plugin indent on
 
-let purescript_indent_if = 2
-let purescript_indent_case = 2
-let purescript_indent_let = 2
-let purescript_indent_where = 2
-let purescript_indent_do = 2
-let purescript_indent_in = 2
+autocmd CompleteDone * pclose
+
 let g:syntastic_always_populate_loc_list = 1
 
-let g:deoplete#enable_at_startup = 1
-let g:deoplete#complete_method = "omnifunc"
-let g:deoplete#omni_patterns = {}
-let g:deoplete#omni_patterns.purescript = ['\w*']
-let g:deoplete#omni#input_patterns = {}
-let g:deoplete#omni#input_patterns.purescript = '[.\w]+'
-
-let g:neoformat_only_msg_on_error = 1
-let g:neoformat_enabled_typescript = ['prettier']
+" let g:neoformat_only_msg_on_error = 1
+" let g:neoformat_enabled_typescript = ['prettier']
 
 map <space> <leader>
 map <space><space> <leader><leader>
@@ -79,7 +69,6 @@ omap <leader>,  <Plug>Commentary
 nmap <leader>,, <Plug>CommentaryLine
 
 
-au BufRead,BufNewFile *.rb set tags=tags,~/c/ramaze/tags
 au BufNewFile,BufRead *.m{,ar}{,k}d{,own} set ai formatoptions=tcroqn2 comments=n:> syntax=mkd
 au BufNewFile,BufRead *.(byss|rake|ru) set filetype=ruby syntax=ruby
 au BufNewFile,BufRead (.irbrc|Vagrantfile) setf ruby
@@ -93,19 +82,6 @@ au BufNewFile,BufRead *.sass  setf sass
 au BufNewFile,BufRead *.go    setf go
 au BufNewFile,BufRead .envrc  setf sh
 
-au FileType purescript nm <buffer> <silent> <leader>L :Plist<CR>
-au FileType purescript nm <buffer> <silent> <leader>l :Pload!<CR>
-au FileType purescript nm <buffer> <silent> <leader>r :Prebuild!<CR>
-au FileType purescript nm <buffer> <silent> <leader>f :PaddClause<CR>
-au FileType purescript nm <buffer> <silent> <leader>t :PaddType<CR>
-au FileType purescript nm <buffer> <silent> <leader>a :Papply<CR>
-au FileType purescript nm <buffer> <silent> <leader>A :Papply!<CR>
-au FileType purescript nm <buffer> <silent> <leader>C :Pcase!<CR>
-au FileType purescript nm <buffer> <silent> <leader>i :Pimport<CR>
-au FileType purescript nm <buffer> <silent> <leader>qa :PaddImportQualifications<CR>
-au FileType purescript nm <buffer> <silent> <leader>g :Pgoto<CR>
-au FileType purescript nm <buffer> <silent> <leader>P :Pursuit<CR>
-au FileType purescript nm <buffer> <silent> <leader>T :Ptype<CR>
 au FileType haskell,vhdl,ada,purescript setlocal commentstring=--\ %s
 au FileType vim                         setlocal commentstring="\ %s
 au FileType c,cpp,java,go,typescript    setlocal commentstring=//\ %s
@@ -116,20 +92,20 @@ au FileType nix                         setlocal commentstring=#\ %s
 autocmd FileType make setlocal noexpandtab
 
 " gt for buffer
-map <leader>] :BuffergatorMruCycleNext<CR>
+" map <leader>] :BuffergatorMruCycleNext<CR>
 " gT for buffer
-map <leader>[ :BuffergatorMruCyclePrev<CR>
+" map <leader>[ :BuffergatorMruCyclePrev<CR>
 " close current buffer
-map gc :bdelete<CR>
+" map gc :bdelete<CR>
 
-nnoremap <F5> :call LanguageClient_contextMenu()<CR>
+" nnoremap <F5> :call LanguageClient_contextMenu()<CR>
 
 " Allow switching windows even if terminal is open.
 tnoremap <C-w>w <C-\><C-n><C-w>w
 tnoremap <C-w>W <C-\><C-n><C-w>W
 
 " Fuzzy matching (used instead of ctrlp)
-nnoremap <leader>p :FuzzyOpen<CR>
+" nnoremap <leader>p :FuzzyOpen<CR>
 
 " set incsearch
 " haya14busa/incsearch
@@ -170,5 +146,63 @@ function! InitBackupDir()
 endfunction
 
 call InitBackupDir()
-call neomake#configure#automake('w')
+" call neomake#configure#automake('w')
+
+
+lua << EOF
+local cmp = require'cmp'
+cmp.setup { 
+  sources = { 
+    { name = 'nvim_lsp' },
+    { name = 'buffer' },
+  },
+  mapping = cmp.mapping.preset.insert({
+    -- ['<C-b>'] = cmp.mapping.scroll_docs(-4),
+    -- ['<C-f>'] = cmp.mapping.scroll_docs(4),
+    -- ['<C-Space>'] = cmp.mapping.complete(),
+    -- ['<C-e>'] = cmp.mapping.abort(),
+    ['<cr>'] = cmp.mapping.confirm({ select = true }), -- Accept currently selected item. Set `select` to `false` to only confirm explicitly selected items.
+  }),
+}
+
+local capabilities = vim.lsp.protocol.make_client_capabilities()
+capabilities = require('cmp_nvim_lsp').update_capabilities(capabilities)
+
+local on_attach = function(client, bufnr)
+  -- Enable completion triggered by <c-x><c-o>
+  -- vim.api.nvim_buf_set_option(bufnr, 'omnifunc', 'v:lua.vim.lsp.omnifunc')
+
+  -- Mappings.
+  -- See `:help vim.lsp.*` for documentation on any of the below functions
+  local bufopts = { noremap=true, silent=true, buffer=bufnr }
+  vim.keymap.set('n', 'gd', vim.lsp.buf.definition, bufopts)
+  -- vim.keymap.set('n', 'gr', vim.lsp.buf.references, bufopts)
+  -- vim.keymap.set('n', '<C-p>', vim.lsp.buf.hover, bufopts)
+  vim.keymap.set('n', '<C-p>', vim.lsp.buf.signature_help, bufopts)
+  vim.keymap.set('n', '<leader>rn', vim.lsp.buf.rename, bufopts)
+  vim.keymap.set('n', 'ga', vim.lsp.buf.code_action, bufopts)
+
+  -- vim.keymap.set('n', 'gD', vim.lsp.buf.declaration, bufopts)
+  -- vim.keymap.set('n', 'gi', vim.lsp.buf.implementation, bufopts)
+  -- vim.keymap.set('n', '<space>wa', vim.lsp.buf.add_workspace_folder, bufopts)
+  -- vim.keymap.set('n', '<space>wr', vim.lsp.buf.remove_workspace_folder, bufopts)
+  -- vim.keymap.set('n', '<space>wl', function()
+  --  print(vim.inspect(vim.lsp.buf.list_workspace_folders()))
+  -- end, bufopts)
+  -- vim.keymap.set('n', '<space>D', vim.lsp.buf.type_definition, bufopts)
+end
+
+
+-- The following example advertise capabilities to `clangd`.
+require'lspconfig'.tsserver.setup {
+  capabilities = capabilities,
+  on_attach = on_attach,
+}
+EOF
+
+nnoremap <silent>gr <cmd>Telescope lsp_references<cr>
+
+nnoremap <leader>ff <cmd>Telescope find_files<cr>
+nnoremap <leader>fg <cmd>Telescope live_grep<cr>
+nnoremap <leader>fq <cmd>Telescope quickfixes<cr>
 

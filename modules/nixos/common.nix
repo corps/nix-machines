@@ -22,6 +22,9 @@
     binutils
     patchelf
     ngrok
+    ripgrep
+    nnn
+    nodejs
   ];
 
   # users
