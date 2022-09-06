@@ -40,6 +40,11 @@
       # solarized8
       vim-airline
       vim-airline-themes
+
+      cmp-vsnip
+      vim-vsnip
+
+      trouble-nvim
     ];
   };
   

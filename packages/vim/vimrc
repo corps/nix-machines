@@ -155,6 +155,16 @@ cmp.setup {
   sources = { 
     { name = 'nvim_lsp' },
     { name = 'buffer' },
+    { name = 'vsnip' },
+  },
+  snippet = {
+    -- REQUIRED - you must specify a snippet engine
+    expand = function(args)
+      vim.fn["vsnip#anonymous"](args.body) -- For `vsnip` users.
+      -- require('luasnip').lsp_expand(args.body) -- For `luasnip` users.
+      -- require('snippy').expand_snippet(args.body) -- For `snippy` users.
+      -- vim.fn["UltiSnips#Anon"](args.body) -- For `ultisnips` users.
+    end,
   },
   mapping = cmp.mapping.preset.insert({
     -- ['<C-b>'] = cmp.mapping.scroll_docs(-4),
@@ -197,6 +207,12 @@ end
 require'lspconfig'.tsserver.setup {
   capabilities = capabilities,
   on_attach = on_attach,
+}
+
+require("trouble").setup {
+  -- your configuration comes here
+  -- or leave it empty to use the default settings
+  -- refer to the configuration section below
 }
 EOF
 
