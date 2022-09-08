@@ -20,10 +20,10 @@ in
     signal-desktop
     bring-firefox-to-front
     bring-konsole-to-front
-    bring-rubymine-to-front
-    bring-pycharm-to-front
-    pycharm
-    ruby-mine
+    # bring-rubymine-to-front
+    # bring-pycharm-to-front
+    # pycharm
+    # ruby-mine
     gnumake
     zoom-us
   ]);
