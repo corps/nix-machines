@@ -1,9 +1,17 @@
-{ system, stdenv, unzip, wget, substituteAll, bash }:
+{ pkgs ? import <nixpkgs> {}
+, system  ? pkgs.system
+, stdenv ? pkgs.stdenv
+, unzip ? pkgs.unzip
+, wget ? pkgs.wget
+, substituteAll ? pkgs.substituteAll
+, bash ? pkgs.bash
+, gnutar  ? pkgs.gnutar
+}:
 
 let
   ngrokUrl = {
-    "x86_64-linux" = "https://bin.equinox.io/c/4VmDzA7iaHb/ngrok-stable-linux-amd64.zip";
-    "x86_64-darwin" = "https://bin.equinox.io/c/4VmDzA7iaHb/ngrok-stable-darwin-amd64.zip";
+    "x86_64-linux" = "https://bin.equinox.io/c/bNyj1mQVY4c/ngrok-v3-stable-linux-amd64.tgz";
+    # "x86_64-darwin" = "https://bin.equinox.io/c/4VmDzA7iaHb/ngrok-stable-darwin-amd64.zip";
   }."${system}";
 in
 
@@ -14,7 +22,7 @@ stdenv.mkDerivation {
     src = ./ngrok.sh;
     name = "ngrok.sh";
     isExecutable = true;
-    inherit unzip wget bash ngrokUrl;
+    inherit unzip wget bash ngrokUrl gnutar;
   };
 
   phases = [ "installPhase" ];

@@ -6,6 +6,7 @@ let callPackage = super.newScope self; in rec {
   my_neovim = callPackage ./vim {};
   # my_neovim = callPackage ./lvim {};
   # my_neovim = self.neovim-unwrapped;
+  spleeter = callPackage ./spleeter.nix {};
   fetch_from_github = callPackage ./fetch-from-github.nix {};
   upgrade-packages = callPackage ./upgrade-packages {};
   fetch_from_pypi = callPackage ./fetch-from-pypi.nix {};

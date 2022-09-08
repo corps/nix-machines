@@ -1,13 +1,13 @@
 #!@bash@/bin/bash
 
-PATH=@unzip@/bin:@wget@/bin:$PATH
+PATH=@gnutar@/bin:@wget@/bin:$PATH
 
 if [ ! -e $HOME/bin/ngrok ]; then
   mkdir -p $HOME/bin/
-  wget "@ngrokUrl@" -O $HOME/bin/ngrok.zip
+  wget "@ngrokUrl@" -O $HOME/bin/ngrok.tgz
   cd $HOME/bin
-  unzip ngrok.zip
-  rm ngrok.zip
+  tar -xvzf ngrok.tgz
+  rm ngrok.tgz
 fi
 
 cd $HOME/bin
