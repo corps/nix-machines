@@ -2,7 +2,7 @@
 
 {
   imports = [
-    ../modules/nixos/server.nix
+    ../modules/nixos/server.nix ../modules/nixos/swarm-host.nix
   ];
 
   environment.systemPackages = with pkgs; [ neovim ];
