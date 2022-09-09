@@ -2,6 +2,8 @@
 {
   imports = [ ./common.nix ];
 
+  networking.firewall.enable = true;
+
   # Packages
   environment.systemPackages = with pkgs; [
     xorg.xmodmap

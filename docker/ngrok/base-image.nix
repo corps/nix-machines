@@ -1,13 +1,6 @@
 { pkgs ? import <nixpkgs> {}
-, ngrok ? pkgs.ngrok
 , symlinkJoin ? pkgs.symlinkJoin
 , dockerTools ? pkgs.dockerTools
-, bash ? pkgs.bash
-, coreutils ? pkgs.coreutils
-, cacert ? pkgs.cacert
-, gnutar ? pkgs.gnutar
-, gzip ? pkgs.gzip
-, curl ? pkgs.curl
 }:
 
 dockerTools.buildImage {
@@ -19,20 +12,20 @@ dockerTools.buildImage {
     WorkingDir = "/home/ngrok";
     Cmd = [ "ngrok" ];
     Env = [
-      "GIT_SSL_CAINFO=${cacert}/etc/ssl/certs/ca-bundle.crt"
-      "SSL_CERT_FILE=${cacert}/etc/ssl/certs/ca-bundle.crt"
+      "GIT_SSL_CAINFO=${pkgs.cacert}/etc/ssl/certs/ca-bundle.crt"
+      "SSL_CERT_FILE=${pkgs.cacert}/etc/ssl/certs/ca-bundle.crt"
     ];
   };
 
   contents = symlinkJoin {
     name = "ngrok-env";
-    paths = [ ngrok bash coreutils cacert gzip gnutar curl ];
+    paths = with pkgs; [ ngrok bash coreutils cacert gzip gnutar curl iputils ];
   };
 
   runAsRoot = ''
     #!${pkgs.runtimeShell}
     ${dockerTools.shadowSetup}
-    useradd -Ums ${bash}/bin/bash -u 6753 ngrok
+    useradd -Ums ${pkgs.bash}/bin/bash -u 6753 ngrok
   '';
 }
 
