@@ -1,0 +1,37 @@
+version: '3.8'
+services:
+  agent:
+    image: corps/ngrok:latest
+    networks:
+      - traefik-public
+    deploy:
+      replicas: 1
+    configs:
+      - source: ngrok.yml
+        target: /ngrok.base.yml
+    secrets:
+      - ngrok-auth
+    command:
+      - bash
+      - -c
+      - |
+        set -ex
+        mkdir -p ~/.config/ngrok/
+        cp /ngrok.base.yml ~/.config/ngrok/ngrok.yml
+        chmod +w ~/.config/ngrok/ngrok.yml
+        ngrok config add-authtoken "$$(cat /run/secrets/ngrok-auth)"
+        ngrok config check
+        exec ngrok start http
+
+networks:
+  traefik-public:
+    external: true
+    
+configs:
+  ngrok.yml:
+    external: true
+    name: ngrok.yml_copy
+    
+secrets:
+  ngrok-auth:
+    external: true
