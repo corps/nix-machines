@@ -15,7 +15,7 @@ services:
       - bash
       - -c
       - |
-        set -ex
+        set -e
         mkdir -p ~/.config/ngrok/
         cp /ngrok.base.yml ~/.config/ngrok/ngrok.yml
         chmod +w ~/.config/ngrok/ngrok.yml
