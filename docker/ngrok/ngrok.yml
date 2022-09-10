@@ -6,6 +6,9 @@ services:
       - traefik-public
     deploy:
       replicas: 1
+      placement:
+        constraints:
+          - node.role == manager
     configs:
       - source: ngrok.yml
         target: /ngrok.base.yml
@@ -30,7 +33,7 @@ networks:
 configs:
   ngrok.yml:
     external: true
-    name: ngrok.yml_copy
+    name: ${NGROK_YML:-ngrok.yml}
     
 secrets:
   ngrok-auth:
