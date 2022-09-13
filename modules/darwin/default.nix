@@ -2,21 +2,16 @@
 
 {
   imports = [
-    ../shared
     ./keybindings.nix
-    ./jupyter.nix
-    ./supervisord.nix
-    ./input-plugins.nix
+    # ./jupyter.nix
+    # ./supervisord.nix
+    # ./input-plugins.nix
     ./workspaces.nix
-    ./nativeapps.nix
-    ./tiddly.nix
+    # ./nativeapps.nix
+    # ./tiddly.nix
   ];
 
-  environment.systemPackages = with pkgs; [
-    mitmproxy
-    alacritty
-    activate-window
-  ];
+  environment.systemPackages = with pkgs; [];
 
   system.defaults.NSGlobalDomain."com.apple.trackpad.trackpadCornerClickBehavior" = 1;
   system.defaults.NSGlobalDomain.NSDocumentSaveNewDocumentsToCloud = false;
@@ -26,20 +21,9 @@
   system.defaults.finder._FXShowPosixPathInTitle = true;
   system.defaults.dockEx."workspaces-edge-delay" = "0.0";
 
-  services.supervisord.enable = true;
+  nixpkgs.overlays = [ (import ../../packages) ];
 
-  nix.nixPath = [
-    "darwin-config=$HOME/.nixpkgs/darwin-configuration.nix"
-    ("nixpkgs=" + (toString ../../packages/pinned/nixpkgs-19.03-darwin))
-    ("unstable=" + (toString ../../packages/pinned/nixos-unstable))
-    "/nix/var/nix/profiles/per-user/root/channels"
-    "$HOME/.nix-defexpr/channels"
-  ];
-
-  nixpkgs.config.vim.ftNix = false;
 
   nix.package = pkgs.nix;
-
   services.nix-daemon.enable = true;
-  services.jupyter.enable = true;
 }
