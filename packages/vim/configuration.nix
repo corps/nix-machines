@@ -57,17 +57,17 @@
       trouble-nvim
 
       nvim-transparent
-      # nnn-nvim
-      (
-        buildVimPluginFrom2Nix {
-          pname = "nnn-nvim";
-          version = "2022-08-23";
-          src = fetchurl {
-            url = "https://github.com/luukvbaal/nnn.nvim/archive/d2299030876eef9297ee8bfe6304872bb36b2689.tar.gz";
-            sha256 = "XcnpkRfpoWoT3MbfMtBuw76tG+SCQhFFcdBRCOnRStc=";
-          };
-        }
-      )
+      nnn-nvim
+      # (
+      #   buildVimPluginFrom2Nix {
+      #     pname = "nnn-nvim";
+      #     version = "2022-08-23";
+      #     src = fetchurl {
+      #       url = "https://github.com/luukvbaal/nnn.nvim/archive/d2299030876eef9297ee8bfe6304872bb36b2689.tar.gz";
+      #       sha256 = "XcnpkRfpoWoT3MbfMtBuw76tG+SCQhFFcdBRCOnRStc=";
+      #     };
+      #   }
+      # )
     ];
   };
   

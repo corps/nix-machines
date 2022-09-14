@@ -239,7 +239,7 @@ require("nnn").setup({
 		session = "shared",
 	},
 	replace_netrw = "picker",
-	windownav = "<C-l>"
+	-- windownav = "<C-l>"
 })
 EOF
 
@@ -250,6 +250,3 @@ nnoremap <leader>fg <cmd>Telescope live_grep<cr>
 nnoremap <leader>fq <cmd>Telescope quickfixes<cr>
 
 set mouse=ar
-
-nnoremap <Leader>w <C-w>
-
