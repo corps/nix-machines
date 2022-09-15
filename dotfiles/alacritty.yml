@@ -1,8 +1,14 @@
 window:
   decorations: none
   title: Alacritty
+  opacity: 0.7
 
-background_opacity: 0.7
+font:
+  size: 18.0
 
 key_bindings:
-  - { key: N,      mods: Command, action: SpawnNewInstance            }
+  - { key: W, mods: Command, chars: "\x17" }
+  - { key: Z, mods: Command, chars: "\x1A" }
+  - { key: C, mods: Command, chars: "\x03" }
+  - { key: D, mods: Command, chars: "\x04" }
+  - { key: R, mods: Command, chars: "\x12" }

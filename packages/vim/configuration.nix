@@ -1,9 +1,19 @@
-{ pkgs ? import <nixpkgs> {} }:
+{ pkgs ? import <nixpkgs> { 
+  overlays = [
+  (import (builtins.fetchTarball {
+      url = "https://github.com/m15a/nixpkgs-vim-extra-plugins/archive/main.tar.gz";
+    })).overlays.default
+  ];
+}
+, buildVimPluginFrom2Nix ? pkgs.vimUtils.buildVimPluginFrom2Nix
+, fetchurl ? pkgs.fetchurl
+}:
 # let plugins = pkgs.callPackage ./plugins.nix {}; in
+# https://github.com/m15a/nixpkgs-vim-extra-plugins/blob/main/pkgs/vim-plugins.nix
 {
   customRC = ''${builtins.readFile ./vimrc}'';
 
-  packages.neovimPlugins = with pkgs.vimPlugins; {
+  packages.neovimPlugins = with pkgs.vimPlugins; with pkgs.vimExtraPlugins; {
     start = [ 
       nvim-lspconfig
       vim-automkdir
@@ -45,6 +55,19 @@
       vim-vsnip
 
       trouble-nvim
+
+      nvim-transparent
+      nnn-nvim
+      # (
+      #   buildVimPluginFrom2Nix {
+      #     pname = "nnn-nvim";
+      #     version = "2022-08-23";
+      #     src = fetchurl {
+      #       url = "https://github.com/luukvbaal/nnn.nvim/archive/d2299030876eef9297ee8bfe6304872bb36b2689.tar.gz";
+      #       sha256 = "XcnpkRfpoWoT3MbfMtBuw76tG+SCQhFFcdBRCOnRStc=";
+      #     };
+      #   }
+      # )
     ];
   };
   

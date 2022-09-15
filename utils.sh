@@ -103,7 +103,10 @@ function setupNix() {
   fi
 
   if ! check fileExists ~/.nix-defexpr/channels/nixpkgs; then
-    nix-channel --add http://nixos.org/channels/nixpkgs-unstable nixpkgs
+    if isDarwin; then
+      nix-channel --add https://nixos.org/channels/nixpkgs-22.05-darwin nixpkgs
+    fi
+    
     nix-channel --update
   fi
 

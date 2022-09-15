@@ -30,20 +30,35 @@ if ! check isXcodeInstalled; then
 fi
 
 setupNix
+
+HOME_NIX=${HOME_NIX-:$DIR/home/home.nix}
+export NIX_PATH="$HOME/.nix-defexpr/channels:$NIX_PATH"
+
 if ! check existsOnPath darwin-rebuild; then
-  bash <(curl https://raw.githubusercontent.com/LnL7/nix-darwin/master/bootstrap.sh)
+  nix-build https://github.com/LnL7/nix-darwin/archive/master.tar.gz -A installer
+  ./result/bin/darwin-installer
   . /etc/bashrc
 fi
-
-ensureRepo "nix-machines"
 
 if ! check isLink "/etc/nix/nix.conf"; then
   echo -e "$YELLOW /etc/nix/nix.conf is not a link.  sudo rm it and link to /etc/static/nix/nix.conf"
 fi
 
 ensureOverlay
-readyPinned nixpkgs-19.03-darwin
-readyPinned nixos-unstable unstable
+
+if ! check fileExists ~/.profile.nix-machines; then
+  echo "source $DIR/dotfiles/profile" >> ~/.profile
+  echo "export HOME_NIX='$HOME_NIX'" >> ~/.profile
+  echo "export NO_REBUILD=$NO_REBUILD" >> ~/.profile
+  touch ~/.profile.nix-machines
+fi
+
+if ! check fileExists ~/.bashrc.nix-machines; then
+  echo "source $DIR/dotfiles/bashrc" >> ~/.bashrc
+  echo "export HOME_NIX='$HOME_NIX'" >> ~/.bashrc
+  echo "export NO_REBUILD=$NO_REBUILD" >> ~/.bashrc
+  touch ~/.bashrc.nix-machines
+fi
 
 export NIX_PATH=darwin-config=$HOME/.nixpkgs/darwin-configuration.nix:$NIX_PATH
 export NIX_PATH=$NIX_PATH:$HOME/.nix-defexpr/channels

@@ -58,6 +58,7 @@ let g:syntastic_always_populate_loc_list = 1
 " let g:neoformat_only_msg_on_error = 1
 " let g:neoformat_enabled_typescript = ['prettier']
 
+
 map <space> <leader>
 map <space><space> <leader><leader>
 " Leave terminal mode with escape
@@ -214,6 +215,32 @@ require("trouble").setup {
   -- or leave it empty to use the default settings
   -- refer to the configuration section below
 }
+
+require("transparent").setup({
+  enable = true, -- boolean: enable transparent
+  extra_groups = { -- table/string: additional groups that should be cleared
+    -- In particular, when you set it to 'all', that means all available groups
+
+    -- example of akinsho/nvim-bufferline.lua
+    "BufferLineTabClose",
+    "BufferlineBufferSelected",
+    "BufferLineFill",
+    "BufferLineBackground",
+    "BufferLineSeparator",
+    "BufferLineIndicatorSelected",
+  },
+  exclude = {}, -- table: groups you don't want to clear
+})
+
+require("nnn").setup({
+	picker = {
+		cmd = "tmux new-session nnn -Pp",
+		style = { border = "rounded" },
+		session = "shared",
+	},
+	replace_netrw = "picker",
+	-- windownav = "<C-l>"
+})
 EOF
 
 nnoremap <silent>gr <cmd>Telescope lsp_references<cr>
@@ -222,3 +249,4 @@ nnoremap <leader>ff <cmd>Telescope find_files<cr>
 nnoremap <leader>fg <cmd>Telescope live_grep<cr>
 nnoremap <leader>fq <cmd>Telescope quickfixes<cr>
 
+set mouse=ar
