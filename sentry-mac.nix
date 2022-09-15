@@ -19,6 +19,7 @@
     openssl
     pkg-config
     add-bin-to-path
+    watchman
   ];
 
   environment.shells = [ pkgs.bashInteractive ];
