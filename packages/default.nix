@@ -22,4 +22,5 @@ let callPackage = super.newScope self; in rec {
   bring-to-front-desktop = callPackage ./bring-to-front-desktop.nix {};
   add-bin-to-path = callPackage ./add-bin-to-path.nix {};
   runc = callPackage ./runc.nix {};
+  terraform_x = callPackage ./terraform.nix {};
 }

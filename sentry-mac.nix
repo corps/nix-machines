@@ -20,6 +20,8 @@
     pkg-config
     add-bin-to-path
     watchman
+    terraform_x
+    google-cloud-sdk
   ];
 
   environment.shells = [ pkgs.bashInteractive ];
