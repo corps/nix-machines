@@ -1,0 +1,32 @@
+version: '3.8'
+services:
+  app:
+    image: corps/bensrs:latest
+    networks:
+      - traefik-public
+    deploy:
+      replicas: 1
+      labels:
+        - traefik.enable=true
+        - traefik.docker.network=traefik-public
+        - traefik.constraint-label=traefik-public
+        - traefik.http.routers.bensrs-http.rule=Host(`bensrs.kaihatsu.io`)
+        - traefik.http.routers.bensrs-http.entrypoints=http
+        - traefik.http.services.bensrs.loadbalancer.server.port=3000
+      placement:
+        constraints: 
+          - node.role == manager
+    volumes:
+      - /mnt/data/bensrs:/app
+
+networks:
+  traefik-public:
+    external: true
+    
+volumes:
+  bensrs_app_data:
+    driver: local
+    # driver_opts:
+    #   type: nfs
+    #   o: addr=10.0.0.115,retry=16,nfsvers=4,rw
+    #   device: ":/data/bensrs"
