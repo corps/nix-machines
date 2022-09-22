@@ -26,6 +26,7 @@
     nnn
     nodejs
     ethtool
+    screen
   ];
 
   # users
