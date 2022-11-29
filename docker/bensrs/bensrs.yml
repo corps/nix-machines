@@ -16,8 +16,15 @@ services:
       placement:
         constraints: 
           - node.role == manager
+          - node.labels.bensrs == true
     volumes:
-      - /mnt/data/bensrs:/app
+      - bensrs_app_data:/app/data
+    secrets:
+      - bensrs-secret
+
+secrets:
+  bensrs-secret:
+    external: true
 
 networks:
   traefik-public:
@@ -26,7 +33,3 @@ networks:
 volumes:
   bensrs_app_data:
     driver: local
-    # driver_opts:
-    #   type: nfs
-    #   o: addr=10.0.0.115,retry=16,nfsvers=4,rw
-    #   device: ":/data/bensrs"
