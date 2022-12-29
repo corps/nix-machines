@@ -1,7 +1,7 @@
 { pkgs ? import <nixpkgs> { 
   overlays = [
   (import (builtins.fetchTarball {
-      url = "https://github.com/m15a/nixpkgs-vim-extra-plugins/archive/main.tar.gz";
+      url = "https://github.com/corps/nixpkgs-vim-extra-plugins/archive/main.tar.gz";
     })).overlays.default
   ];
 }

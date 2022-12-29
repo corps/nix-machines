@@ -39,6 +39,7 @@ in
     gnumake
     beancount
     bc
+    act
   ]);
 
   programs.git = {

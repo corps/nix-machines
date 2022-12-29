@@ -30,7 +30,7 @@
 
   services.khd.khdConfig = ''
 shift + cmd - d : open -a "Firefox"
-shift + cmd - e : open -a "alacritty"
+shift + cmd - e : open -a "Terminal"
 shift + cmd - 0x2F : open -a Pycharm
 shift + cmd - 0x2C : open -a Pycharm
   '';
