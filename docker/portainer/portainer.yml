@@ -46,7 +46,3 @@ networks:
 volumes:
   portainer_data:
     driver: local
-    driver_opts:
-      type: nfs
-      o: addr=10.0.0.115,nolock,noatime,suid,nodev,retry=16,nfsvers=4
-      device: ":/data/portainer"

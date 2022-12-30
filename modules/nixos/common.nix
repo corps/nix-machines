@@ -101,5 +101,6 @@
   # Nix
   nix.gc.automatic = true;
   nixpkgs.config.allowUnfree = true;
+  nix.gc.options = "-d";
 }
 
