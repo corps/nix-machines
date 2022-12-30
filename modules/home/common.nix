@@ -62,7 +62,7 @@ in
     enable = true;
     matchBlocks = {
       "comboslice" = {
-        hostname = "10.0.0.14";
+        hostname = "10.0.0.45";
         user = "home";
       };
 
