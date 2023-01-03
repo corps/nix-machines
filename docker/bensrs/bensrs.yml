@@ -21,9 +21,12 @@ services:
       - bensrs_app_data:/app/data
     secrets:
       - bensrs-secret
+      - bensrs-dsn
 
 secrets:
   bensrs-secret:
+    external: true
+  bensrs-dsn:
     external: true
 
 networks:
