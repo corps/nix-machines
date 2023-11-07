@@ -5,10 +5,6 @@ ngrok2 = pkgs.callPackage ../../ngrok {};
 in
 
 {
-  imports = [
-    ./docker-services.nix
-  ];
-
   # Environment
   environment.variables = {
     EDITOR = "nvim";
@@ -41,8 +37,6 @@ in
   };
 
   networking.wireless.userControlled.enable = true;
-  # networking.
-
   # networking
   networking.wireless.networks = {
     projector = {
