@@ -35,9 +35,7 @@ def edited_config_file(original_data):
         yield tf.name
 
 def configure(stack_yaml):
-    project_name = os.path.basename(os.path.dirname(stack_yaml))
-    if stack_yaml != project_name + '.yml':
-        fail(f"File {stack_yaml} does not match project source {project_name}")
+    # project_name = os.path.basename(os.path.dirname(stack_yaml))
     with open(stack_yaml, 'r') as yf:
         stack_keys, _ = parse_yaml_keys(list(yf.readlines()))
 

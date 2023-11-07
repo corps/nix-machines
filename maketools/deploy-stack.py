@@ -13,8 +13,6 @@ docker_service_update = run.subcommand("docker", "service", "update")
 
 def deploy(stack_yaml):
     project_name = os.path.basename(os.path.dirname(stack_yaml))
-    if stack_yaml != project_name + '.yml':
-        fail(f"File {stack_yaml} does not match project source {project_name}")
     with open(stack_yaml, 'r') as yf:
         stack_keys, _ = parse_yaml_keys(list(yf.readlines()))
 
