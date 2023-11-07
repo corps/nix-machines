@@ -93,12 +93,12 @@ def parse_yaml_keys(lines, i=0, indention_level=0):
         indention = count_leading_spaces(line)
         stripped = line.strip()
         parts = stripped.split()
-        if not parts[0].endswith(':'):
+        if not parts or not parts[0].endswith(':'):
             continue
         if indention < indention_level:
             break
 
-        key = parts[:-1]
+        key = parts[0][:-1]
         if indention > indention_level:
             agg[key], i = parse_yaml_keys(lines, i, indention)
         else:
