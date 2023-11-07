@@ -16,6 +16,12 @@ def deploy(stack_yaml):
     with open(stack_yaml, 'r') as yf:
         stack_keys, _ = parse_yaml_keys(list(yf.readlines()))
 
+    for network_name, network_keys in stack_keys.get('networks', {}).items():
+        if 'external' in network_keys:
+            if run('docker', 'network', 'inspect', network_name, required=False, silent=True):
+                continue
+            run.subcommand('docker', 'network', 'create')(network_name, attachable=True, d='overlay', scope='swarm')
+
     docker_stack_deploy(project_name, compose_file=stack_yaml)
     for service_name in stack_keys.get('services', {}).keys():
         docker_service_update(f"{project_name}_{service_name}")
