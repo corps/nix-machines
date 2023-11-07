@@ -11,17 +11,16 @@ in
 
   environment.systemPackages = with pkgs; [
     ngrok2
-    nvim
+    neovim
+    vim
     bash
     nnn
     git
-    runc
     gnused
     pre-commit
     direnv
     openssl
     pkg-config
-    add-bin-to-path
     watchman
     google-cloud-sdk
   ];

@@ -22,8 +22,6 @@ in
   system.defaults.finder._FXShowPosixPathInTitle = true;
   system.defaults.dockEx."workspaces-edge-delay" = "0.0";
 
-  nixpkgs.overlays = [ (import ../../packages) ];
-
   environment.systemPackages = with pkgs; with compostPkgs; [
     compost
     update-channels
