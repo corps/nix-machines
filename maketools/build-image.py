@@ -2,7 +2,10 @@
 import os.path
 import sys
 
-from .utils import run, root_dir, fail
+SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
+sys.path.append(os.path.dirname(SCRIPT_DIR))
+
+from maketools.utils import run, root_dir, fail
 
 docker_start = run.subcommand("docker", "start")
 docker_create = run.subcommand("docker", "create")

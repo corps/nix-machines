@@ -1,2 +1,2 @@
-include ../make-tools/help.mk
-include ../make-tools/docker.mk
+include ../maketools/help.mk
+include ../maketools/docker.mk

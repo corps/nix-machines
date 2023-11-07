@@ -2,7 +2,10 @@
 import os.path
 import sys
 
-from .utils import run, fail, parse_yaml_keys
+SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
+sys.path.append(os.path.dirname(SCRIPT_DIR))
+
+from maketools.utils import run, fail, parse_yaml_keys
 
 docker_stack_deploy = run.subcommand("docker", "stack", "deploy")
 docker_service_update = run.subcommand("docker", "service", "update")

@@ -1,4 +1,4 @@
-include make-tools/help.mk
+include maketools/help.mk
 
 project_directories:=$(sort $(dir $(wildcard ./*/Makefile)))
 image_directories:=$(filter $(sort $(dir $(wildcard ./*/Dockerfile))), $(project_directories))
