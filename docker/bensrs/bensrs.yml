@@ -22,8 +22,11 @@ services:
     secrets:
       - bensrs-secret
       - bensrs-dsn
+      - openapi-key
 
 secrets:
+  openapi-key:
+    external: true
   bensrs-secret:
     external: true
   bensrs-dsn:

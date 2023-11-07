@@ -1,4 +1,4 @@
-{ pkgs ? import <nixpkgs> {}, wmctrl ? pkgs.wmctrl, writeScriptBin ? pkgs.writeScriptbin, bash ? pkgs.bash }:
+{ pkgs ? import <nixpkgs> {}, wmctrl ? pkgs.wmctrl, writeScriptBin ? pkgs.writeScriptBin, bash ? pkgs.bash }:
 
 writeScriptBin "bring-to-front" ''
 #! ${bash}/bin/bash
