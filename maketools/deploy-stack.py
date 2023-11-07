@@ -24,7 +24,7 @@ def deploy(stack_yaml):
 
     docker_stack_deploy(project_name, compose_file=stack_yaml)
     for service_name in stack_keys.get('services', {}).keys():
-        docker_service_update(f"{project_name}_{service_name}")
+        docker_service_update(f"{project_name}_{service_name}", force=True)
 
 if __name__ == "__main__":
     stack_yml = os.path.abspath(sys.argv[1])

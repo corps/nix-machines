@@ -86,21 +86,28 @@ def count_leading_spaces(string):
 
 def parse_yaml_keys(lines, i=0, indention_level=0):
     agg = {}
+    last_key = None
 
     line: str
-    for i, line in enumerate(lines[i:]):
+    while i < len(lines):
+        line = lines[i]
         line = line.expandtabs(2)
         indention = count_leading_spaces(line)
         stripped = line.strip()
         parts = stripped.split()
         if not parts or not parts[0].endswith(':'):
+            i += 1
             continue
         if indention < indention_level:
             break
 
         key = parts[0][:-1]
         if indention > indention_level:
-            agg[key], i = parse_yaml_keys(lines, i, indention)
+            if last_key is None:
+                fail(f"Badly formatted yaml, found indention {indention} at top level!")
+            agg[last_key], i = parse_yaml_keys(lines, i, indention)
         else:
             agg[key] = {}
+            i += 1
+            last_key = key
     return agg, i
