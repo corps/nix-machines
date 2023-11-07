@@ -1,5 +1,9 @@
 { config, lib, pkgs, ... }:
 
+let
+ngrok2 = pkgs.callPackage ../../ngrok {};
+in
+
 {
   imports = [
     ./docker-services.nix
@@ -12,7 +16,7 @@
   
   # Packages
   environment.systemPackages = with pkgs; [
-    wget 
+    wget
     git bash
     neovim 
     mkcert
@@ -21,7 +25,7 @@
     dpkg
     binutils
     patchelf
-    ngrok
+    ngrok2
     ripgrep
     nnn
     nodejs
@@ -33,7 +37,7 @@
   users.extraUsers.home = {
     isNormalUser = true;
     extraGroups = ["wheel" "networkmanager" "docker"];
-    openssh.authorizedKeys.keys = (import ../../authorized-keys.nix).github.corps;
+    openssh.authorizedKeys.keys = (import ./authorized-keys.nix).github.corps;
   };
 
   networking.wireless.userControlled.enable = true;
@@ -61,7 +65,7 @@
       psk = "mebejefe";
     };
     "Brutal Poodle" = {
-      psk = "Awesome1111!";
+      psk = "Awesome!!!!";
     };
     "Hilton Honors" = {};
     HHonors = {};

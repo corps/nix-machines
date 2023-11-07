@@ -1,10 +1,16 @@
 { config, lib, pkgs, ... }:
+
+let
+bring-to-front = (import ./bring-to-front.nix) { inherit pkgs; };
+bring-to-front-destop = (import ./bring-to-front-desktop) { inherit pkgs bring-to-front; };
+in
+
 {
   imports = [ ./common.nix ];
 
-
   # Packages
   environment.systemPackages = with pkgs; [
+    bring-to-front
     xorg.xmodmap
     xorg.xrandr
   ];

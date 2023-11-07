@@ -1,17 +1,18 @@
 { config, lib, pkgs, ... }:
 
+let
+compostPkgs = (import ../../compost) { inherit pkgs; compostScriptPath = ../../compost/darwin-compost.sh; };
+activate-window = (import ./activate-window.nix) { inherit pkgs; };
+
+in
+
+
 {
   imports = [
     ./keybindings.nix
-    # ./jupyter.nix
-    # ./supervisord.nix
-    # ./input-plugins.nix
+    ./supervisord.nix
     ./workspaces.nix
-    # ./nativeapps.nix
-    # ./tiddly.nix
   ];
-
-  environment.systemPackages = with pkgs; [];
 
   system.defaults.NSGlobalDomain."com.apple.trackpad.trackpadCornerClickBehavior" = 1;
   system.defaults.NSGlobalDomain.NSDocumentSaveNewDocumentsToCloud = false;
@@ -23,6 +24,11 @@
 
   nixpkgs.overlays = [ (import ../../packages) ];
 
+  environment.systemPackages = with pkgs; with compostPkgs; [
+    compost
+    update-channels
+    activate-window
+  ];
 
   nix.package = pkgs.nix;
   services.nix-daemon.enable = true;
