@@ -5,10 +5,11 @@ import sys
 SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
 sys.path.append(os.path.dirname(SCRIPT_DIR))
 
-from maketools.utils import run, fail, parse_yaml_keys
+from maketools.utils import run, fail, parse_yaml_keys, edited_config_file
 
 docker_stack_deploy = run.subcommand("docker", "stack", "deploy")
 docker_service_update = run.subcommand("docker", "service", "update")
+docker_config_create = run.subcommand("docker", "config", "create")
 
 
 def deploy(stack_yaml):
@@ -21,6 +22,14 @@ def deploy(stack_yaml):
             if run('docker', 'network', 'inspect', network_name, required=False, silent=True):
                 continue
             run.subcommand('docker', 'network', 'create')(network_name, attachable=True, d='overlay', scope='swarm')
+
+    for config_name, config_keys in stack_keys.get('configs', {}).items():
+        if 'external' in config_keys:
+            if run('docker', 'config', 'inspect', config_name, required=False, silent=True):
+                continue
+
+            with edited_config_file(f"<data for {config_name}>".encode('utf8')) as cf_path:
+                docker_config_create(config_name, cf_path)
 
     docker_stack_deploy(project_name, compose_file=stack_yaml)
     for service_name in stack_keys.get('services', {}).keys():

@@ -1,16 +1,13 @@
 #!/usr/bin/env python3
 import base64
-import contextlib
 import json
-import os.path
-import sys
-import tempfile
 import os
+import sys
 
 SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
 sys.path.append(os.path.dirname(SCRIPT_DIR))
 
-from maketools.utils import run, fail, parse_yaml_keys
+from maketools.utils import run, parse_yaml_keys, edited_config_file
 
 docker_config_inspect = run.subcommand("docker", "config", "inspect")
 docker_config_create = run.subcommand("docker", "config", "create")
@@ -25,14 +22,6 @@ def count_leading_spaces(string):
         else:
             break
     return count
-
-@contextlib.contextmanager
-def edited_config_file(original_data):
-    with tempfile.NamedTemporaryFile() as tf:
-        tf.write(original_data)
-        tf.flush()
-        run(os.environ['EDITOR'], tf.name)
-        yield tf.name
 
 def configure(stack_yaml):
     # project_name = os.path.basename(os.path.dirname(stack_yaml))

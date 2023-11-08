@@ -2,6 +2,7 @@ import contextlib
 import sys
 import subprocess
 import os.path
+import tempfile
 
 root_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
 
@@ -111,3 +112,14 @@ def parse_yaml_keys(lines, i=0, indention_level=0):
             i += 1
             last_key = key
     return agg, i
+
+@contextlib.contextmanager
+def edited_config_file(original_data):
+    with tempfile.NamedTemporaryFile() as tf:
+        tf.write(original_data)
+        tf.flush()
+        run(os.environ['EDITOR'], tf.name)
+        tf.seek(0)
+        if tf.read() == original_data:
+            fail('Skipping -- no updates found')
+        yield tf.name
