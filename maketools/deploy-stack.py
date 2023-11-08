@@ -10,6 +10,7 @@ from maketools.utils import run, fail, parse_yaml_keys, edited_config_file
 docker_stack_deploy = run.subcommand("docker", "stack", "deploy")
 docker_service_update = run.subcommand("docker", "service", "update")
 docker_config_create = run.subcommand("docker", "config", "create")
+docker_secret_create = run.subcommand("docker", "secret", "create")
 
 
 def deploy(stack_yaml):
@@ -30,6 +31,13 @@ def deploy(stack_yaml):
 
             with edited_config_file(f"<data for {config_name}>".encode('utf8')) as cf_path:
                 docker_config_create(config_name, cf_path)
+
+    for secret_name, secret_keys in stack_keys.get('secrets', {}).items():
+        if 'external' in secret_keys:
+            if run('docker', 'secret', 'inspect', secret_name, required=False, silent=True):
+                continue
+
+            docker_secret_create(secret_name, "-")
 
     docker_stack_deploy(project_name, compose_file=stack_yaml)
     for service_name in stack_keys.get('services', {}).keys():
