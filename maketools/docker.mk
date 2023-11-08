@@ -1,4 +1,4 @@
-project_name:=$(shell basename .)
+project_name:=$(shell basename $(abspath .))
 
 ifeq ($(wildcard Dockerfile),Dockerfile)
 .PHONY: image

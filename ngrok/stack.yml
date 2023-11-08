@@ -24,7 +24,7 @@ services:
         chmod +w ~/.config/ngrok/ngrok.yml
         ngrok config add-authtoken "$$(cat /run/secrets/ngrok-auth)"
         ngrok config check
-        exec ngrok start http
+        exec ngrok start --all
 
 networks:
   traefik-public:

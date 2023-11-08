@@ -7,7 +7,7 @@ import sys
 SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
 sys.path.append(os.path.dirname(SCRIPT_DIR))
 
-from maketools.utils import run, parse_yaml_keys, edited_config_file
+from maketools.utils import run, parse_yaml_keys, edited_config_file, fail
 
 docker_config_inspect = run.subcommand("docker", "config", "inspect")
 docker_config_create = run.subcommand("docker", "config", "create")
@@ -33,12 +33,15 @@ def configure(stack_yaml):
         if not config_json:
             data = b''
         else:
-            data = base64.b64decode(config_json[0]['Data'])
+            data = base64.b64decode(config_json[0]['Spec']['Data'])
 
         with edited_config_file(data) as cf_path:
             sub_config_file = f"{config_file}.new"
             docker_config_create(sub_config_file, cf_path)
-            run("make", "deploy", env={config_file.replace('.', ''): sub_config_file})
+            if not run("make", "deploy", env={config_file.replace('.', ''): sub_config_file}, required=False):
+                run("make", "deploy", required=False)
+                docker_config_rm(sub_config_file)
+                fail("Deployment of new config failed")
             docker_config_rm(config_file)
             docker_config_create(config_file, cf_path)
             run("make", "deploy")
