@@ -16,7 +16,12 @@ ifeq ($(wildcard stack.yml),stack.yml)
 deploy:: # builds the docker stack from the stack.yml file
 	../maketools/deploy-stack.py stack.yml
 
-configure: # Configure and then deploy any files in the stack
+.PHONY: configure
+configure:: # Configure and then deploy any files in the stack
 	../maketools/configure-stack.py stack.yml
+
+.PHONY: compost
+compost:: image push deploy # Bootstraps the stack
+	@echo Ready!
 endif
 
