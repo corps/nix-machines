@@ -1,9 +1,10 @@
-version: '3.8'
+version: "3.8"
 services:
   app:
     image: jupyter/tensorflow-notebook
     networks:
       - traefik-public
+      - mistral
     command:
       - "start-notebook.sh"
       - "--NotebookApp.password='argon2:$$argon2id$$v=19$$m=10240,t=10,p=8$$2NWJkwYTtxatvj+4Tyz61Q$$0U1dMk+Wvoq5tFt9Z/JianidtEzsbAKbvxZjehOgtgo'"
@@ -17,7 +18,7 @@ services:
         - traefik.http.routers.jupyter-http.entrypoints=http
         - traefik.http.services.jupyter.loadbalancer.server.port=8888
       placement:
-        constraints: 
+        constraints:
           - node.role == manager
           - node.labels.jupyter == true
     volumes:
@@ -27,7 +28,9 @@ services:
 networks:
   traefik-public:
     external: true
-    
+  mistral:
+    external: true
+
 volumes:
   jupyter_app_data:
     driver: local

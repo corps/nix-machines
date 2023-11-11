@@ -1,0 +1,29 @@
+version: "3.8"
+services:
+  app:
+    image: corps/mistral
+    networks:
+      - mistral
+    command:
+      - "--host 0.0.0.0"
+      - "--model mistralai/Mistral-7B-v0.1"
+    deploy:
+      replicas: 1
+      placement:
+        constraints:
+          - node.role == manager
+          - node.labels.mistral == true
+    volumes:
+      - hugging_face:/root/.cache/huggingface
+
+networks:
+  mistral:
+    external: true
+
+volumes:
+  hugging_face:
+    driver: local
+
+secrets:
+  hugging_face_token:
+    external: true
