@@ -1,5 +1,6 @@
 root:=$(shell dirname $(shell dirname $(lastword $(MAKEFILE_LIST))))
 tag_name:=$(shell realpath --relative-to="$(root)" . | tr '/' ':')
+project_name:=$(shell realpath --relative-to="$(root)" .)
 compose_app:=app
 source_volumes:=
 shell:=bash
@@ -36,7 +37,7 @@ image:: # builds the Dockerfile of this project, including all dependent images
 
 .PHONY: push
 push:: image # Builds and pushes the latest Dockerfile for the project
-	docker tag $(project_name) corps/$(project_name):latest
+	docker tag $(tag_name) corps/$(project_name):latest
 	docker push corps/$(project_name):latest
 endif
 

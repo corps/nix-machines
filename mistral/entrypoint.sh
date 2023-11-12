@@ -1,5 +1,5 @@
 #!/bin/bash
-HF_TOKEN="$(cat /run/secrets/hugging_face_token)"
+export HF_TOKEN="$(cat /run/secrets/hugging_face_token)"
 if [[ ! -z "${HF_TOKEN}" ]]; then
     echo "The HF_TOKEN environment variable set, logging to Hugging Face."
     python3 -c "import huggingface_hub; huggingface_hub.login('${HF_TOKEN}')"

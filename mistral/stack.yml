@@ -5,8 +5,10 @@ services:
     networks:
       - mistral
     command:
-      - "--host 0.0.0.0"
-      - "--model mistralai/Mistral-7B-v0.1"
+      - "--host"
+      - "0.0.0.0"
+      - "--model" 
+      - "mistralai/Mistral-7B-v0.1"
     deploy:
       replicas: 1
       placement:
