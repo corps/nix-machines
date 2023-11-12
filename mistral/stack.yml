@@ -15,6 +15,7 @@ services:
           - node.labels.mistral == true
     environment:
       MODEL: TheBloke/Mistral-7B-Instruct-v0.1-GGUF
+      MODEL_FILE: mistral-7b-instruct-v0.1.Q5_K_M.gguf
     volumes:
       - hugging_face:/root/.cache/huggingface
     ports:

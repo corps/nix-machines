@@ -1,5 +1,5 @@
 FROM python:3.11
-RUN pip install ctransformers==0.2.27 flask
+RUN pip install flask huggingface_hub
 WORKDIR /app
 COPY server.py .
 CMD python3 server.py
