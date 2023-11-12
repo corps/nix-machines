@@ -1,11 +1,6 @@
 FROM jupyter/tensorflow-notebook
 # https://jupyter-docker-stacks.readthedocs.io/en/latest/using/selecting.html#core-stacks
-RUN mamba install --quiet --yes \
-    pydantic openapi dropbox google-api-python-client google-auth-httplib2 google-auth-oauthlib \
-    ipywidgets \
-    && \
-    mamba clean --all -f -y && \
-    fix-permissions "${CONDA_DIR}" && \
-    fix-permissions "/home/${NB_USER}"
+ENV PYTHONPATH=/home/jovyan
+COPY install_chatbot.py .
+RUN python3 ./install_chatbot.py
 
-COPY ipython_config.py /app/profile_default/

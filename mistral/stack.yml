@@ -17,6 +17,10 @@ services:
           - node.labels.mistral == true
     volumes:
       - hugging_face:/root/.cache/huggingface
+    ports:
+      - 8000:8000
+    secrets:
+      - hugging_face_token
 
 networks:
   mistral:
