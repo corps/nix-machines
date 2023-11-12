@@ -5,16 +5,16 @@ services:
     networks:
       - mistral
     command:
-      - "--host"
-      - "0.0.0.0"
-      - "--model" 
-      - "mistralai/Mistral-7B-v0.1"
+      - python
+      - /app/server.py
     deploy:
       replicas: 1
       placement:
         constraints:
           - node.role == manager
           - node.labels.mistral == true
+    environment:
+      MODEL: TheBloke/Mistral-7B-Instruct-v0.1-GGUF
     volumes:
       - hugging_face:/root/.cache/huggingface
     ports:

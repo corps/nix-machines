@@ -1,0 +1,7 @@
+services:
+  app:
+    volumes:
+      - .:/app
+    build:
+      context: .
+    platform: linux/amd64
