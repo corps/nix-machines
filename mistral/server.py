@@ -3,7 +3,7 @@ import os
 from ctransformers import AutoModelForCausalLM
 
 llm = AutoModelForCausalLM.from_pretrained(
-    os.environ["MODEL"], model_file=os.environ["MODEL_FILE"], hf=True, model_type="mistral", gpu_layers=0
+    os.environ["MODEL"], model_file=os.environ["MODEL_FILE"], hf=True, model_type="mistral"
 )
 
 from flask import Flask, make_response, request

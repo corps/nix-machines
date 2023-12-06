@@ -24,6 +24,8 @@ services:
     volumes:
       - jupyter_app_data:/home/jovyan/work
       - jupyter_conda_env:/opt/conda
+    secrets:
+      - hugging_face_token
 
 networks:
   traefik-public:
@@ -36,3 +38,7 @@ volumes:
     driver: local
   jupyter_conda_env:
     driver: local
+
+secrets:
+  hugging_face_token:
+    external: true
