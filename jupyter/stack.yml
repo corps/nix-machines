@@ -24,6 +24,7 @@ services:
     volumes:
       - jupyter_app_data:/home/jovyan/work
       - jupyter_conda_env:/opt/conda
+      - jupyter_cache_dir:/home/jovyan/.cache
     secrets:
       - hugging_face_token
 
@@ -37,6 +38,8 @@ volumes:
   jupyter_app_data:
     driver: local
   jupyter_conda_env:
+    driver: local
+  jupyter_cache_dir:
     driver: local
 
 secrets:
