@@ -1,7 +1,7 @@
 version: "3.8"
 services:
   app:
-    image: jupyter/tensorflow-notebook
+    image: corps/jupyter
     networks:
       - traefik-public
       - mistral
