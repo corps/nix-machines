@@ -5,5 +5,3 @@ USER root
 USER jovyan
 
 ENV PYTHONPATH=/home/jovyan
-COPY requirements.txt .
-RUN pip3 install -r requirements.txt
