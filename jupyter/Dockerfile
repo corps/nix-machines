@@ -4,4 +4,7 @@ FROM jupyter/tensorflow-notebook
 USER root
 USER jovyan
 
+COPY requirements.txt .
+RUN pip install -r requirements.txt
+
 ENV PYTHONPATH=/home/jovyan
