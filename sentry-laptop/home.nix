@@ -23,6 +23,9 @@ in
     pkg-config
     watchman
     google-cloud-sdk
+    lzma
+    ncurses
+    readline
   ];
 
   environment.shells = [ pkgs.bashInteractive ];
