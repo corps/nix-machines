@@ -2,6 +2,9 @@ version: "3.8"
 services:
   app:
     image: corps/jupyter
+    user: root
+    environment:
+      GRANT_SUDO: "yes"
     networks:
       - traefik-public
       - mistral
@@ -16,7 +19,12 @@ services:
         - traefik.constraint-label=traefik-public
         - traefik.http.routers.jupyter-http.rule=Host(`jupyter.kaihatsu.io`)
         - traefik.http.routers.jupyter-http.entrypoints=http
+        - traefik.http.routers.jupyter-http.service=jupyter
         - traefik.http.services.jupyter.loadbalancer.server.port=8888
+        - traefik.http.routers.pricestudy-http.rule=Host(`pricestudy.kaihatsu.io`)
+        - traefik.http.routers.pricestudy-http.entrypoints=http
+        - traefik.http.routers.pricestudy-http.service=pricestudy
+        - traefik.http.services.pricestudy.loadbalancer.server.port=8882
       placement:
         constraints:
           - node.role == manager

@@ -1,0 +1,39 @@
+version: "3.8"
+services:
+  app:
+    image: corps/wakimae
+    networks:
+      - traefik-public
+    deploy:
+      replicas: 1
+      labels:
+        - traefik.enable=true
+        - traefik.docker.network=traefik-public
+        - traefik.constraint-label=traefik-public
+        - traefik.http.routers.wakimae-http.rule=Host(`wakimae.kaihatsu.io`)
+        - traefik.http.routers.wakimae-http.entrypoints=http
+        - traefik.http.routers.wakimae-http.service=jupyter
+        - traefik.http.services.wakimae.loadbalancer.server.port=8888
+      placement:
+        constraints:
+          - node.role == manager
+          - node.labels.wakimae == true
+    volumes:
+      - wakimae_db:/var/sqlite/wakimae
+      - wakimae_store:/var/store
+    secrets:
+      - wakimae_storage_secret
+
+networks:
+  traefik-public:
+    external: true
+
+volumes:
+  wakimae_db:
+    driver: local
+  wakimae_store:
+    driver: local
+
+secrets:
+  wakimae_storage_secret:
+    external: true

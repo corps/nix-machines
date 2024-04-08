@@ -6,7 +6,10 @@ services:
       - 8081:8080
     volumes:
       - ./src:/app/src
-      - db:/var/sqlite/libbiz
+      - db:/var/sqlite/wakimae
+      - store:/var/store/
+      - ./.env:/run/env
 
 volumes:
   db:
+  store:

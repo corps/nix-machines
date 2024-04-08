@@ -1,0 +1,17 @@
+pydantic==2.6.4
+nicegui==1.4.12
+pytest==8.1.1
+sqlalchemy==2.0.25
+pytest-asyncio==0.23.6
+types-requests==2.25.0
+mypy==1.9.0
+pre-commit==3.5.0
+alembic==1.13.1
+johen==0.1.4
+aiohttp==3.9.3
+aiosqlite==0.20.0
+python-dateutil==2.9.0.post0
+dropbox==11.36.2
+sentry-sdk==1.44.0
+mitmproxy==10.2.4
+pytest-asyncio==0.23.6
