@@ -23,6 +23,7 @@ services:
       - wakimae_store:/var/store
     secrets:
       - wakimae_storage_secret
+      - wakimae_env
 
 networks:
   traefik-public:
@@ -36,4 +37,6 @@ volumes:
 
 secrets:
   wakimae_storage_secret:
+    external: true
+  wakimae_env:
     external: true

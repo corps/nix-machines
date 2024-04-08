@@ -1,7 +1,7 @@
 import os.path
 
-if os.path.exists("/run/env") and os.path.isfile("/run/env"):
-    with open("/run/env", "r") as env_file:
+if os.path.exists("/run/secrets/wakimae_env") and os.path.isfile("/run/secrets/wakimae_env"):
+    with open("/run/secrets/wakimae_env", "r") as env_file:
         for line in env_file.readlines():
             k, v = line.strip().split("=")
             os.environ[k] = v

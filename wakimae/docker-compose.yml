@@ -8,7 +8,7 @@ services:
       - ./src:/app/src
       - db:/var/sqlite/wakimae
       - store:/var/store/
-      - ./.env:/run/env
+      - ./.env:/run/secrets/wakimae_env
 
 volumes:
   db:
