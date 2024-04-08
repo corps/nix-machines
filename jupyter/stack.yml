@@ -21,10 +21,6 @@ services:
         - traefik.http.routers.jupyter-http.entrypoints=http
         - traefik.http.routers.jupyter-http.service=jupyter
         - traefik.http.services.jupyter.loadbalancer.server.port=8888
-        - traefik.http.routers.pricestudy-http.rule=Host(`pricestudy.kaihatsu.io`)
-        - traefik.http.routers.pricestudy-http.entrypoints=http
-        - traefik.http.routers.pricestudy-http.service=pricestudy
-        - traefik.http.services.pricestudy.loadbalancer.server.port=8882
       placement:
         constraints:
           - node.role == manager
