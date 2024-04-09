@@ -12,8 +12,8 @@ services:
         - traefik.constraint-label=traefik-public
         - traefik.http.routers.wakimae-http.rule=Host(`wakimae.kaihatsu.io`)
         - traefik.http.routers.wakimae-http.entrypoints=http
-        - traefik.http.routers.wakimae-http.service=jupyter
-        - traefik.http.services.wakimae.loadbalancer.server.port=8888
+        - traefik.http.routers.wakimae-http.service=wakimae
+        - traefik.http.services.wakimae.loadbalancer.server.port=8080
       placement:
         constraints:
           - node.role == manager
@@ -21,6 +21,9 @@ services:
     volumes:
       - wakimae_db:/var/sqlite/wakimae
       - wakimae_store:/var/store
+      - wakimae_fastembed:/var/fastembe
+    environment:
+      FASTEMBED_CACHE_PATH: /fastembed
     secrets:
       - wakimae_storage_secret
       - wakimae_env
@@ -34,9 +37,13 @@ volumes:
     driver: local
   wakimae_store:
     driver: local
+  wakimae_fastembed:
+    driver: local
 
 secrets:
   wakimae_storage_secret:
     external: true
   wakimae_env:
+    external: true
+  hugging_face_token:
     external: true

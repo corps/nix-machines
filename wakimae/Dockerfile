@@ -11,5 +11,8 @@ RUN pip install -e .
 
 COPY start.sh .
 
+RUN useradd --create-home -ms /bin/bash app
+USER app
+
 EXPOSE 8080
 CMD /app/start.sh

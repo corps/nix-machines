@@ -15,3 +15,6 @@ dropbox==11.36.2
 sentry-sdk==1.44.0
 mitmproxy==10.2.4
 pytest-asyncio==0.23.6
+
+fastembed==0.2.6
+numpy==1.26.4

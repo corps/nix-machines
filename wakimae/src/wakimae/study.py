@@ -26,6 +26,10 @@ def to_time(minutes: Minutes) -> float:
 
 
 class StudyItem(pydantic.BaseModel):
-    external_id: str
+    path: str
     due_minutes: Minutes
     interval_minutes: Minutes
+    content: str
+    cloze_start: int
+    cloze_end: int
+    definition: str

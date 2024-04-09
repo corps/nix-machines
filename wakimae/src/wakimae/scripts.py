@@ -31,25 +31,7 @@ async def load_legacy():
                 decoded = f.read().decode()
                 notes.append(parse_note(decoded))
 
-    now_minutes = time.time() / 60
-
-    def schedule_legacy(note: LegacyNote) -> float:
-        return min(
-            [
-                min(
-                    [
-                        now_minutes - cloze.attributes.schedule.nextDueMinutes
-                        if now_minutes > cloze.attributes.schedule.nextDueMinutes
-                        else cloze.attributes.schedule.nextDueMinutes
-                        for cloze in term.attributes.clozes
-                    ]
-                )
-                for term in note.attributes.terms
-            ]
-        )
-
-    notes.sort(key=schedule_legacy)
-    print(notes[0])
+    return notes
 
 
 async def run_local_sync():

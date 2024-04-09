@@ -85,3 +85,19 @@ class LegacyScheduler:
     entropy_source: Callable[[], float] = dataclasses.field(
         default_factory=lambda: random.random
     )
+
+
+def schedule_legacy(now_minutes: int, note: LegacyNote) -> float:
+    return min(
+        [
+            min(
+                [
+                    now_minutes - cloze.attributes.schedule.nextDueMinutes
+                    if now_minutes > cloze.attributes.schedule.nextDueMinutes
+                    else cloze.attributes.schedule.nextDueMinutes
+                    for cloze in term.attributes.clozes
+                ]
+            )
+            for term in note.attributes.terms
+        ]
+    )
