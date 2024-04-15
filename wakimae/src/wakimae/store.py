@@ -2,37 +2,33 @@ import asyncio
 import contextlib
 import dataclasses
 import hashlib
+import logging
 import os
 import shutil
 import tempfile
-import uuid
-from typing import IO, Any
+from typing import IO, Any, AsyncIterator
 
 import pytest
-from sqlalchemy import select, update
-from sqlalchemy.dialects.sqlite import insert
+from johen import generate
+from johen.generators import specialized
+from johen.pytest import parametrize
+from sqlalchemy import or_, select, update
 
-from wakimae.db import AsyncSession, File, Tombstone, User
-from wakimae.login import UserSession
+from wakimae import config
+from wakimae.db import AsyncSession, File, User
+from wakimae.login import UserFactory
 
 
 @dataclasses.dataclass
 class Store:
     user: User
-    store_prefix: str
-
-    async def get_deleted_files(self) -> list[Tombstone]:
-        async with AsyncSession() as session:
-            result = await session.execute(
-                select(Tombstone).filter(Tombstone.user_id == self.user.id)
-            )
-            return list(result.scalars())
+    store_prefix: str = dataclasses.field(default_factory=lambda: config.store_prefix)
 
     async def get_edited_files(self) -> list[File]:
         async with AsyncSession() as session:
             result = await session.execute(
                 select(File).filter(
-                    File.user_id == self.user.id, File.pending_edits == 1
+                    File.user_id == self.user.id, File.pending_edits == True
                 )
             )
             return list(result.scalars())
@@ -42,18 +38,12 @@ class Store:
             await session.execute(
                 update(File)
                 .filter(
-                    File.user_id == self.user.id,
-                    File.pending_edits == 1,
                     File.id == file.id,
-                    File.content_hash == file.content_hash,
+                    File.user_id == self.user.id,
+                    File.sequence == file.sequence,
                 )
-                .values(pending_edits=0)
+                .values(pending_edits=False)
             )
-            await session.commit()
-
-    async def mark_tombstone_applied(self, tombstone: Tombstone) -> None:
-        async with AsyncSession() as session:
-            await session.delete(tombstone)
             await session.commit()
 
     def check_content_path(self, content_hash: str) -> str | None:
@@ -62,81 +52,45 @@ class Store:
             return path
         return None
 
-    async def list_files(self) -> list[str]:
-        async with AsyncSession() as session:
-            result = await session.execute(
-                select(File.path).filter(File.user_id == self.user.id)
-            )
-            return result.scalars()
-
-    async def read_file(self, path: str) -> tuple[File, str] | None:
+    async def find_file_by_path(self, path: str) -> File | None:
         async with AsyncSession() as session:
             result = await session.execute(
                 select(File).filter(File.path == path, File.user_id == self.user.id)
             )
             file = result.scalar_one_or_none()
-            if not file:
+            if not file or file.deleted:
                 return None
-            return file, os.path.join(self.store_prefix, file.content_hash)
+            return file
 
     async def delete_path(self, path: str, edit: bool):
         async with AsyncSession() as session:
-            criteria = (
-                File.path.startswith(path) if path.endswith("/") else File.path == path
+            await session.execute(
+                update(File)
+                .filter(
+                    File.user_id == self.user.id,
+                    or_(File.path == path, File.path.startswith(path + "/")),
+                )
+                .values(pending_edits=edit, deleted=True)
             )
-            result = await session.execute(
-                select(File).filter(criteria, File.user_id == self.user.id)
-            )
-            for file in result.scalars():
-                await session.delete(file)
-                if edit:
-                    session.add(
-                        Tombstone(
-                            user_id=file.user_id,
-                            external_id=file.external_id,
-                            path=file.path,
-                            rev=file.rev,
-                        )
-                    )
             await session.commit()
 
     async def mark_user_file(
         self,
-        content_hash: str,
-        remote_path: str,
-        external_id: str,
-        rev: str,
-        edit: bool,
+        file: File,
     ) -> File:
-        async with AsyncSession() as session:
-            await session.execute(
-                insert(File)
-                .values(
-                    content_hash=content_hash,
-                    user_id=self.user.id,
-                    external_id=external_id,
-                    path=remote_path,
-                    pending_edits=1 if edit else 0,
-                    rev=rev,
-                )
-                .on_conflict_do_update(
-                    index_elements=("user_id", "path"),
-                    set_=dict(
-                        content_hash=content_hash,
-                        rev=rev,
-                        pending_edits=1 if edit else 0,
-                        external_id=external_id,
-                    ),
-                )
+        if file.path.lower() != file.path:
+            raise ValueError(
+                f"File {file.path} must contain only lowercase characters."
             )
-            await session.commit()
 
-            result = await session.execute(
-                select(File).filter(
-                    File.user_id == self.user.id, File.path == remote_path
-                )
-            )
-            return result.scalar_one()
+        async with AsyncSession() as session:
+            if file.id is not None:
+                assert file.user_id == self.user.id
+                file = await session.merge(file)
+            file.user_id = self.user.id
+            session.add(file)
+            await session.commit()
+            return file
 
     async def store_file(self, local_path: str) -> str:
         content_hash = await asyncio.get_running_loop().run_in_executor(
@@ -147,6 +101,28 @@ class Store:
 
     def store_local_edit(self, path: str) -> "LocalFileSaveContextManager":
         return LocalFileSaveContextManager(self, path)
+
+    async def file_batches(
+        self, sequence_cursor: str, batch_size: int = 100
+    ) -> AsyncIterator[tuple[list[File], str]]:
+        sequence_num = -1 if not sequence_cursor else int(sequence_cursor)
+        while True:
+            async with AsyncSession() as session:
+                result = await session.execute(
+                    select(File)
+                    .filter(File.user_id == self.user.id, File.sequence > sequence_num)
+                    .order_by(File.sequence)
+                    .limit(batch_size)
+                )
+                files = list(result.scalars())
+            try:
+                sequence_num = max([f.sequence for f in files])
+            except ValueError:
+                break
+            yield files, str(sequence_num)
+
+    def content_path(self, file: File) -> str:
+        return os.path.join(self.store_prefix, file.content_hash)
 
 
 def content_hash_of(filepath: str):
@@ -161,12 +137,121 @@ def content_hash_of(filepath: str):
 
 
 @pytest.mark.asyncio
-async def test_store(a_user_session: UserSession):
-    user = await a_user_session.get_user()
-    assert user
+@parametrize(count=1)
+async def test_content_hash_of(user: User):
+    async with AsyncSession() as session:
+        session.add(user)
+        await session.commit()
+    store = Store(user)
+    async with store.store_local_edit("/a") as f:
+        f.write(b"word" * 8 * 1024 * 1024)
+        f.flush()
+        assert (
+            content_hash_of(f.name)
+            == "f9d2833923ee97ee314c5a6c9e972d4344156900276838d624ca6cee053d23a0"
+        )
+
+
+@dataclasses.dataclass
+class StoreFactory:
+    user_factory: UserFactory
+
+    async def save(self):
+        await self.user_factory.save()
+
+    @property
+    def user(self):
+        return self.user_factory.user
+
+    @property
+    def store(self) -> Store:
+        return Store(self.user)
+
+    def generate_file(self, path_override: str | None = None):
+        for file in generate(File):
+            file.user_id = self.user.id
+            if path_override:
+                file.path = path_override
+            return file
+
+
+@pytest.mark.asyncio
+@parametrize(count=1)
+async def test_edit_state(
+    store1: StoreFactory,
+    store2: StoreFactory,
+    common_path: specialized.FilePath,
+    store_1_paths: tuple[specialized.FilePath, specialized.FilePath],
+    store_2_paths: tuple[specialized.FilePath, specialized.FilePath],
+):
+    await store1.save()
+    await store2.save()
+
+    assert await store1.store.get_edited_files() == []
+    assert await store2.store.get_edited_files() == []
+
+    store1_unique_files = [store1.generate_file(path) for path in store_1_paths]
+    store2_unique_files = [store2.generate_file(path) for path in store_2_paths]
+    store1_common_file = store1.generate_file(common_path)
+    store2_common_file = store1.generate_file(common_path)
+
+    for file in [*store1_unique_files, store1_common_file]:
+        file.pending_edits = True
+        await store1.store.mark_user_file(file)
+
+    for file in [*store2_unique_files, store2_common_file]:
+        file.pending_edits = True
+        await store2.store.mark_user_file(file)
+
+    assert set(f.path for f in await store1.store.get_edited_files()) == {
+        *store_1_paths,
+        common_path,
+    }
+    assert set(f.path for f in await store2.store.get_edited_files()) == {
+        *store_2_paths,
+        common_path,
+    }
+
+    await store1.store.mark_file_uploaded(store1_unique_files[0])
+    # Simultaneous load, so it won't actually mark it.
+    assert set(f.path for f in await store1.store.get_edited_files()) == {
+        *store_1_paths,
+        common_path,
+    }
 
     async with AsyncSession() as session:
-        user2 = User(account_id="new_thing", email="you@thing.com", refresh_token="")
+        await store1.store.mark_file_uploaded(
+            await session.scalar(
+                select(File).where(File.id == store1_unique_files[0].id)
+            )
+        )
+    assert set(f.path for f in await store1.store.get_edited_files()) == {
+        *store_1_paths[1:],
+        common_path,
+    }
+
+    await store2.store.delete_path(common_path, False)
+    assert set(f.path for f in await store1.store.get_edited_files()) == {
+        *store_1_paths[1:],
+        common_path,
+    }
+    assert set(f.path for f in await store2.store.get_edited_files()) == {
+        *store_2_paths
+    }
+
+    await store2.store.delete_path(common_path, True)
+    assert set(f.path for f in await store2.store.get_edited_files()) == {
+        *store_2_paths,
+        common_path,
+    }
+
+
+@pytest.mark.asyncio
+async def test_store():
+    async with AsyncSession() as session:
+        user = User(account_id="user1", email="you1@thing.com", refresh_token="")
+        user2 = User(account_id="user2", email="you2@thing.com", refresh_token="")
+        session.add(user)
         session.add(user2)
         await session.commit()
 
@@ -174,7 +259,7 @@ async def test_store(a_user_session: UserSession):
         store = Store(user, tempdir)
         store2 = Store(user2, tempdir)
 
-        assert not await store.read_file("/a-file.txt")
+        assert not await store.find_file_by_path("/a-file.txt")
         assert await store.get_edited_files() == []
 
         with tempfile.NamedTemporaryFile(delete=False) as nf:
@@ -182,7 +267,12 @@ async def test_store(a_user_session: UserSession):
             nf.flush()
             content_hash = await store.store_file(nf.name)
             file = await store.mark_user_file(
-                content_hash, "/a-file.txt", f"some-id", "", True
+                File(
+                    content_hash=content_hash,
+                    path="/a-file.txt",
+                    rev="",
+                    pending_edits=True,
+                )
             )
 
         assert file.content_hash == content_hash
@@ -190,13 +280,12 @@ async def test_store(a_user_session: UserSession):
 
         assert [f.id for f in await store.get_edited_files()] == [file.id]
         assert await store2.get_edited_files() == []
-        assert not await store2.read_file("/a-file.txt")
+        assert not await store2.find_file_by_path("/a-file.txt")
 
-        result = await store.read_file("/a-file.txt")
-        assert result
-        file, path = result
+        file = await store.find_file_by_path("/a-file.txt")
+        assert file
 
-        with open(path, "rb") as f:
+        with open(store.content_path(file), "rb") as f:
             assert f.read() == b"test-content"
 
         with tempfile.NamedTemporaryFile(delete=False) as nf:
@@ -204,7 +293,12 @@ async def test_store(a_user_session: UserSession):
             nf.flush()
             content_hash = await store.store_file(nf.name)
             file2 = await store2.mark_user_file(
-                content_hash, "/a-file.txt", f"some-id-2", "rev", False
+                File(
+                    content_hash=content_hash,
+                    path="/a-file.txt",
+                    rev="rev",
+                    pending_edits=False,
+                )
             )
 
         assert file2.rev == "rev"
@@ -212,11 +306,10 @@ async def test_store(a_user_session: UserSession):
         assert [f.id for f in await store.get_edited_files()] == [file.id]
         assert [f.id for f in await store2.get_edited_files()] == []
 
-        result = await store2.read_file("/a-file.txt")
-        assert result
-        file, path = result
+        file = await store2.find_file_by_path("/a-file.txt")
+        assert file
 
-        with open(path, "rb") as f:
+        with open(store2.content_path(file), "rb") as f:
             assert f.read() == b"test-content-2"
 
         with tempfile.NamedTemporaryFile(delete=False) as nf:
@@ -224,18 +317,66 @@ async def test_store(a_user_session: UserSession):
             nf.flush()
             content_hash = await store.store_file(nf.name)
             file2 = await store2.mark_user_file(
-                content_hash, "/a-file.txt", "new-some-id", "new-rev", True
+                File(
+                    content_hash=content_hash,
+                    path="/a-file.txt",
+                    rev="new-rev",
+                    pending_edits=True,
+                )
             )
 
         assert [f.id for f in await store2.get_edited_files()] == [file2.id]
         assert file2.rev == "new-rev"
-        assert file2.external_id == "new-some-id"
-        result = await store2.read_file("/a-file.txt")
-        assert result
-        file, path = result
+        file = await store2.find_file_by_path("/a-file.txt")
 
-        with open(path, "rb") as f:
+        with open(store2.content_path(file), "rb") as f:
             assert f.read() == b"test-content-3"
+
+
+@pytest.mark.asyncio
+@parametrize(count=1)
+async def test_sequences(
+    store_factory: StoreFactory,
+):
+    await store_factory.save()
+    async with AsyncSession() as session:
+        for i in range(10):
+            file = store_factory.generate_file()
+            session.add(file)
+        await session.commit()
+
+    cursors = []
+    file_ids = set()
+    async for batch, cursor in store_factory.store.file_batches("", batch_size=2):
+        assert len(batch) == 2
+        for file in batch:
+            assert file.id not in file_ids
+            file_ids.add(file.id)
+        cursors.append(cursor)
+
+    assert len(cursors) == 5
+    assert (
+        len(
+            [
+                0
+                async for _ in store_factory.store.file_batches(
+                    cursors[2], batch_size=2
+                )
+            ]
+        )
+        == 2
+    )
+    assert (
+        len(
+            [
+                0
+                async for _ in store_factory.store.file_batches(
+                    cursors[-1], batch_size=2
+                )
+            ]
+        )
+        == 0
+    )
 
 
 class LocalFileSaveContextManager(contextlib.AbstractAsyncContextManager):
@@ -258,21 +399,22 @@ class LocalFileSaveContextManager(contextlib.AbstractAsyncContextManager):
 
     async def __aexit__(self, __exc_type: Any, __exc_value: Any, __traceback: Any):
         rv = self.context.__exit__(__exc_type, __exc_value, __traceback)
-        if rv is not None:
+        if rv:
+            logging.info("RV was %r", rv)
             return rv
 
-        result = await self.store.read_file(self.target_path)
-        if result:
-            target_file, _ = result
-        else:
-            target_file = File(external_id=uuid.uuid4().hex, rev="")
-
         content_hash = await self.store.store_file(self.local_file)
-        await self.store.mark_user_file(
-            content_hash,
-            remote_path=self.target_path,
-            external_id=target_file.external_id,
-            rev=target_file.rev,
-            edit=True,
-        )
+
+        target_file = await self.store.find_file_by_path(self.target_path)
+        if target_file is None:
+            target_file = File(
+                user_id=self.store.user.id,
+                rev="",
+                path=self.target_path,
+                deleted=False,
+            )
+        target_file.pending_edits = True
+        target_file.content_hash = content_hash
+
+        await self.store.mark_user_file(target_file)
         return None

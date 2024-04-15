@@ -2,7 +2,8 @@ import asyncio
 import contextlib
 import functools
 from asyncio import Task
-from typing import Any, Awaitable, Callable, ParamSpec, TypeVar
+from typing import (Any, AsyncContextManager, Awaitable, Callable, Coroutine,
+                    ParamSpec, Self, TypeVar)
 
 from nicegui.elements.button import Button
 from nicegui.elements.input import Input
@@ -69,3 +70,15 @@ def submits_with(
         return wrapper
 
     return dec
+
+
+async def concurrently_run(co: list[Coroutine], max_concurrency: int):
+    semaphore = asyncio.Semaphore(value=max_concurrency)
+
+    async def run_coro(coro: Coroutine):
+        async with semaphore:
+            await coro
+
+    async with asyncio.TaskGroup() as tg:
+        for coro in co:
+            tg.create_task(run_coro(coro))

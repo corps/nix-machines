@@ -28,6 +28,10 @@ in
     activate-window
   ];
 
-  nix.package = pkgs.nix;
-  services.nix-daemon.enable = true;
+  nix = {
+    package = pkgs.nix;
+    settings = {
+      "extra-experimental-features" = [ "nix-command" "flakes" ];
+    };
+  };
 }

@@ -22,6 +22,7 @@ services:
       - wakimae_db:/var/sqlite/wakimae
       - wakimae_store:/var/store
       - wakimae_fastembed:/var/fastembe
+      - nicegui_session_state:/app/src/.nicegui
     environment:
       FASTEMBED_CACHE_PATH: /fastembed
     secrets:
@@ -38,6 +39,8 @@ volumes:
   wakimae_store:
     driver: local
   wakimae_fastembed:
+    driver: local
+  nicegui_session_state:
     driver: local
 
 secrets:

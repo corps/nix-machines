@@ -13,12 +13,13 @@ from sqlalchemy import select
 from sqlalchemy.dialects.sqlite import insert
 
 from wakimae import config
-from wakimae.db import AsyncSession, SyncCursor
+from wakimae.db import AsyncSession, File, SyncCursor
 from wakimae.login import UserSession
 from wakimae.store import Store, content_hash_of
+from wakimae.utils import concurrently_run
 
 logger = logging.getLogger(__name__)
-logger.setLevel(logging.DEBUG)
+logger.setLevel(logging.INFO)
 
 
 class FileMetadata(pydantic.BaseModel):
@@ -199,8 +200,14 @@ async def do_sync(user_session: UserSession):
         store = Store(user=user, store_prefix=config.store_prefix)
 
         edited_files = await store.get_edited_files()
+
         for file in edited_files:
-            if local_path := store.check_content_path(file.content_hash):
+            if file.deleted:
+                logger.info(f"Attempting delete of file {file.path}@rev={file.rev!r}")
+                success = await sync.delete_file(file.path, file.rev)
+                if not success:
+                    logger.info("Conflict detected, will process on sync.")
+            elif local_path := store.check_content_path(file.content_hash):
                 logger.info(f"Uploading file {file.path}@rev={file.rev!r}")
                 conflicted = await sync.upload_file(
                     file.path, local_path, file.rev, file.content_hash
@@ -209,40 +216,27 @@ async def do_sync(user_session: UserSession):
                     logger.info("Conflict detected, will process on sync.")
             await store.mark_file_uploaded(file)
 
-        tombstones = await store.get_deleted_files()
-        for tombstone in tombstones:
-            logger.info(
-                f"Attempting delete of file {tombstone.path}@rev={tombstone.rev!r}"
-            )
-            success = await sync.delete_file(tombstone.path, tombstone.rev)
-            if not success:
-                logger.info("Conflict detected, will process on sync.")
-            await store.mark_tombstone_applied(tombstone)
-
         while True:
-            async with AsyncSession() as session:
-                result = await session.execute(
-                    select(SyncCursor.cursor)
-                    .filter(SyncCursor.user_id == user.id)
-                    .limit(1)
-                )
-            cursor_str = result.scalar_one_or_none() or ""
+            cursor = await SyncCursor.find_from_user_namespace(
+                user.id, "dropbox:list_folder"
+            )
+            cursor_str = cursor.cursor
 
-            logger.info(f"Syncing from cursor {cursor_str}...")
+            logger.info(f"Syncing from cursor {cursor_str!r}...")
             list_folder = await sync.list_folder(cursor_str)
 
             download_metas: list[FileMetadata] = []
-            mark_targets: list[tuple[FileMetadata, str]] = []
+            mark_targets: list[FileMetadata] = []
 
             for entry in list_folder.entries:
                 if isinstance(entry, FileMetadata):
-                    if content_hash := store.check_content_path(entry.content_hash):
-                        mark_targets.append((entry, content_hash))
+                    if store.check_content_path(entry.content_hash):
+                        mark_targets.append(entry)
                     else:
                         download_metas.append(entry)
 
                 if isinstance(entry, DeletedMetadata):
-                    logger.info(f"Deleting entry {entry.path_lower}...")
+                    logger.info(f"Deleting {entry.path_lower}...")
                     await store.delete_path(entry.path_lower, edit=False)
 
             for entry in download_metas:
@@ -250,28 +244,27 @@ async def do_sync(user_session: UserSession):
                     entry.path_lower, entry.rev
                 )
                 logger.info(f"Downloading {download_meta.path_lower}...")
-                content_hash = await store.store_file(local_path)
-                mark_targets.append((download_meta, content_hash))
+                await store.store_file(local_path)
+                mark_targets.append(download_meta)
 
-            for meta, content_hash in mark_targets:
-                await store.mark_user_file(
-                    content_hash, meta.path_lower, meta.id, meta.rev, False
-                )
+            for meta in mark_targets:
+                existing_by_path = await store.find_file_by_path(meta.path_lower)
+                if existing_by_path is not None:
+                    file = existing_by_path
+                else:
+                    file = File(
+                        path=meta.path_lower,
+                    )
+
+                file.content_hash = meta.content_hash
+                file.rev = meta.rev
+                file.pending_edits = False
+                file.deleted = False
+
+                await store.mark_user_file(file)
 
             logger.info(f"Updating cursor to {list_folder.cursor}")
-            async with AsyncSession() as session:
-                await session.execute(
-                    insert(SyncCursor)
-                    .values(
-                        user_id=user.id,
-                        cursor=list_folder.cursor,
-                    )
-                    .on_conflict_do_update(
-                        index_elements=("user_id",),
-                        set_=dict(cursor=list_folder.cursor),
-                    )
-                )
-                await session.commit()
+            await cursor.update_cursor(list_folder.cursor)
 
             if not list_folder.has_more:
                 logger.info("Done")

@@ -18,3 +18,4 @@ pytest-asyncio==0.23.6
 
 fastembed==0.2.6
 numpy==1.26.4
+sqlite-vss==0.1.2

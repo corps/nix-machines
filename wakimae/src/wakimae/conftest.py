@@ -4,6 +4,7 @@ import socket
 import tempfile
 
 import johen.generators.pydantic
+import johen.generators.sqlalchemy
 import pytest
 from johen import global_config
 from sqlalchemy import select
@@ -29,18 +30,6 @@ async def _select_a_user() -> User:
         return user
 
 
-async def _start_test_user_session() -> UserSession:
-    account = await get_current_account(AccessToken(config.dropbox_test_token))
-    return await complete_login(
-        TokenAuthorizationResponse(
-            access_token=config.dropbox_test_token,
-            account_id=account.account_id,
-            expires_in=10000000000,
-            refresh_token="",
-        )
-    )
-
-
 class MockedStorage:
     def __init__(self):
         self.user = {}
@@ -58,7 +47,7 @@ def mock_storage():
         app.storage = original_storage
 
 
-@pytest.fixture(autouse=True, scope="session")
+@pytest.fixture(scope="session")
 def a_user() -> User:
     return asyncio.run(_select_a_user())
 
@@ -72,12 +61,10 @@ def configure_test_db():
     asyncio.run(init_models())
 
 
-@pytest.fixture(autouse=True, scope="function")
-def a_user_session(configure_test_db) -> UserSession:
-    return asyncio.run(_start_test_user_session())
-
-
 global_config["matchers"].append(johen.generators.pydantic.generate_pydantic_instances)
+global_config["matchers"].append(
+    johen.generators.sqlalchemy.generate_sqlalchemy_instance
+)
 
 
 def find_free_port() -> int:

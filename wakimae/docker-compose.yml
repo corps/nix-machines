@@ -11,7 +11,8 @@ services:
       - ./.env:/run/secrets/wakimae_env
       - fastembed:/var/fastembed
     environment:
-      FASTEMBED_CACHE_PATH: /fastembed
+      FASTEMBED_CACHE_PATH: /var/fastembed
+    platform: linux/amd64
 
 volumes:
   db:

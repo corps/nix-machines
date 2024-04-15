@@ -71,6 +71,7 @@ class LegacyNote(pydantic.BaseModel):
     attributes: LegacyNoteAttributes = pydantic.Field(
         default_factory=LegacyNoteAttributes
     )
+    external_id: str = ""
 
 
 def parse_note(note: str) -> LegacyNote:

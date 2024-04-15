@@ -1,6 +1,8 @@
+import dataclasses
 import datetime
 import logging
-from typing import Literal, NewType, NotRequired, TypedDict
+from typing import (Awaitable, Callable, Literal, NewType, NotRequired,
+                    TypedDict, TypeVar)
 
 import aiohttp
 import pydantic
@@ -18,6 +20,8 @@ logger = logging.getLogger(__name__)
 logger.setLevel(logging.INFO)
 
 AccessToken = NewType("AccessToken", str)
+
+_T = TypeVar("_T")
 
 
 class TokenRequest(TypedDict):
@@ -289,3 +293,13 @@ async def start_root_user_session() -> UserSession:
         refresh_response = await do_refresh(user.refresh_token)
         sess = await complete_login(refresh_response)
         return sess
+
+
+@dataclasses.dataclass
+class UserFactory:
+    user: User
+
+    async def save(self):
+        async with AsyncSession() as session:
+            session.add(self.user)
+            await session.commit()
