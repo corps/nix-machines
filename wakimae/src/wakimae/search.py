@@ -64,35 +64,6 @@ class UserVectorStore:
     async def updated_with_content(self, file_id: int, contents: list[str]):
         embeddings = await self.create_embedding(contents)
 
-        logger.info(f"Adding embeddings for {file_id}")
-        async with self.prepare_db() as db:
-            await db.execute("BEGIN")
-            row_ids = [
-                row["row_id"]
-                for row in await db.execute_fetchall(
-                    "SELECT row_id FROM contents WHERE file_id=?", (file_id,)
-                )
-            ]
-            await db.execute("DELETE FROM contents WHERE rowid in ?", (row_ids,))
-            await db.execute("DELETE FROM vss_vectors WHERE rowid in ?", (row_ids,))
-
-            for content, embedding in zip(contents, embeddings):
-                logger.info(
-                    f"Inserting embedding for content {content}: {embedding.ndim}"
-                )
-                rowid = await db.execute_insert(
-                    "INSERT INTO contents (file_id, content) values (?, ?)",
-                    (file_id, content),
-                )
-                await db.execute(
-                    "INSERT INTO vss_vectors(rowid, contents_embedding) VALUES (?, ?)",
-                    (
-                        rowid,
-                        embedding.tobytes(),
-                    ),
-                )
-            await db.execute("COMMIT")
-
     @cached_property
     def model(self):
         return TextEmbedding(model_name=self.model_name)
@@ -123,48 +94,3 @@ async def synchronize_user_vector_store(user: User):
 
         logger.info(f"Updating cursor {cursor}")
         await sync_cursor.update_cursor(cursor)
-
-
-class PrepareDb(contextlib.AbstractAsyncContextManager):
-    context: contextlib.AsyncExitStack
-    path: str
-
-    def __init__(self, path: str):
-        self.context = contextlib.AsyncExitStack()
-        self.path = path
-
-    async def __aenter__(self) -> aiosqlite.Connection:
-        """Return `self` upon entering the runtime context."""
-        existed = os.path.exists(self.path)
-        connection = await self.context.enter_async_context(
-            aiosqlite.connect(self.path)
-        )
-        await connection.enable_load_extension(True)
-        await connection.load_extension(sqlite_vss.vector_loadable_path())
-        await connection.load_extension(sqlite_vss.vss_loadable_path())
-        await connection.enable_load_extension(False)
-
-        if not existed:
-            await connection.execute(
-                """
-                create table contents(
-                  content TEXT NOT NULL,
-                  file_id INTEGER NOT NULL
-                );
-
-                CREATE INDEX contents_key_idx ON contents (file_id)
-            """
-            )
-            await connection.execute(
-                """
-                create virtual table vss_vectors using vss0(
-                  contents_embedding(384)
-                );
-            """
-            )
-
-        return connection
-
-    async def __aexit__(self, __exc_type: Any, __exc_value: Any, __traceback: Any):
-        rv = await self.context.__aexit__(__exc_type, __exc_value, __traceback)
-        return rv

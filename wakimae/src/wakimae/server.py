@@ -1,5 +1,7 @@
+import asyncio
+
 import sentry_sdk
-from nicegui import Client, ui
+from nicegui import Client, run, ui
 
 from wakimae import config
 from wakimae.login import get_user_session
@@ -27,6 +29,23 @@ async def index(client: Client):
         return
 
     user_state = UserState(user=user, user_session=user_session, client=client)
+    asyncio.create_task(user_state.await_shutdown())  # noqa
+
+    async def notify_sync_state():
+        while not user_state.shutdown.is_set():
+            await user_state.run_or_end(user_state.sync_state_change.wait())
+            if user_state.shutdown.is_set():
+                return
+
+            if user_state.is_syncing:
+                ui.notify("Syncing starting...")
+
+            if user_state.is_syncing:
+                ui.notify("Syncing done.")
+
+    asyncio.create_task(notify_sync_state())  # noqa
+    user_state.start_sync()
+
     await navigation(user_state)
 
 

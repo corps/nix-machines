@@ -30,33 +30,30 @@ class UserState:
     sync_state_change: asyncio.Condition = dataclasses.field(
         default_factory=asyncio.Condition
     )
+    sync_task: asyncio.Task | None = None
 
     @cached_property
     def vector_store(self) -> UserVectorStore:
         return UserVectorStore(self.user)
 
-    @cached_property
-    def sync_task(self):
-        return asyncio.create_task(self._run_sync())
+    def start_sync(self):
+        if self.sync_task is not None:
+            self.sync_task.cancel()
+        self.sync_task = asyncio.create_task(self._run_sync())
 
-    async def _await_shutdown(self):
+    async def await_shutdown(self):
         await self.client.disconnected(check_interval=5.0)
         self.shutdown.set()
 
     async def _run_sync(self):
-        shutdown_task = asyncio.create_task(self._await_shutdown())
+        self.is_syncing = True
+        self.sync_state_change.notify_all()
         try:
-            while not self.shutdown.is_set():
-                self.is_syncing = True
-                self.sync_state_change.notify_all()
-                try:
-                    await self.run_or_end(do_sync(self.user_session))
-                    await self.run_or_end(synchronize_user_vector_store(self.user))
-                finally:
-                    self.is_syncing = False
-                    self.sync_state_change.notify_all()
+            await self.run_or_end(do_sync(self.user_session))
+            await self.run_or_end(synchronize_user_vector_store(self.user))
         finally:
-            shutdown_task.cancel()
+            self.is_syncing = False
+            self.sync_state_change.notify_all()
 
     async def run_or_end(
         self, c: Future[_A] | Coroutine[Any, Any, _A]

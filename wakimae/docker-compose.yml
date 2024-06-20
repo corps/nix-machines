@@ -4,15 +4,11 @@ services:
       context: .
     ports:
       - 8081:8080
-    volumes: &volumes
+    volumes:
       - ./src:/app/src
       - db:/var/sqlite/wakimae
       - store:/var/store/
       - ./.env:/run/secrets/wakimae_env
-      - fastembed:/var/fastembed
-    environment:
-      FASTEMBED_CACHE_PATH: /var/fastembed
-    platform: linux/amd64
 
 volumes:
   db:

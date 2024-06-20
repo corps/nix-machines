@@ -21,10 +21,7 @@ services:
     volumes:
       - wakimae_db:/var/sqlite/wakimae
       - wakimae_store:/var/store
-      - wakimae_fastembed:/var/fastembe
       - nicegui_session_state:/app/src/.nicegui
-    environment:
-      FASTEMBED_CACHE_PATH: /fastembed
     secrets:
       - wakimae_storage_secret
       - wakimae_env
