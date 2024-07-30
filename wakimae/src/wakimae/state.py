@@ -9,7 +9,6 @@ from nicegui import Client
 
 from wakimae.db import User
 from wakimae.login import UserSession
-from wakimae.search import UserVectorStore, synchronize_user_vector_store
 from wakimae.sync import do_sync
 
 _A = TypeVar("_A")
@@ -32,10 +31,6 @@ class UserState:
     )
     sync_task: asyncio.Task | None = None
 
-    @cached_property
-    def vector_store(self) -> UserVectorStore:
-        return UserVectorStore(self.user)
-
     def start_sync(self):
         if self.sync_task is not None:
             self.sync_task.cancel()
@@ -50,7 +45,6 @@ class UserState:
         self.sync_state_change.notify_all()
         try:
             await self.run_or_end(do_sync(self.user_session))
-            await self.run_or_end(synchronize_user_vector_store(self.user))
         finally:
             self.is_syncing = False
             self.sync_state_change.notify_all()

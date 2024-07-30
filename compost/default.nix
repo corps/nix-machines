@@ -1,8 +1,8 @@
-{ pkgs ? import <nixpkgs> {}, compostScriptPath }:
+{ pkgs ? import <nixpkgs> {}, compostScript}:
 {
     compost = pkgs.writeScriptBin "compost" ''
 #! ${pkgs.bash}/bin/bash
-exec ${builtins.toString compostScriptPath}
+exec ~/nix-machines/compost/${compostScript}
     '';
 
     update-channels = pkgs.writeScriptBin "update-channels" ''

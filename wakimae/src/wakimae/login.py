@@ -1,8 +1,7 @@
 import dataclasses
 import datetime
 import logging
-from typing import (Awaitable, Callable, Literal, NewType, NotRequired,
-                    TypedDict, TypeVar)
+from typing import Literal, NewType, NotRequired, TypedDict, TypeVar
 
 import aiohttp
 import pydantic

@@ -13,7 +13,7 @@ SOURCE="${BASH_SOURCE[0]}"
 while [ -h "$SOURCE" ]; do
   DIR="$( cd -P "$( dirname "$SOURCE" )" && pwd )"
   SOURCE="$(readlink "$SOURCE")"
-  [[ $SOURCE != /* ]] && SOURCE="$DIR/$SOURCE" 
+  [[ $SOURCE != /* ]] && SOURCE="$DIR/$SOURCE"
 done
 DIR="$( cd -P "$( dirname "$SOURCE" )" && pwd )"
 
@@ -35,23 +35,15 @@ if ! check fileExists /nix; then
   . /nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh
 fi
 
-if ! check fileExists ~/.nix-defexpr/channels/nixpkgs; then
-  if isDarwin; then
-    nix-channel --add https://nixos.org/channels/nixpkgs-23.05-darwin nixpkgs
-  fi
-
-  nix-channel --update
-fi
-
 check existsOnPath nix-env || exitWithMessage 1 "Cannot find nix executables on path."
 
 export NIX_PATH="$HOME/.nix-defexpr/channels:$NIX_PATH"
 
 if ! check existsOnPath darwin-rebuild; then
-  nix-build https://github.com/LnL7/nix-darwin/archive/master.tar.gz -A installer
-  ./result/bin/darwin-installer
-  . /etc/bashrc
-  echo "Add an imports = [ ../machine-config.nix ]; to your ~/.nixpkgs/darwin-configuration.nix file"
+  nix run nix-darwin -- switch --flake $DIR/..
+  # nix-build https://github.com/LnL7/nix-darwin/archive/master.tar.gz -A installer
+  # ./result/bin/darwin-installer
+  # . /etc/bashrc
 fi
 
 if ! check isLink "/etc/nix/nix.conf"; then
@@ -59,15 +51,15 @@ if ! check isLink "/etc/nix/nix.conf"; then
 fi
 
 if ! check fileExists ~/.profile.nix-machines; then
-  echo "source $DIR/dotfiles/profile" >> ~/.profile
+  echo "source $DIR/../dotfiles/profile" >> ~/.profile
   touch ~/.profile.nix-machines
 fi
 
 if ! check fileExists ~/.bashrc.nix-machines; then
-  echo "source $DIR/dotfiles/bashrc" >> ~/.bashrc
+  echo "source $DIR/../dotfiles/bashrc" >> ~/.bashrc
   touch ~/.bashrc.nix-machines
 fi
 
-export NIX_PATH=darwin-config=$HOME/.nixpkgs/darwin-configuration.nix:$NIX_PATH
-export NIX_PATH=$NIX_PATH:$HOME/.nix-defexpr/channels
-exec darwin-rebuild switch $@
+#export NIX_PATH=darwin-config=$HOME/.nixpkgs/darwin-configuration.nix:$NIX_PATH
+#export NIX_PATH=$NIX_PATH:$HOME/.nix-defexpr/channels
+exec darwin-rebuild switch --flake $DIR/.. $@

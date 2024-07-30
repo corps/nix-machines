@@ -1,0 +1,27 @@
+{
+  "name": "trains",
+  "version": "0.0.1",
+  "description": "",
+  "main": "entry/index.js",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "serve": "rm -rf .parcel-cache && parcel ./frontend/index.html"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/robertdp/purescript-web-router-example.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "parcel": "^2.6.2",
+    "process": "^0.11.10"
+  },
+  "dependencies": {
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "tachyons": "^4.12.0"
+  }
+}

@@ -124,9 +124,11 @@ class SyncClient:
                             autorename=False,
                             strict_conflict=True,
                             content_hash=content_hash,
-                            mode={".tag": "update", "update": rev}
-                            if rev
-                            else {".tag": "add"},
+                            mode=(
+                                {".tag": "update", "update": rev}
+                                if rev
+                                else {".tag": "add"}
+                            ),
                         )
                     ),
                     "Content-Type": "application/octet-stream",

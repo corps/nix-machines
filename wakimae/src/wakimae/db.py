@@ -1,18 +1,25 @@
-import asyncio
 import dataclasses
 import datetime
 from typing import Annotated, Any, Literal
 
-import aiosqlite
 from johen.examples import Examples
 from johen.generators import specialized
-from sqlalchemy import (Boolean, Connection, DateTime, ForeignKey, Index,
-                        Integer, String, UniqueConstraint, select, text)
+from sqlalchemy import (
+    Boolean,
+    Connection,
+    DateTime,
+    ForeignKey,
+    Index,
+    Integer,
+    String,
+    UniqueConstraint,
+    select,
+    text,
+)
 from sqlalchemy.dialects.sqlite import insert
 from sqlalchemy.event import listen
-from sqlalchemy.ext.asyncio import (AsyncAttrs, async_sessionmaker,
-                                    create_async_engine)
-from sqlalchemy.orm import DeclarativeBase, Mapped, Mapper, mapped_column
+from sqlalchemy.ext.asyncio import AsyncAttrs, async_sessionmaker, create_async_engine
+from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column
 
 async_engine = create_async_engine("sqlite+aiosqlite:////var/sqlite/wakimae/app.db")
 AsyncSession = async_sessionmaker(expire_on_commit=False)

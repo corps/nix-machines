@@ -9,10 +9,3 @@ help::
 
 test::
 	echo safe
-
-init:: # init submodules
-	git submodule init
-	git config -f .gitmodules submodule.ben-srs.branch master
-
-update:: # update the project submodules
-	git submodule update --init --recursive --remote

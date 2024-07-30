@@ -1,14 +1,14 @@
 { config, lib, pkgs, ... }:
 
-let 
-compostPkgs = (import ../../compost) { inherit pkgs; compostScriptPath = ../../compost/home.sh; };
+let
+compostPkgs = (import ../../compost) { inherit pkgs; compostScript = "home-compost.sh"; };
 
 in
 
 {
   home.username = "home";
   home.homeDirectory = "/home/home";
- 
+
   # Let Home Manager install and manage itself.
   programs.home-manager.enable = true;
 
@@ -26,7 +26,7 @@ in
     userEmail = "recursive.cookie.jar@gmail.com";
   };
 
-  programs.chromium = { 
+  programs.chromium = {
     enable = true;
   };
 

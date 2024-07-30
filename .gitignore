@@ -4,3 +4,4 @@ result
 nohup.out
 venv
 __pycache__
+.direnv

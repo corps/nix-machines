@@ -1,7 +1,7 @@
 { config, lib, pkgs, ... }:
 
 let
-compostPkgs = (import ../../compost) { inherit pkgs; compostScriptPath = ../../compost/darwin-compost.sh; };
+compostPkgs = (import ../../compost) { inherit pkgs; compostScript = "darwin-compost.sh"; };
 activate-window = (import ./activate-window.nix) { inherit pkgs; };
 
 in

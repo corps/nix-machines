@@ -1,9 +1,7 @@
 import asyncio
 import contextlib
-import functools
 from asyncio import Task
-from typing import (Any, AsyncContextManager, Awaitable, Callable, Coroutine,
-                    ParamSpec, Self, TypeVar)
+from typing import Any, Awaitable, Callable, Coroutine, ParamSpec, TypeVar
 
 from nicegui.elements.button import Button
 from nicegui.elements.input import Input
