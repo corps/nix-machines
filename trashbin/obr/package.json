@@ -1,5 +1,5 @@
 {
-  "name": "trains",
+  "name": "obr",
   "version": "0.0.1",
   "description": "",
   "main": "entry/index.js",
@@ -7,7 +7,7 @@
     "test": "test"
   },
   "scripts": {
-    "serve": "rm -rf .parcel-cache && parcel ./frontend/index.html"
+    "serve": "rm -rf .parcel-cache && mkdir -p dist/ && cp frontend/* dist/ && parcel ./frontend/index.html"
   },
   "repository": {
     "type": "git",
@@ -16,10 +16,13 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
+    "buffer": "^6.0.3",
     "parcel": "^2.6.2",
     "process": "^0.11.10"
   },
   "dependencies": {
+    "@owlbear-rodeo/sdk": "^2.4.0",
+    "primeflex": "^3.3.1",
     "primereact": "^10.8.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0"

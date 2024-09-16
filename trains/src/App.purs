@@ -10,28 +10,40 @@ import Concur.Core.Types (Widget)
 import Concur.React (HTML)
 import App.Router (mkRouter)
 import Concur.React.DOM as D
+import Concur.React.Props as P
 import App.Routes (Page(..), Route(..))
 import Data.Tuple (Tuple(Tuple))
-import Concur.Core.FRP (display, dyn)
+import Concur.Core.FRP (Signal, display, dyn, loopW)
 import Web.Router.Internal.Types (RouterInterface)
-import App.Components (mkContainer)
-import Effect.Class (liftEffect)
-import Control.Monad.Rec.Class (forever)
+import Data.Monoid (mempty)
+import Concur.React.Props (unsafeTargetValue)
+import App.Components (primeReactApp, button)
 
-newGame :: forall a. RouterInterface Page -> Widget HTML a
-newGame router = do
-    forever do
-        container <- liftEffect mkContainer
-        void $ container $ D.h2' [D.text "New Game"]
+type NewGameFormState = { numberPlayers :: String }
+
+newGame :: RouterInterface Page -> Signal HTML NewGameFormState
+newGame router =
+    loopW mempty formView
+    where
+    formView :: NewGameFormState -> Widget HTML NewGameFormState
+    formView state = do
+        state <- D.div'
+            [ D.h2' [D.text "New Game"]
+            , D.label' $ [D.text "Players"]
+            , D.input [P._type "number", unsafeTargetValue >>> { numberPlayers: _ } <$> P.onChange]
+            , button [] [D.text "Start New Game"]
+            ]
+        pure state
 --        liftEffect $ router.navigate $ NewGame
 
 mkHtmlApp :: forall a. Effect (Widget HTML a)
 mkHtmlApp = do
     Tuple router routes <- mkRouter $ Page NewGame
     void router.initialize
-    pure $ dyn do
+    pure $ primeReactApp [] [dyn do
         route <- routes
         case route of
-            Page NewGame -> display $ newGame router
+            Page NewGame -> void $ newGame router
             Page (PlayGame _) -> display $ D.text "loading"
             NotFound -> display $ D.text "Not Found"
+    ]

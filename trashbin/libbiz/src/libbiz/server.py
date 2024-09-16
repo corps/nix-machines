@@ -1,7 +1,6 @@
-from nicegui import ui
-
 from libbiz import research
 from libbiz.components import main_column
+from nicegui import ui
 
 with main_column():
     research.manage()

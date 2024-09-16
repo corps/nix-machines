@@ -1,0 +1,26 @@
+version: "3.8"
+services:
+  app:
+    image: corps/sheets
+    networks:
+      - traefik-public
+    deploy:
+      replicas: 1
+      labels:
+        - traefik.enable=true
+        - traefik.docker.network=traefik-public
+        - traefik.constraint-label=traefik-public
+        - traefik.http.routers.sheets-http.rule=Host(`sheets.kaihatsu.io`)
+        - traefik.http.routers.sheets-http.entrypoints=http
+        - traefik.http.routers.sheets-http.service=sheets
+        - traefik.http.services.sheets.loadbalancer.server.port=8080
+    volumes:
+      - nicegui_session_state:/app/src/.nicegui
+
+networks:
+  traefik-public:
+    external: true
+
+volumes:
+  nicegui_session_state:
+    driver: local

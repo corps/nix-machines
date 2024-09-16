@@ -1,10 +1,9 @@
 import asyncio
 
 import pydantic
+from libbiz.components import row
 from nicegui import ui
 from sqlalchemy import select
-
-from libbiz.components import row
 
 __all__ = ["manage"]
 
