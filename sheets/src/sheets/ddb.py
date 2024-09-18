@@ -1,4 +1,3 @@
-import dataclasses
 import json
 import math
 import re
@@ -7,8 +6,6 @@ from functools import cached_property
 from typing import Literal, TypeVar
 
 import aiohttp
-import pytest
-from nicegui import ui
 from pydantic import BaseModel, Field, ValidationError
 
 _M = TypeVar("_M", bound=BaseModel)
@@ -77,7 +74,7 @@ class Item(BaseModel):
         class GrantedModifier(BaseModel):
             type: str
             subType: str
-            value: int
+            value: int | None
 
         grantedModifiers: list[GrantedModifier] | None
 
@@ -96,6 +93,12 @@ class Armor(Item):
         properties: list[Property]
 
     definition: ArmorDefinition
+
+    @property
+    def max_dex_modifier(self) -> int | None:
+        if self.definition.armorTypeId == 2:
+            return 2
+        return None
 
 
 class Weapon(Item):
@@ -200,7 +203,7 @@ class Action(BaseModel):
     saveSuccessDescription: str | None
     saveStatId: int | None
     fixedSaveDc: int | None
-    attackTypeRange: None
+    attackTypeRange: int | None
     dice: Dice | None
     displayAsAttack: bool | None
 
@@ -336,77 +339,12 @@ class DDBCharacter(BaseModel):
 
     data: Data
 
-
-async def load_character(character_id: int) -> DDBCharacter:
-    async with aiohttp.ClientSession() as session:
-        res = await session.get(
-            f"https://character-service.dndbeyond.com/character/v5/character/{character_id}"
-        )
-        res.raise_for_status()
-        json_body = await res.json()
-        with open(f"character.{character_id}.json", "w") as f:
-            f.write(json.dumps(json_body, indent=2))
-
-        try:
-            return DDBCharacter.model_validate(json_body)
-        except ValidationError as err:
-            print(err.errors())
-            raise err
-
-
-STRENGTH = 0
-DEXTERITY = 1
-CONSTITUTION = 2
-INTELLIGENCE = 3
-WISDOM = 4
-CHARISMA = 5
-stat_name = {
-    STRENGTH: "strength",
-    DEXTERITY: "dexterity",
-    CONSTITUTION: "constitution",
-    INTELLIGENCE: "intelligence",
-    WISDOM: "wisdom",
-    CHARISMA: "charisma",
-}
-skills = {
-    "acrobatics": DEXTERITY,
-    "animal handling": WISDOM,
-    "arcana": INTELLIGENCE,
-    "athletics": STRENGTH,
-    "deception": WISDOM,
-    "history": INTELLIGENCE,
-    "insight": WISDOM,
-    "intimidation": CHARISMA,
-    "investigation": INTELLIGENCE,
-    "medicine": WISDOM,
-    "nature": INTELLIGENCE,
-    "perception": WISDOM,
-    "performance": CHARISMA,
-    "persuasion": CHARISMA,
-    "religion": INTELLIGENCE,
-    "sleight of hand": DEXTERITY,
-    "stealth": DEXTERITY,
-    "survival": WISDOM,
-}
-
-
-class ActivationType(IntEnum):
-    REACTION = 4
-    BONUS_ACTION = 3
-    ACTION = 1
-    RIDER = 8
-
-
-@dataclasses.dataclass
-class DDBCharacterCalculator:
-    character: DDBCharacter
-
     def calculate_stat(self, index: int):
-        if self.character.data.overrideStats[index].value:
-            return self.character.data.overrideStats[index].value
+        if self.data.overrideStats[index].value:
+            return self.data.overrideStats[index].value
         return (
-            self.character.data.stats[index].value
-            + (self.character.data.bonusStats[index].value or 0)
+            self.data.stats[index].value
+            + (self.data.bonusStats[index].value or 0)
             + sum(
                 m.value
                 for m in self.all_modifiers
@@ -460,7 +398,7 @@ class DDBCharacterCalculator:
 
     @property
     def speeds(self) -> list[tuple[str, int]]:
-        s = self.character.data.race.weightSpeeds.normal
+        s = self.data.race.weightSpeeds.normal
         return [
             (k, v)
             for k, v in (
@@ -488,36 +426,36 @@ class DDBCharacterCalculator:
     @cached_property
     def reactions(
         self,
-    ) -> list[tuple[Action, None] | tuple[Spell, DDBCharacter.Data.ClassSpells]]:
+    ) -> list[tuple[Action, None] | tuple[Spell, Data.ClassSpells]]:
         return [
             *(
                 (action, None)
-                for action in self.character.data.actions.race or []
+                for action in self.data.actions.race or []
                 if action.activation.activationType == ActivationType.REACTION
             ),
             *(
                 (action, None)
-                for action in self.character.data.actions.feat or []
+                for action in self.data.actions.feat or []
                 if action.activation.activationType == ActivationType.REACTION
             ),
             *(
                 (action, None)
-                for action in self.character.data.actions.item or []
+                for action in self.data.actions.item or []
                 if action.activation.activationType == ActivationType.REACTION
             ),
             *(
                 (action, None)
-                for action in self.character.data.actions.background or []
+                for action in self.data.actions.background or []
                 if action.activation.activationType == ActivationType.REACTION
             ),
             *(
                 (action, None)
-                for action in self.character.data.actions.class_ or []
+                for action in self.data.actions.class_ or []
                 if action.activation.activationType == ActivationType.REACTION
             ),
             *(
                 (spell, class_spells)
-                for class_spells in self.character.data.classSpells
+                for class_spells in self.data.classSpells
                 for spell in class_spells.spells
                 if spell.activation.activationType == ActivationType.REACTION
             ),
@@ -540,64 +478,43 @@ class DDBCharacterCalculator:
 
     @cached_property
     def levels(self):
-        return sum(c.level for c in self.character.data.classes)
+        return sum(c.level for c in self.data.classes)
 
     @cached_property
     def max_hp(self):
-        if self.character.data.overrideHitPoints is not None:
-            return self.character.data.overrideHitPoints
+        if self.data.overrideHitPoints is not None:
+            return self.data.overrideHitPoints
         return (
-            self.character.data.baseHitPoints
-            + (self.character.data.bonusHitPoints or 0)
+            self.data.baseHitPoints
+            + (self.data.bonusHitPoints or 0)
             + (self.calculate_mod(CONSTITUTION) * self.levels)
         )
 
     @cached_property
     def cur_hp(self):
-        return self.max_hp - self.character.data.removedHitPoints
+        return self.max_hp - self.data.removedHitPoints
 
     @cached_property
     def temp_hp(self):
-        return self.character.data.temporaryHitPoints
-
-    @cached_property
-    def ac(self):
-        return self.effective_ac(self.current_armor)
+        return self.data.temporaryHitPoints
 
     @cached_property
     def armors(self) -> list[Armor]:
-        return self.filter(self.character.data.inventory, Armor)
+        return self.filter(self.data.inventory, Armor)
 
     @cached_property
     def weapons(self) -> list[Weapon]:
-        return self.filter(self.character.data.inventory, Weapon)
-
-    @cached_property
-    def current_armor(self) -> Armor | None:
-        for a in self.armors:
-            if a.equipped:
-                return a
-        return None
+        return self.filter(self.data.inventory, Weapon)
 
     @cached_property
     def all_modifiers(self) -> list[Modifier]:
         return [
-            *(self.character.data.modifiers.feat or []),
-            *(self.character.data.modifiers.item or []),
-            *(self.character.data.modifiers.race or []),
-            *(self.character.data.modifiers.background or []),
-            *(self.character.data.modifiers.class_ or []),
+            *(self.data.modifiers.feat or []),
+            *(self.data.modifiers.item or []),
+            *(self.data.modifiers.race or []),
+            *(self.data.modifiers.background or []),
+            *(self.data.modifiers.class_ or []),
         ]
-
-    def effective_ac(self, armor: Armor | None):
-        result = self.calculate_mod(DEXTERITY)
-        if armor is None:
-            result += 10
-        else:
-            if armor.definition.armorTypeId == 2:
-                result = min(result, 2)
-            result += armor.definition.armorClass
-        return result
 
     @property
     def initiative(self):
@@ -621,38 +538,61 @@ class DDBCharacterCalculator:
         return result
 
 
-class CharacterSheet(BaseModel):
-    last_loaded: DDBCharacter
+async def load_character(character_id: int) -> DDBCharacter:
+    async with aiohttp.ClientSession() as session:
+        try:
+            res = await session.get(
+                f"https://character-service.dndbeyond.com/character/v5/character/{character_id}"
+            )
+            res.raise_for_status()
+            json_body = await res.json()
+            with open(f"character.{character_id}.json", "w") as f:
+                f.write(json.dumps(json_body, indent=2))
+        except aiohttp.client.ClientError:
+            with open(f"character.{character_id}.json", "r") as f:
+                json_body = json.loads(f.read())
 
-    current_hp: int = -1
-    temporary_hp: int = -1
-    current_armor: Armor | None = None
-
-
-async def load_sheet(character_id: int) -> CharacterSheet:
-    ddb_character = await load_character(character_id)
-    calculator = DDBCharacterCalculator(ddb_character)
-    return CharacterSheet(
-        last_loaded=ddb_character,
-        current_hp=calculator.cur_hp,
-        temporary_hp=calculator.temp_hp,
-        current_armor=calculator.current_armor,
-    )
+        return DDBCharacter.model_validate(json_body)
 
 
-async def update_sheet(sheet: CharacterSheet):
-    ddb_character = await load_character(sheet.last_loaded.data.id)
-    calculator = DDBCharacterCalculator(ddb_character)
-    if calculator.cur_hp != sheet.current_hp:
-        sheet.current_hp = calculator.cur_hp
-    if calculator.temp_hp != sheet.temporary_hp:
-        sheet.temporary_hp = calculator.temp_hp
-    if calculator.current_armor != sheet.current_armor:
-        sheet.current_armor = calculator.current_armor
-    sheet.last_loaded = ddb_character
+STRENGTH = 0
+DEXTERITY = 1
+CONSTITUTION = 2
+INTELLIGENCE = 3
+WISDOM = 4
+CHARISMA = 5
+stat_name = {
+    STRENGTH: "strength",
+    DEXTERITY: "dexterity",
+    CONSTITUTION: "constitution",
+    INTELLIGENCE: "intelligence",
+    WISDOM: "wisdom",
+    CHARISMA: "charisma",
+}
+skills = {
+    "acrobatics": DEXTERITY,
+    "animal handling": WISDOM,
+    "arcana": INTELLIGENCE,
+    "athletics": STRENGTH,
+    "deception": WISDOM,
+    "history": INTELLIGENCE,
+    "insight": WISDOM,
+    "intimidation": CHARISMA,
+    "investigation": INTELLIGENCE,
+    "medicine": WISDOM,
+    "nature": INTELLIGENCE,
+    "perception": WISDOM,
+    "performance": CHARISMA,
+    "persuasion": CHARISMA,
+    "religion": INTELLIGENCE,
+    "sleight of hand": DEXTERITY,
+    "stealth": DEXTERITY,
+    "survival": WISDOM,
+}
 
 
-@pytest.mark.asyncio
-async def test_get_characters():
-    character = await load_character(45344354)
-    DDBCharacter.model_validate(character.model_dump(mode="json", by_alias=True))
+class ActivationType(IntEnum):
+    REACTION = 4
+    BONUS_ACTION = 3
+    ACTION = 1
+    RIDER = 8

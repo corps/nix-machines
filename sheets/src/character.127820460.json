@@ -603,19 +603,19 @@
             {
               "id": 2,
               "name": "Finesse",
-              "description": "When making an attack with a finesse weapon, you use your choice of your Strength or Dexterity modifier for the attack and damage rolls. You must use the same modifier for both rolls. ",
+              "description": "<p>When making an attack with a Finesse weapon, use your choice of your Strength or Dexterity modifier for the attack and damage rolls. You must use the same modifier for both rolls.</p>",
               "notes": null
             },
             {
               "id": 4,
               "name": "Light",
-              "description": "A light weapon is small and easy to handle, making it ideal for use when fighting with two weapons. ",
+              "description": "<p>When you take the [action]Attack[/action] action on your turn and attack with a Light weapon, you can make one extra attack as a Bonus Action later on the same turn. That extra attack must be made with a different Light weapon, and you don\u2019t add your ability modifier to the extra attack\u2019s damage unless that modifier is negative. For example, you can attack with a [items]Shortsword[/items] in one hand and a [items]Dagger[/items] in the other using the [action]Attack[/action] action and a Bonus Action, but you don\u2019t add your Strength or Dexterity modifier to the damage roll of the Bonus Action unless that modifier is negative.</p>",
               "notes": null
             },
             {
               "id": 10,
               "name": "Thrown",
-              "description": "If a weapon has the thrown property, you can throw the weapon to make a ranged attack. If the weapon is a melee weapon, you use the same ability modifier for that attack roll and damage roll that you would use for a melee attack with the weapon. For example, if you throw a handaxe, you use your Strength, but if you throw a dagger, you can use either your Strength or your Dexterity, since the dagger has the finesse property. ",
+              "description": "<p>If a weapon has the Thrown property, you can throw the weapon to make a ranged attack, and you can draw that weapon as part of the attack. If the weapon is a Melee weapon, use the same ability modifier for the attack and damage rolls that you use for a melee attack with that weapon.</p>",
               "notes": null
             },
             {
@@ -716,19 +716,19 @@
             {
               "id": 2,
               "name": "Finesse",
-              "description": "When making an attack with a finesse weapon, you use your choice of your Strength or Dexterity modifier for the attack and damage rolls. You must use the same modifier for both rolls. ",
+              "description": "<p>When making an attack with a Finesse weapon, use your choice of your Strength or Dexterity modifier for the attack and damage rolls. You must use the same modifier for both rolls.</p>",
               "notes": null
             },
             {
               "id": 4,
               "name": "Light",
-              "description": "A light weapon is small and easy to handle, making it ideal for use when fighting with two weapons. ",
+              "description": "<p>When you take the [action]Attack[/action] action on your turn and attack with a Light weapon, you can make one extra attack as a Bonus Action later on the same turn. That extra attack must be made with a different Light weapon, and you don\u2019t add your ability modifier to the extra attack\u2019s damage unless that modifier is negative. For example, you can attack with a [items]Shortsword[/items] in one hand and a [items]Dagger[/items] in the other using the [action]Attack[/action] action and a Bonus Action, but you don\u2019t add your Strength or Dexterity modifier to the damage roll of the Bonus Action unless that modifier is negative.</p>",
               "notes": null
             },
             {
               "id": 10,
               "name": "Thrown",
-              "description": "If a weapon has the thrown property, you can throw the weapon to make a ranged attack. If the weapon is a melee weapon, you use the same ability modifier for that attack roll and damage roll that you would use for a melee attack with the weapon. For example, if you throw a handaxe, you use your Strength, but if you throw a dagger, you can use either your Strength or your Dexterity, since the dagger has the finesse property. ",
+              "description": "<p>If a weapon has the Thrown property, you can throw the weapon to make a ranged attack, and you can draw that weapon as part of the attack. If the weapon is a Melee weapon, use the same ability modifier for the attack and damage rolls that you use for a melee attack with that weapon.</p>",
               "notes": null
             },
             {
@@ -829,25 +829,25 @@
             {
               "id": 1,
               "name": "Ammunition",
-              "description": "You can use a weapon that has the ammunition property to make a ranged attack only if you have ammunition to fire from the weapon. Each time you attack with the weapon, you expend one piece of ammunition. Drawing the ammunition from a quiver, case, or other container is part of the attack (you need a free hand to load a one-handed weapon). At the end of the battle, you can recover half your expended ammunition by taking a minute to search the battlefield. \r\nIf you use a weapon that has the ammunition property to make a melee attack, you treat the weapon as an improvised weapon (see \"Improvised Weapons\" later in the section). A sling must be loaded to deal any damage when used in this way. ",
+              "description": "<p>You can use a weapon that has the Ammunition property to make a ranged attack only if you have ammunition to fire from it. The type of ammunition required is specified with the weapon\u2019s range. Each attack expends one piece of ammunition. Drawing the ammunition is part of the attack (you need a free hand to load a one-handed weapon). After a fight, you can spend 1 minute to recover half the ammunition (round down) you used in the fight; the rest is lost.</p>",
               "notes": null
             },
             {
               "id": 3,
               "name": "Heavy",
-              "description": "Creatures that are Small or Tiny have disadvantage on attack rolls with heavy weapons. A heavy weapon's size and bulk make it too large for a Small or Tiny creature to use effectively.",
+              "description": "<p>You have [rules]Disadvantage[/rules] on attack rolls with a Heavy weapon if it\u2019s a Melee weapon and your Strength score isn\u2019t at least 13 or if it\u2019s a Ranged weapon and your Dexterity score isn\u2019t at least 13.</p>",
               "notes": null
             },
             {
               "id": 7,
               "name": "Range",
-              "description": "A weapon that can be used to make a ranged attack has a range in parentheses after the ammunition or thrown property. The range lists two numbers. The first is the weapon's normal range in feet, and the second indicates the weapon's long range. When attacking a target beyond normal range, you have disadvantage on the attack roll. You can't attack a target beyond the weapon's long range. ",
+              "description": "<p>A Range weapon has a range in parentheses after the [wprop]Ammunition[/wprop] or [wprop]Thrown[/wprop] property. The range lists two numbers. The first is the weapon\u2019s normal range in feet, and the second is the weapon\u2019s long range. When attacking a target beyond normal range, you have [rules]Disadvantage[/rules] on the attack roll. You can\u2019t attack a target beyond the long range.</p>",
               "notes": null
             },
             {
               "id": 11,
               "name": "Two-Handed",
-              "description": "This weapon requires two hands when you attack with it. ",
+              "description": "<p>A Two-Handed weapon requires two hands when you attack with it.</p>",
               "notes": null
             },
             {
@@ -6219,8 +6219,8 @@
         "affectedClassFeatureDefinitionKey": "class-feature:299"
       }
     ],
-    "dateModified": "2024-09-16T05:48:55.00109Z",
-    "providedFrom": "database",
+    "dateModified": "2024-09-17T06:12:08.86Z",
+    "providedFrom": "storage",
     "canEdit": false,
     "status": 0,
     "statusSlug": null,
