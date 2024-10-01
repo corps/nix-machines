@@ -3,11 +3,11 @@
   "success": true,
   "message": "Character successfully received.",
   "data": {
-    "id": 112315775,
-    "userId": 116336608,
-    "username": "lorekeepers",
+    "id": 132817395,
+    "userId": 105722249,
+    "username": "Discomancey",
     "isAssignedToPlayer": true,
-    "readonlyUrl": "https://dndbeyond.com/characters/112315775",
+    "readonlyUrl": "https://dndbeyond.com/characters/132817395",
     "decorations": {
       "avatarUrl": "https://www.dndbeyond.com/avatars/39462/307/1581111423-112315775.jpeg?width=150&height=150&fit=crop&quality=95&auto=webp",
       "frameAvatarUrl": null,
@@ -337,7 +337,7 @@
       },
       "definitionId": null,
       "customBackground": {
-        "id": 112315775,
+        "id": 132817395,
         "entityTypeId": 1581111423,
         "name": null,
         "description": null,
@@ -933,7 +933,7 @@
       "enforceMulticlassRules": true,
       "enableOptionalClassFeatures": false,
       "enableOptionalOrigins": false,
-      "enableDarkMode": true,
+      "enableDarkMode": false,
       "enableContainerCurrency": false
     },
     "configuration": {
@@ -944,7 +944,7 @@
     "lifestyle": null,
     "inventory": [
       {
-        "id": 1265727647,
+        "id": 1514457001,
         "entityTypeId": 1439493548,
         "definition": {
           "id": 4749,
@@ -1047,16 +1047,16 @@
         "isAttuned": false,
         "equipped": true,
         "equippedEntityTypeId": 1581111423,
-        "equippedEntityId": 112315775,
+        "equippedEntityId": 132817395,
         "chargesUsed": 0,
         "limitedUse": null,
-        "containerEntityId": 112315775,
+        "containerEntityId": 132817395,
         "containerEntityTypeId": 1581111423,
-        "containerDefinitionKey": "1581111423:112315775",
+        "containerDefinitionKey": "1581111423:132817395",
         "currency": null
       },
       {
-        "id": 1265727058,
+        "id": 1514457002,
         "entityTypeId": 1439493548,
         "definition": {
           "id": 16,
@@ -1154,16 +1154,16 @@
         "isAttuned": false,
         "equipped": true,
         "equippedEntityTypeId": 1581111423,
-        "equippedEntityId": 112315775,
+        "equippedEntityId": 132817395,
         "chargesUsed": 0,
         "limitedUse": null,
-        "containerEntityId": 112315775,
+        "containerEntityId": 132817395,
         "containerEntityTypeId": 1581111423,
-        "containerDefinitionKey": "1581111423:112315775",
+        "containerDefinitionKey": "1581111423:132817395",
         "currency": null
       },
       {
-        "id": 1265727050,
+        "id": 1514457003,
         "entityTypeId": 1439493548,
         "definition": {
           "id": 30,
@@ -1261,16 +1261,16 @@
         "isAttuned": false,
         "equipped": true,
         "equippedEntityTypeId": 1581111423,
-        "equippedEntityId": 112315775,
+        "equippedEntityId": 132817395,
         "chargesUsed": 0,
         "limitedUse": null,
-        "containerEntityId": 112315775,
+        "containerEntityId": 132817395,
         "containerEntityTypeId": 1581111423,
-        "containerDefinitionKey": "1581111423:112315775",
+        "containerDefinitionKey": "1581111423:132817395",
         "currency": null
       },
       {
-        "id": 1265727049,
+        "id": 1514457004,
         "entityTypeId": 1439493548,
         "definition": {
           "id": 20,
@@ -1351,13 +1351,13 @@
         "equippedEntityId": null,
         "chargesUsed": 0,
         "limitedUse": null,
-        "containerEntityId": 112315775,
+        "containerEntityId": 132817395,
         "containerEntityTypeId": 1581111423,
-        "containerDefinitionKey": "1581111423:112315775",
+        "containerDefinitionKey": "1581111423:132817395",
         "currency": null
       },
       {
-        "id": 1265727059,
+        "id": 1514457005,
         "entityTypeId": 1439493548,
         "definition": {
           "id": 40,
@@ -1438,13 +1438,13 @@
         "equippedEntityId": null,
         "chargesUsed": 0,
         "limitedUse": null,
-        "containerEntityId": 112315775,
+        "containerEntityId": 132817395,
         "containerEntityTypeId": 1581111423,
-        "containerDefinitionKey": "1581111423:112315775",
+        "containerDefinitionKey": "1581111423:132817395",
         "currency": null
       },
       {
-        "id": 1265727060,
+        "id": 1514457006,
         "entityTypeId": 1439493548,
         "definition": {
           "id": 119,
@@ -1525,13 +1525,13 @@
         "equippedEntityId": null,
         "chargesUsed": 0,
         "limitedUse": null,
-        "containerEntityId": 112315775,
+        "containerEntityId": 132817395,
         "containerEntityTypeId": 1581111423,
-        "containerDefinitionKey": "1581111423:112315775",
+        "containerDefinitionKey": "1581111423:132817395",
         "currency": null
       },
       {
-        "id": 1265727051,
+        "id": 1514457007,
         "entityTypeId": 1439493548,
         "definition": {
           "id": 24,
@@ -1612,13 +1612,13 @@
         "equippedEntityId": null,
         "chargesUsed": 0,
         "limitedUse": null,
-        "containerEntityId": 1265727049,
+        "containerEntityId": 1514457004,
         "containerEntityTypeId": 1439493548,
-        "containerDefinitionKey": "1439493548:1265727049",
+        "containerDefinitionKey": "1439493548:1514457004",
         "currency": null
       },
       {
-        "id": 1265727052,
+        "id": 1514457008,
         "entityTypeId": 1439493548,
         "definition": {
           "id": 61,
@@ -1699,13 +1699,13 @@
         "equippedEntityId": null,
         "chargesUsed": 0,
         "limitedUse": null,
-        "containerEntityId": 1265727049,
+        "containerEntityId": 1514457004,
         "containerEntityTypeId": 1439493548,
-        "containerDefinitionKey": "1439493548:1265727049",
+        "containerDefinitionKey": "1439493548:1514457004",
         "currency": null
       },
       {
-        "id": 1265727055,
+        "id": 1514457009,
         "entityTypeId": 1439493548,
         "definition": {
           "id": 75,
@@ -1786,13 +1786,13 @@
         "equippedEntityId": null,
         "chargesUsed": 0,
         "limitedUse": null,
-        "containerEntityId": 1265727049,
+        "containerEntityId": 1514457004,
         "containerEntityTypeId": 1439493548,
-        "containerDefinitionKey": "1439493548:1265727049",
+        "containerDefinitionKey": "1439493548:1514457004",
         "currency": null
       },
       {
-        "id": 1265727057,
+        "id": 1514457010,
         "entityTypeId": 1439493548,
         "definition": {
           "id": 77,
@@ -1873,13 +1873,13 @@
         "equippedEntityId": null,
         "chargesUsed": 0,
         "limitedUse": null,
-        "containerEntityId": 1265727049,
+        "containerEntityId": 1514457004,
         "containerEntityTypeId": 1439493548,
-        "containerDefinitionKey": "1439493548:1265727049",
+        "containerDefinitionKey": "1439493548:1514457004",
         "currency": null
       },
       {
-        "id": 1265727053,
+        "id": 1514457011,
         "entityTypeId": 1439493548,
         "definition": {
           "id": 90,
@@ -1960,13 +1960,13 @@
         "equippedEntityId": null,
         "chargesUsed": 0,
         "limitedUse": null,
-        "containerEntityId": 1265727049,
+        "containerEntityId": 1514457004,
         "containerEntityTypeId": 1439493548,
-        "containerDefinitionKey": "1439493548:1265727049",
+        "containerDefinitionKey": "1439493548:1514457004",
         "currency": null
       },
       {
-        "id": 1265727054,
+        "id": 1514457012,
         "entityTypeId": 1439493548,
         "definition": {
           "id": 91,
@@ -2047,13 +2047,13 @@
         "equippedEntityId": null,
         "chargesUsed": 0,
         "limitedUse": null,
-        "containerEntityId": 1265727049,
+        "containerEntityId": 1514457004,
         "containerEntityTypeId": 1439493548,
-        "containerDefinitionKey": "1439493548:1265727049",
+        "containerDefinitionKey": "1439493548:1514457004",
         "currency": null
       },
       {
-        "id": 1265727056,
+        "id": 1514457013,
         "entityTypeId": 1439493548,
         "definition": {
           "id": 92,
@@ -2134,9 +2134,9 @@
         "equippedEntityId": null,
         "chargesUsed": 0,
         "limitedUse": null,
-        "containerEntityId": 1265727049,
+        "containerEntityId": 1514457004,
         "containerEntityTypeId": 1439493548,
-        "containerDefinitionKey": "1439493548:1265727049",
+        "containerDefinitionKey": "1439493548:1514457004",
         "currency": null
       }
     ],
@@ -2149,7 +2149,7 @@
     },
     "classes": [
       {
-        "id": 151454589,
+        "id": 180351909,
         "entityTypeId": 1446578651,
         "level": 9,
         "isStartingClass": true,
@@ -4305,8 +4305,8 @@
     "characterValues": [],
     "conditions": [],
     "deathSaves": {
-      "failCount": null,
-      "successCount": null,
+      "failCount": 0,
+      "successCount": 0,
       "isStabilized": false
     },
     "adjustmentXp": 0,
@@ -5822,47 +5822,6 @@
           "ammunition": null
         },
         {
-          "componentId": 256,
-          "componentTypeId": 12168134,
-          "id": "53375",
-          "entityTypeId": "222216831",
-          "limitedUse": null,
-          "name": "Open Hand Technique",
-          "description": null,
-          "snippet": "Whenever you hit with one of your Flurry of Blows attacks, you can impose one of the following effects on that target: fall prone if it fails a DEX saving throw (DC {{savedc:wis}}), get pushed up to 15 ft. if it fails a STR saving throw (DC {{savedc:wis}}), or it can't take reaction until the end of your next turn.",
-          "abilityModifierStatId": null,
-          "onMissDescription": null,
-          "saveFailDescription": null,
-          "saveSuccessDescription": null,
-          "saveStatId": null,
-          "fixedSaveDc": null,
-          "attackTypeRange": null,
-          "actionType": 3,
-          "attackSubtype": null,
-          "dice": null,
-          "value": null,
-          "damageTypeId": null,
-          "isMartialArts": false,
-          "isProficient": false,
-          "spellRangeType": null,
-          "displayAsAttack": null,
-          "range": {
-            "range": null,
-            "longRange": null,
-            "aoeType": null,
-            "aoeSize": null,
-            "hasAoeSpecialDescription": false,
-            "minimumRange": null
-          },
-          "activation": {
-            "activationTime": null,
-            "activationType": 8
-          },
-          "numberOfTargets": null,
-          "fixedToHit": null,
-          "ammunition": null
-        },
-        {
           "componentId": 257,
           "componentTypeId": 12168134,
           "id": "1025",
@@ -6010,6 +5969,47 @@
           "onMissDescription": "",
           "saveFailDescription": "",
           "saveSuccessDescription": "",
+          "saveStatId": null,
+          "fixedSaveDc": null,
+          "attackTypeRange": null,
+          "actionType": 3,
+          "attackSubtype": null,
+          "dice": null,
+          "value": null,
+          "damageTypeId": null,
+          "isMartialArts": false,
+          "isProficient": false,
+          "spellRangeType": null,
+          "displayAsAttack": null,
+          "range": {
+            "range": null,
+            "longRange": null,
+            "aoeType": null,
+            "aoeSize": null,
+            "hasAoeSpecialDescription": false,
+            "minimumRange": null
+          },
+          "activation": {
+            "activationTime": null,
+            "activationType": 8
+          },
+          "numberOfTargets": null,
+          "fixedToHit": null,
+          "ammunition": null
+        },
+        {
+          "componentId": 256,
+          "componentTypeId": 12168134,
+          "id": "53375",
+          "entityTypeId": "222216831",
+          "limitedUse": null,
+          "name": "Open Hand Technique",
+          "description": null,
+          "snippet": "Whenever you hit with one of your Flurry of Blows attacks, you can impose one of the following effects on that target: fall prone if it fails a DEX saving throw (DC {{savedc:wis}}), get pushed up to 15 ft. if it fails a STR saving throw (DC {{savedc:wis}}), or it can't take reaction until the end of your next turn.",
+          "abilityModifierStatId": null,
+          "onMissDescription": null,
+          "saveFailDescription": null,
+          "saveSuccessDescription": null,
           "saveStatId": null,
           "fixedSaveDc": null,
           "attackTypeRange": null,
@@ -6898,7 +6898,7 @@
     "classSpells": [
       {
         "entityTypeId": 1446578651,
-        "characterClassId": 151454589,
+        "characterClassId": 180351909,
         "spells": []
       }
     ],
@@ -6907,7 +6907,7 @@
     "creatures": [],
     "optionalOrigins": [],
     "optionalClassFeatures": [],
-    "dateModified": "2024-09-18T00:48:23.135Z",
+    "dateModified": "2024-09-21T01:01:52.349Z",
     "providedFrom": "storage",
     "canEdit": false,
     "status": 0,

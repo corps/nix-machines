@@ -1,6 +1,7 @@
 import dataclasses
 from typing import Any, Callable, Generic, MutableMapping, TypeVar
 
+import sentry_sdk
 from pydantic import BaseModel, ValidationError
 
 _T = TypeVar("_T", bound=BaseModel)
@@ -24,5 +25,6 @@ class ModelStorage(Generic[_T]):
         try:
             return self.t.model_validate(v)
         except ValidationError as e:
+            sentry_sdk.capture_exception(e)
             failure()
             return None

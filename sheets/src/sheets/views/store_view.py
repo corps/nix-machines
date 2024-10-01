@@ -6,8 +6,8 @@ from sheets.async_helpers import capture_events, run_async_renderer
 from sheets.components import (
     aligned_baseline_row,
     col,
+    full_input,
     growth_col,
-    long_input,
     with_classes,
 )
 from sheets.ddb import load_character
@@ -49,7 +49,7 @@ async def sheet_store():
 
         with aligned_baseline_row():
             with growth_col():
-                with long_input("Your dndbeyond character id or url") as url_input:
+                with full_input("Your dndbeyond character id or url") as url_input:
                     submit_events.capture(["keydown.enter"])
                     change_url_events.capture(["change"])
             with col():
