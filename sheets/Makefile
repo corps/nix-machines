@@ -6,10 +6,10 @@ include ../maketools/docker.mk
 
 .PHONY: up
 up: # Runs development server
-	docker-compose up
+	docker compose up
 
 .PHONY: down
 down:
-	docker-compose down
+	docker compose down
 	docker image prune
 	docker container prune

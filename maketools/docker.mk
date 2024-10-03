@@ -10,14 +10,14 @@ ports:=
 update:: # Updates development services
 
 ifeq ($(wildcard docker-compose.yml),docker-compose.yml)
-run:=docker-compose run $(compose_app)
+run:=docker compose run $(compose_app)
 .PHONY: run
 run: # Runs the service
-	docker-compose up
+	docker compose up
 
 .PHONY: update
 update:: # Updates development services
-	docker-compose build
+	docker compose build
 else
 run:=docker run -it --rm $(source_volumes) $(ports) $(tag_name)
 .PHONY: run

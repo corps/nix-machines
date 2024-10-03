@@ -60,6 +60,7 @@
               python311Packages.black
               python311Packages.isort
               python311Packages.pre-commit-hooks
+              python311Packages.pip-tools
               pre-commit
           ]);
           shellHook = ''

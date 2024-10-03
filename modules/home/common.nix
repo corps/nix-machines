@@ -16,7 +16,6 @@ in
     compost
     update-channels
     jq
-    docker-compose
     gnumake
   ]);
 

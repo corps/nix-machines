@@ -13,7 +13,6 @@ from johen import generate
 from johen.generators import specialized
 from johen.pytest import parametrize
 from sqlalchemy import or_, select, update
-
 from wakimae import config
 from wakimae.db import AsyncSession, File, User
 from wakimae.login import UserFactory

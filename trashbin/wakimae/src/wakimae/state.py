@@ -6,7 +6,6 @@ from functools import cached_property
 from typing import Any, Coroutine, TypeVar
 
 from nicegui import Client
-
 from wakimae.db import User
 from wakimae.login import UserSession
 from wakimae.sync import do_sync

@@ -2,15 +2,8 @@ version: "3.8"
 services:
   app:
     image: corps/jupyter
-    user: root
-    environment:
-      GRANT_SUDO: "yes"
     networks:
       - traefik-public
-      - mistral
-    command:
-      - "start-notebook.sh"
-      - "--NotebookApp.password='argon2:$$argon2id$$v=19$$m=10240,t=10,p=8$$2NWJkwYTtxatvj+4Tyz61Q$$0U1dMk+Wvoq5tFt9Z/JianidtEzsbAKbvxZjehOgtgo'"
     deploy:
       replicas: 1
       labels:
@@ -26,29 +19,12 @@ services:
           - node.role == manager
           - node.labels.jupyter == true
     volumes:
-      - jupyter_app_data:/home/jovyan/work
-      - jupyter_conda_env:/opt/conda
-      - jupyter_cache_dir:/home/jovyan/.cache
-      - jupyter_local_dir:/home/jovyan/.local
-    secrets:
-      - hugging_face_token
+      - jupyter_app_home:/app
 
 networks:
   traefik-public:
     external: true
-  mistral:
-    external: true
 
 volumes:
-  jupyter_app_data:
+  jupyter_app_home:
     driver: local
-  jupyter_conda_env:
-    driver: local
-  jupyter_cache_dir:
-    driver: local
-  jupyter_local_dir:
-    driver: local
-
-secrets:
-  hugging_face_token:
-    external: true

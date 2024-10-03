@@ -8,8 +8,10 @@ from sentry_sdk.integrations.starlette import StarletteIntegration
 
 from sheets.views.sheet_view import sheet_page
 from sheets.views.store_view import store_page
+from sheets.views.study import study_page
 
 ui.page("/")(store_page)
+ui.page("/study")(study_page)
 ui.page("/{ddb_id}")(sheet_page)
 
 

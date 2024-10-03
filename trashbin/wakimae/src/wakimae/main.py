@@ -1,7 +1,6 @@
 import dataclasses
 
 from nicegui import ui
-
 from wakimae import components
 from wakimae.components import main_column
 from wakimae.state import UserState

@@ -1,10 +1,22 @@
-FROM jupyter/tensorflow-notebook:python-3.11
-# https://jupyter-docker-stacks.readthedocs.io/en/latest/using/selecting.html#core-stacks
+FROM python:3.11
 
-USER root
-USER jovyan
+RUN apt-get update \
+    && apt-get install -y --no-install-recommends \
+    curl \
+    tini \
+    && rm -rf /var/lib/apt/lists/*
 
-COPY requirements.txt .
-RUN pip install -r requirements.txt
+ENTRYPOINT ["/usr/bin/tini", "--"]
 
-ENV PYTHONPATH=/home/jovyan
+RUN mkdir -p /app
+
+WORKDIR /app
+
+COPY requirements.frozen.txt .
+RUN pip install -r requirements.frozen.txt --no-cache-dir
+
+COPY src src
+COPY setup.py .
+RUN pip install --default-timeout=120 -e . --no-cache-dir --no-deps
+
+CMD jupyter notebook --ip=0.0.0.0 --port=8888 --no-browser --allow-root

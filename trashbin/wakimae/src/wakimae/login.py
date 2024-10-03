@@ -10,7 +10,6 @@ from aiohttp import ClientResponseError
 from nicegui import app, ui
 from sqlalchemy import select
 from sqlalchemy.dialects.sqlite import insert
-
 from wakimae import components, config
 from wakimae.db import AsyncSession, User
 from wakimae.utils import submits_with

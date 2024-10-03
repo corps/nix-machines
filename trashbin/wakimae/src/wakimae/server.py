@@ -2,7 +2,6 @@ import asyncio
 
 import sentry_sdk
 from nicegui import Client, run, ui
-
 from wakimae import config
 from wakimae.login import get_user_session
 from wakimae.main import main_page

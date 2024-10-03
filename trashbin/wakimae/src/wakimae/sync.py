@@ -11,7 +11,6 @@ import pydantic
 import pytest
 from sqlalchemy import select
 from sqlalchemy.dialects.sqlite import insert
-
 from wakimae import config
 from wakimae.db import AsyncSession, File, SyncCursor
 from wakimae.login import UserSession

@@ -3,3 +3,6 @@ deploy::
 
 include ../maketools/help.mk
 include ../maketools/docker.mk
+
+update-packages:
+	pip-compile --upgrade --strip-extras --quiet requirements.txt -o requirements.frozen.txt

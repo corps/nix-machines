@@ -9,12 +9,16 @@ import pytest
 from johen import global_config
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import create_async_engine
-
 from wakimae import config
 from wakimae.db import AsyncSession, Base, User, async_engine
-from wakimae.login import (AccessToken, TokenAuthorizationResponse,
-                           UserSession, complete_login, do_refresh,
-                           get_current_account)
+from wakimae.login import (
+    AccessToken,
+    TokenAuthorizationResponse,
+    UserSession,
+    complete_login,
+    do_refresh,
+    get_current_account,
+)
 
 
 async def init_models():

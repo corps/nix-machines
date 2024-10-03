@@ -10,7 +10,6 @@ from typing import Sequence, Union
 
 import sqlalchemy as sa
 from alembic import op
-
 from wakimae.db import (
     on_insert_file_update_sequence_trigger,
     on_update_file_update_sequence_trigger,

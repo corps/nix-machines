@@ -2,7 +2,6 @@ from logging.config import fileConfig
 
 from alembic import context
 from sqlalchemy import engine_from_config, pool
-
 from wakimae.db import Base
 
 # this is the Alembic Config object, which provides

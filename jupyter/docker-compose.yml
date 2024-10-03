@@ -3,6 +3,6 @@ services:
     build:
       context: .
     ports:
-      - 3000:3000
+      - 8888:8888
     volumes:
-      - ./:/home/jovyan
+      - ./:/app
