@@ -5,3 +5,7 @@ requests==2.*
 types-requests==2.*
 urllib3==1.*
 mistralai==1.*
+hatch-nodejs-version
+hatchling>=1.5.0
+guidance
+python-dotenv
