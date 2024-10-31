@@ -13,6 +13,7 @@ in
   programs.home-manager.enable = true;
 
   home.packages = (with pkgs; with compostPkgs; [
+    nixfmt-rfc-style
     compost
     update-channels
     jq

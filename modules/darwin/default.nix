@@ -24,6 +24,7 @@ in
 
   environment.systemPackages = with pkgs; with compostPkgs; [
     compost
+    nixfmt-rfc-style
     update-channels
     activate-window
   ];

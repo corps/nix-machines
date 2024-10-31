@@ -25,6 +25,93 @@ gnuGrepStub = pkgs.writeScriptBin "ggrep" ''
 echo ${pkgs.gnugrep}/bin/grep $@
 '';
 
+nixvim = inputs.nixvim;
+nixconfig = {
+    opts = {
+      number = true;         # Show line numbers
+      shiftwidth = 2;        # Tab width should be 2
+    };
+    vimAlias = true;
+
+    plugins.barbecue.enable = true;
+    plugins.chadtree.enable = true;
+    plugins.navic.enable = true;
+    plugins.navbuddy.enable = true;
+    plugins.web-devicons.enable = true;
+    plugins.telescope.enable = true;
+
+    plugins = {
+      conform-nvim = {
+        enable = true;
+        formattersByFt.python = [ "black" ];
+      };
+      lsp.servers.pylsp = {
+        enable = true;
+        settings.plugins = {
+          black.enabled = true;
+          flake8.enabled = true;
+          isort.enabled = true;
+          jedi.enabled = true;
+          mccabe.enabled = true;
+          pycodestyle.enabled = true;
+          pydocstyle.enabled = true;
+          pyflakes.enabled = true;
+          pylint.enabled = true;
+          rope.enabled = true;
+          yapf.enabled = true;
+        };
+      };
+    };
+
+    globals.mapleader = ",";
+
+    keymaps = [ 
+      {
+        mode = "n";
+        key = "<space>";
+        action = "<nop>";
+      }
+      {
+        mode = "n";
+        key = "<leader>l";
+        action = "<cmd>call setqflist([])<CR>";
+      }
+      {
+        mode = "n";
+        key = "<leader>v";
+        action = "<cmd>CHADopen<CR>";
+      }
+      {
+        mode = "n";
+        key = "<leader>ff";
+        action = "<cmd>Telescope find_files<cr>";
+      }
+      {
+        mode = "n";
+        key = "<leader>fg";
+        action = "<cmd>Telescope live_grep<cr>";
+      }
+      {
+        mode = "n";
+        key = "<leader>fb";
+        action = "<cmd>Telescope buffers<cr>";
+      }
+      {
+        mode = "n";
+        key = "<leader>fh";
+        action = "<cmd>Telescope buffers<cr>";
+      }
+    ];
+
+    colorschemes.rose-pine.enable = true;
+
+    extraPlugins = with pkgs.vimPlugins; [
+      vim-nix
+    ];
+};
+nixvim' = nixvim.legacyPackages.${pkgs.system};
+nvim = nixvim'.makeNixvim nixconfig;
+
 in
 
 {
@@ -43,7 +130,7 @@ in
 
   environment.systemPackages = with pkgs; [
     ngrok2
-    neovim
+    nvim
     nnn
     git
     gnused
@@ -57,6 +144,7 @@ in
     ncurses
     readline
     perl
+    ripgrep
 
     python311
     python312Linked
@@ -72,6 +160,8 @@ in
     easy-ps.purescript-language-server
     easy-ps.purs-tidy
   ];
+
+  system.stateVersion = 5;
 
   environment.shells = [ pkgs.bashInteractive ];
   programs.bash.enable = true;

@@ -6,3 +6,5 @@ services:
       - 8888:8888
     volumes:
       - ./:/app
+    env_file:
+      - .env

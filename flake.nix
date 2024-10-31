@@ -1,61 +1,41 @@
 {
   description = "system configurations";
   inputs = {
-    nixpkgs.url = "github:NixOS/nixpkgs/nixos-24.05";
+    nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
     flake-utils.url = "github:numtide/flake-utils";
     easy-purescript-nix.url = "github:justinwoo/easy-purescript-nix";
     nixvim = {
-#        url = "github:nix-community/nixvim";
-        url = "github:nix-community/nixvim/nixos-24.05";
+        url = "github:nix-community/nixvim";
+#       url = "github:nix-community/nixvim/nixos-24.05";
         inputs.nixpkgs.follows = "nixpkgs";
     };
     nix-darwin.url = "github:LnL7/nix-darwin";
     nix-darwin.inputs.nixpkgs.follows = "nixpkgs";
+    poetry2nix.url = "github:nix-community/poetry2nix";
   };
 
 
-  outputs = inputs@{ nixpkgs, flake-utils, easy-purescript-nix, nixvim, nix-darwin, ... }:
+  outputs = inputs@{ nixpkgs, flake-utils, easy-purescript-nix, nixvim, nix-darwin, poetry2nix, ... }:
     {
-        darwinConfigurations = {
+        darwinConfigurations = rec {
             RY0KG7652H = nix-darwin.lib.darwinSystem {
                 modules = [ ./sentry-laptop/home.nix ];
                 specialArgs = { inherit inputs; };
             };
+            RY0KG7652H-2 = RY0KG7652H;
         };
     } //
     flake-utils.lib.eachDefaultSystem (system:
       let
         pkgs = nixpkgs.legacyPackages.${system};
-        nixconfig = {
-            opts = {
-              number = true;         # Show line numbers
-              shiftwidth = 2;        # Tab width should be 2
-            };
-
-            plugins.lsp.enable = true;
-            plugins.barbecue.enable = true;
-            plugins.chadtree.enable = true;
-
-            globals.mapleader = "<space>";
-
-            keymaps = [
-            ];
-
-            colorschemes.rose-pine.enable = true;
-
-            extraPlugins = with pkgs.vimPlugins; [
-              vim-nix
-            ];
-        };
-        nixvim' = nixvim.legacyPackages.${system};
-        nvim = nixvim'.makeNixvim nixconfig;
       in
       {
-        devShells.default = pkgs.mkShell {
+        devShells.default = 
+        let inherit (poetry2nix.lib.mkPoetry2Nix { pkgs = nixpkgs.legacyPackages.${system}; }) mkPoetryEnv; in
+        pkgs.mkShell {
           name = "development shell";
-          buildInputs = [
-            nvim
-          ] ++ (with pkgs; [
+          
+          buildInputs =  (with pkgs; [
               python311
               python311Packages.black
               python311Packages.isort
