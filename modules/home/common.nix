@@ -51,7 +51,10 @@ in
     };
   };
 
+  programs.bash.enable = true;
   programs.direnv.enable = true;
+  programs.direnv.enableBashIntegration = true;
+  programs.direnv.nix-direnv.enable = true;
   # programs.direnv.enableNixDirenvIntegration = true;
 
   # You can update Home Manager without changing this value. See

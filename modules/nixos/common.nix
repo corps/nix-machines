@@ -71,7 +71,7 @@ in
   # Port ranges could be specified.
 
   # networking.extraHosts = "";
-  networking.nameservers = [ "10.0.0.14" "1.1.1.1" "8.8.8.8" "8.8.4.4" ];
+  networking.nameservers = [ "1.1.1.1" "8.8.8.8" "8.8.4.4" ];
 
   # Security
   security.sudo.extraRules = [
@@ -100,5 +100,9 @@ in
   nix.gc.automatic = true;
   nixpkgs.config.allowUnfree = true;
   nix.gc.options = "-d";
+  nix.package = pkgs.nix;
+  nix.settings = {
+    "extra-experimental-features" = [ "nix-command" "flakes" ];
+  };
 }
 
