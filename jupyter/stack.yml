@@ -20,6 +20,7 @@ services:
           - node.labels.jupyter == true
     volumes:
       - jupyter_app_home:/app
+      - jupyter_root:/root/.jupyter
 
 networks:
   traefik-public:
@@ -27,4 +28,6 @@ networks:
 
 volumes:
   jupyter_app_home:
+    driver: local
+  jupyter_root:
     driver: local

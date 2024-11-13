@@ -16,8 +16,8 @@ WORKDIR /app
 COPY requirements.frozen.txt .
 RUN pip install -r requirements.frozen.txt --no-cache-dir
 
-COPY src src
-COPY setup.py .
-RUN pip install --default-timeout=120 -e . --no-cache-dir --no-deps
+# COPY src src
+# COPY setup.py .
+# RUN pip install --default-timeout=120 -e . --no-cache-dir --no-deps
 
 CMD jupyter notebook --ip=0.0.0.0 --port=8888 --no-browser --allow-root
