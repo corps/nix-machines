@@ -8,7 +8,7 @@ aiofiles==24.1.0
     # via nicegui
 aiohappyeyeballs==2.4.3
     # via aiohttp
-aiohttp==3.10.9
+aiohttp==3.10.11
     # via nicegui
 aiosignal==1.3.1
     # via aiohttp
