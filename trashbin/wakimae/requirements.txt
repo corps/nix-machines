@@ -12,7 +12,7 @@ aiohttp==3.9.3
 aiosqlite==0.20.0
 python-dateutil==2.9.0.post0
 dropbox==11.36.2
-sentry-sdk==1.44.0
+sentry-sdk==2.8.0
 mitmproxy==10.2.4
 pytest-asyncio==0.23.6
 
