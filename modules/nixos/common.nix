@@ -1,10 +1,10 @@
 { config, lib, pkgs, ... }:
 
-{
-  imports = [
-    ./docker-services.nix
-  ];
+let
+ngrok2 = pkgs.callPackage ../../ngrok {};
+in
 
+{
   # Environment
   environment.variables = {
     EDITOR = "nvim";
@@ -12,7 +12,7 @@
   
   # Packages
   environment.systemPackages = with pkgs; [
-    wget 
+    wget
     git bash
     neovim 
     mkcert
@@ -21,7 +21,7 @@
     dpkg
     binutils
     patchelf
-    ngrok
+    ngrok2
     ripgrep
     nnn
     nodejs
@@ -33,12 +33,10 @@
   users.extraUsers.home = {
     isNormalUser = true;
     extraGroups = ["wheel" "networkmanager" "docker"];
-    openssh.authorizedKeys.keys = (import ../../authorized-keys.nix).github.corps;
+    openssh.authorizedKeys.keys = (import ./authorized-keys.nix).github.corps;
   };
 
   networking.wireless.userControlled.enable = true;
-  # networking.
-
   # networking
   networking.wireless.networks = {
     projector = {
@@ -61,7 +59,7 @@
       psk = "mebejefe";
     };
     "Brutal Poodle" = {
-      psk = "Awesome1111!";
+      psk = "Awesome!!!!";
     };
     "Hilton Honors" = {};
     HHonors = {};
@@ -73,7 +71,7 @@
   # Port ranges could be specified.
 
   # networking.extraHosts = "";
-  networking.nameservers = [ "10.0.0.14" "1.1.1.1" "8.8.8.8" "8.8.4.4" ];
+  networking.nameservers = [ "1.1.1.1" "8.8.8.8" "8.8.4.4" ];
 
   # Security
   security.sudo.extraRules = [
@@ -102,5 +100,9 @@
   nix.gc.automatic = true;
   nixpkgs.config.allowUnfree = true;
   nix.gc.options = "-d";
+  nix.package = pkgs.nix;
+  nix.settings = {
+    "extra-experimental-features" = [ "nix-command" "flakes" ];
+  };
 }
 

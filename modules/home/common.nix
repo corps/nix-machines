@@ -1,45 +1,23 @@
 { config, lib, pkgs, ... }:
 
-let compost = pkgs.writeScriptBin "compost" ''
-#! ${pkgs.bash}/bin/bash
-cd $HOME/nix-machines
-exec ./home-compost.sh
-'';
-
-update-channels = pkgs.writeScriptBin "update-channels" ''
-#! ${pkgs.bash}/bin/bash
-nix-channel --update
-sudo nix-channel --update
-'';
-
-unstable = import <unstable> {};
-# beancount = unstable.beancount;
+let
+compostPkgs = (import ../../compost) { inherit pkgs; compostScript = "home-compost.sh"; };
 
 in
 
 {
   home.username = "home";
   home.homeDirectory = "/home/home";
- 
+
   # Let Home Manager install and manage itself.
   programs.home-manager.enable = true;
 
-  home.packages = (with pkgs; [
-    htop
-    add-bin-to-path
-    my_neovim
-    upgrade-packages
-    fetch_from_pypi
-    fetch_from_github
-    ngrok
+  home.packages = (with pkgs; with compostPkgs; [
+    nixfmt-rfc-style
     compost
     update-channels
     jq
-    docker-compose
     gnumake
-    beancount
-    bc
-    act
   ]);
 
   programs.git = {
@@ -48,7 +26,7 @@ in
     userEmail = "recursive.cookie.jar@gmail.com";
   };
 
-  programs.chromium = { 
+  programs.chromium = {
     enable = true;
   };
 
@@ -73,7 +51,10 @@ in
     };
   };
 
-  # programs.direnv.enable = true;
+  programs.bash.enable = true;
+  programs.direnv.enable = true;
+  programs.direnv.enableBashIntegration = true;
+  programs.direnv.nix-direnv.enable = true;
   # programs.direnv.enableNixDirenvIntegration = true;
 
   # You can update Home Manager without changing this value. See

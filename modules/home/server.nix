@@ -1,7 +1,4 @@
 { config, pkgs, lib, ... }:
-let
-unstable = import <unstable> {};
-in
 
 {
   imports = [

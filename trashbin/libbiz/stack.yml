@@ -1,0 +1,30 @@
+version: "3.8"
+services:
+  app:
+    image: corps/libbiz
+    networks:
+      - traefik-public
+    deploy:
+      replicas: 1
+      labels:
+        - traefik.enable=true
+        - traefik.docker.network=traefik-public
+        - traefik.constraint-label=traefik-public
+        - traefik.http.routers.libbiz-http.rule=Host(`libbiz.kaihatsu.io`)
+        - traefik.http.routers.libbiz-http.entrypoints=http
+        - traefik.http.routers.libbiz-http.service=jupyter
+        - traefik.http.services.libbiz.loadbalancer.server.port=8888
+      placement:
+        constraints:
+          - node.role == manager
+          - node.labels.libbiz == true
+    volumes:
+      - libbiz_db:/var/sqlite/libbiz
+
+networks:
+  traefik-public:
+    external: true
+
+volumes:
+  libbiz_db:
+    driver: local

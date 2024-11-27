@@ -1,0 +1,3 @@
+[submodule "ben-srs"]
+	path = ben-srs
+	url = git@github.com:corps/ben-srs.git

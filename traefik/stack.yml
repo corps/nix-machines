@@ -1,0 +1,60 @@
+version: '3.8'
+
+services:
+
+  traefik:
+    image: traefik:v2.2
+    ports:
+      - 80:80
+    deploy:
+      placement:
+        constraints:
+          - node.role == manager
+      labels:
+        - traefik.enable=true
+        - traefik.docker.network=traefik-public
+        - traefik.constraint-label=traefik-public
+        - traefik.http.routers.traefik-public-https.rule=Host(`traefik.kaihatsu.io`)
+        - traefik.http.routers.traefik-public-https.entrypoints=http
+        - traefik.http.routers.traefik-public-https.service=api@internal
+        - traefik.http.routers.traefik-public-https.middlewares=admin-auth
+        - "traefik.http.middlewares.admin-auth.basicauth.usersfile=/users"
+        - traefik.http.services.traefik-public.loadbalancer.server.port=8080
+    volumes:
+      # Add Docker as a mounted volume, so that Traefik can read the labels of other services
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+    command:
+      # Enable Docker in Traefik, so that it reads labels from Docker services
+      - --providers.docker
+      # Add a constraint to only use services with the label "traefik.constraint-label=traefik-public"
+      - --providers.docker.constraints=Label(`traefik.constraint-label`, `traefik-public`)
+      # Do not expose all Docker services, only the ones explicitly exposed
+      - --providers.docker.exposedbydefault=false
+      # Enable Docker Swarm mode
+      - --providers.docker.swarmmode
+      # Create an entrypoint "http" listening on port 80
+      - --entrypoints.http.address=:80
+      # Create an entrypoint "https" listening on port 443
+      - --entrypoints.https.address=:443
+      # Enable the access log, with HTTP requests
+      - --accesslog
+      # Enable the Traefik log, for configurations and errors
+      - --log
+      # Enable the Dashboard and API
+      - --api
+    networks:
+      # Use the public network created to be shared between Traefik and
+      # any other service that needs to be publicly available with HTTPS
+      - traefik-public
+    configs:
+      - source: users
+        target: /users
+
+networks:
+  traefik-public:
+    external: true
+
+configs:
+  users:
+    external: true
+    name: ${users:-users}

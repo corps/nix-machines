@@ -1,0 +1,12 @@
+services:
+  app:
+    build:
+      context: .
+    ports:
+      - 8081:8080
+    volumes:
+      - ./src:/app/src
+      - db:/var/sqlite/libbiz
+
+volumes:
+  db:

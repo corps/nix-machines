@@ -2,6 +2,6 @@
 
 {
   # security.enableAccessibilityAccess = true;
-  services.khd.enable = true;
-  environment.systemPackages = with pkgs; [ khd ];
+  services.skhd.enable = true;
+  # environment.systemPackages = with pkgs; [ khd ];
 }

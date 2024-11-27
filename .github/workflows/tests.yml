@@ -1,0 +1,26 @@
+name: CI for the python module
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - python/**
+  pull_request:
+    paths:
+      - python/**
+
+jobs:
+  tests:
+    name: "Run tests"
+    runs-on: ubuntu-latest
+    strategy:
+      max-parallel: 3
+    steps:
+      - uses: actions/checkout@v3
+        name: Checkout code
+      - uses: actions/setup-python@v2
+        with:
+          python-version: 3.11
+      - name: run tests
+        run: |
+          make test

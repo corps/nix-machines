@@ -1,6 +1,9 @@
 { config, pkgs, ... }:
 {
-  imports = [ ../modules/home/server.nix ];
+  imports = [ ../modules/home/workstation.nix ];
   
   home.stateVersion = "20.03";
+  home.packages = with pkgs; [
+    browsh
+  ];
 }

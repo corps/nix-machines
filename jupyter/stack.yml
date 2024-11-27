@@ -1,0 +1,33 @@
+version: "3.8"
+services:
+  app:
+    image: corps/jupyter
+    networks:
+      - traefik-public
+    deploy:
+      replicas: 1
+      labels:
+        - traefik.enable=true
+        - traefik.docker.network=traefik-public
+        - traefik.constraint-label=traefik-public
+        - traefik.http.routers.jupyter-http.rule=Host(`jupyter.kaihatsu.io`)
+        - traefik.http.routers.jupyter-http.entrypoints=http
+        - traefik.http.routers.jupyter-http.service=jupyter
+        - traefik.http.services.jupyter.loadbalancer.server.port=8888
+      placement:
+        constraints:
+          - node.role == manager
+          - node.labels.jupyter == true
+    volumes:
+      - jupyter_app_home:/app
+      - jupyter_root:/root/.jupyter
+
+networks:
+  traefik-public:
+    external: true
+
+volumes:
+  jupyter_app_home:
+    driver: local
+  jupyter_root:
+    driver: local

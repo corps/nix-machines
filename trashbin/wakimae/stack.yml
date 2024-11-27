@@ -1,0 +1,49 @@
+version: "3.8"
+services:
+  app:
+    image: corps/wakimae
+    networks:
+      - traefik-public
+    deploy:
+      replicas: 1
+      labels:
+        - traefik.enable=true
+        - traefik.docker.network=traefik-public
+        - traefik.constraint-label=traefik-public
+        - traefik.http.routers.wakimae-http.rule=Host(`wakimae.kaihatsu.io`)
+        - traefik.http.routers.wakimae-http.entrypoints=http
+        - traefik.http.routers.wakimae-http.service=wakimae
+        - traefik.http.services.wakimae.loadbalancer.server.port=8080
+      placement:
+        constraints:
+          - node.role == manager
+          - node.labels.wakimae == true
+    volumes:
+      - wakimae_db:/var/sqlite/wakimae
+      - wakimae_store:/var/store
+      - nicegui_session_state:/app/src/.nicegui
+    secrets:
+      - wakimae_storage_secret
+      - wakimae_env
+
+networks:
+  traefik-public:
+    external: true
+
+volumes:
+  wakimae_db:
+    driver: local
+  wakimae_store:
+    driver: local
+  wakimae_fastembed:
+    driver: local
+  nicegui_session_state:
+    driver: local
+
+secrets:
+  wakimae_storage_secret:
+    external: true
+  wakimae_env:
+    external: true
+  hugging_face_token:
+    external: true

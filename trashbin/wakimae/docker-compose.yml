@@ -1,0 +1,16 @@
+services:
+  app:
+    build:
+      context: .
+    ports:
+      - 8081:8080
+    volumes:
+      - ./src:/app/src
+      - db:/var/sqlite/wakimae
+      - store:/var/store/
+      - ./.env:/run/secrets/wakimae_env
+
+volumes:
+  db:
+  store:
+  fastembed:
