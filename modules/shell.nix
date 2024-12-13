@@ -21,15 +21,10 @@ with lib;
 
     buildInputs = environment.systemPackages;
     shellHook = programs.bash.interactiveShellInit;
-
-    name = mkOption {
-      type = types.string;
-    };
   };
 
   config = {
     buildInputs = config.environment.systemPackages;
     shellHook = config.programs.bash.interactiveShellInit;
-    name = config.name;
   };
 }

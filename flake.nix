@@ -30,18 +30,14 @@
           ./modules/python.nix
           ./modules/purescript.nix
           { 
-            name = "nix-machines development shell";
+            _module.args = { inherit pkgs; };
             environment.development.enable = true;
             programs.python.default = pkgs.python311;
           }
         ]; }).config;
       in
       {
-        devShells.default = pkgs.mkShell {
-          name = "development shell";
-          buildInputs = config.systemPackages;
-          shellHook = config.interactiveShellInit;
-        };
+        devShells.default = pkgs.mkShell { inherit (config) shellHook buildInputs; name = "nix-machines development shell"; };
      }
   );
 }

@@ -1,6 +1,7 @@
 { config, lib, pkgs, ... }:
 
 with lib;
+let compost = import ../compost { inherit pkgs; }; in
 
 {
   imports = [
@@ -12,7 +13,7 @@ with lib;
       systemPackages = (if config.environment.development.enable then with pkgs; [
         nil
         nixfmt-rfc-style
-      ] else []);
+      ] else []) ++ [ compost ];
     };
   
     nix = {
