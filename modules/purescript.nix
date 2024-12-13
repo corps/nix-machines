@@ -1,7 +1,16 @@
-{ inputs ? {}, easy-ps ? inputs.easy-purescript-nix.packages.${pkgs.system}, config, lib, pkgs, ... }:
+{
+  inputs,
+  config,
+  lib,
+  pkgs,
+  ...
+}:
 
 with lib;
-let cfg = config.programs.purescript; in
+let
+  cfg = config.programs.purescript;
+  easy-ps = inputs.easy-purescript-nix.packages.${pkgs.system};
+in
 
 {
   imports = [
@@ -11,12 +20,6 @@ let cfg = config.programs.purescript; in
 
   options = {
     programs.purescript = {
-      enable = mkOption {
-        type = types.bool;
-        default = false;
-        description = "enable purescript environment";
-      };
-      
       default = mkOption {
         type = types.package;
         default = easy-ps.purs-0_15_15;
@@ -25,18 +28,19 @@ let cfg = config.programs.purescript; in
     };
   };
 
-  config = mkIf cfg.enable {
-    programs.bash.interactiveShellInit = if config.environment.development.enable then ''
+  # Spago isn't building for arm right now, CPU error
+  config = mkIf (config.environment.development.enable && pkgs.system != "aarch64-darwin") {
+    programs.bash.interactiveShellInit = ''
       source <(spago --bash-completion-script `which spago`)
-    '' else "";
-    
+    '';
+
     environment = {
-      systemPackages = (if config.environment.development.enable then [
-        cfg.default 
+      systemPackages = [
+        cfg.default
         easy-ps.spago
         easy-ps.purescript-language-server
         easy-ps.purs-tidy
-      ] else []);
+      ];
     };
   };
 }

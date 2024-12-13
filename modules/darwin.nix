@@ -1,19 +1,30 @@
-{ config, lib, pkgs, ... }:
+{
+  config,
+  lib,
+  pkgs,
+  inputs,
+  ...
+}:
 
 with lib;
 
-let
-edgeDelay = config.system.defaults.dockEx."workspaces-edge-delay";
-showWriteDefaults = delay: ''
-  echo Writing worksapces edge delay value
-	echo defaults write com.apple.dock workspaces-edge-delay -float ${toString delay}
-	defaults write com.apple.dock workspaces-edge-delay -float ${toString delay}
-'';
-
-in
+# let
+#   edgeDelay = config.system.defaults.dockEx."workspaces-edge-delay";
+#   showWriteDefaults = delay: ''
+#       echo Writing worksapces edge delay value
+#     	echo defaults write com.apple.dock workspaces-edge-delay -float ${toString delay}
+#     	defaults write com.apple.dock workspaces-edge-delay -float ${toString delay}
+#   '';
+#
+# in
 
 {
-  imports = [ 
+  imports = [
+    {
+      _module.args = {
+        inherit inputs;
+      };
+    }
     ./c.nix
     ./libs.nix
     ./nix.nix
@@ -21,14 +32,14 @@ in
     ./purescript.nix
     ./python.nix
     ./tools.nix
+    ./lean.nix
   ];
 
   options = {
     system.defaults.dockEx."workspaces-edge-delay" = mkOption {
-			default = null;
+      default = null;
     };
   };
-
 
   config = {
     # system.activationScripts.defaults.text = showWriteDefaults
@@ -41,7 +52,7 @@ in
     # system.defaults.finder.AppleShowAllExtensions = true;
     # system.defaults.finder._FXShowPosixPathInTitle = true;
     # system.defaults.dockEx."workspaces-edge-delay" = "0.0";
-  
+
     environment.shells = [ pkgs.bashInteractive ];
     services.skhd.enable = true;
   };

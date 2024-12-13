@@ -11,7 +11,7 @@ let compost = import ../compost { inherit pkgs; }; in
   config = {
     environment = {
       systemPackages = (if config.environment.development.enable then with pkgs; [
-        nil
+        nixd
         nixfmt-rfc-style
       ] else []) ++ [ compost ];
     };
