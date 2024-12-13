@@ -24,6 +24,8 @@ in
           vim
           neovim
           gnused
+          curl
+          wget
         ]
         ++ (
           if config.environment.development.enable then
