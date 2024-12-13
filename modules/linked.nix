@@ -8,7 +8,7 @@ in
 
 {
   options = {
-    linked = mkOption {
+    environment.linked = mkOption {
       type = types.attrsOf (types.either types.str (types.listOf types.str));
       default = {};
       description = "Paths to be linked";
@@ -16,14 +16,14 @@ in
   };
 
   config = {
-    packages = [(
+    environment.packages = [(
       pkgs.stdenv.mkDerivation {
         name = "linked";
         phases = [ "installPhase" ];
         installPhase = ''
           mkdir -p $out/bin
 
-        '' + (builtins.foldlAttrs mkLinks "" (acc: src: dst: acc + "\n" + (linked src dst)) config.linked)
+        '' + (builtins.foldlAttrs mkLinks "" (acc: src: dst: acc + "\n" + (linked src dst)) config.environment.linked)
       };
     )]
   };

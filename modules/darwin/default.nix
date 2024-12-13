@@ -22,10 +22,8 @@ in
   system.defaults.finder._FXShowPosixPathInTitle = true;
   system.defaults.dockEx."workspaces-edge-delay" = "0.0";
 
-  environment.systemPackages = with pkgs; with compostPkgs; [
-    compost
+  environment.systemPackages = with pkgs; [
     nixfmt-rfc-style
-    update-channels
     activate-window
   ];
 

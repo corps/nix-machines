@@ -6,9 +6,7 @@
     easy-purescript-nix.url = "github:justinwoo/easy-purescript-nix";
     nix-darwin.url = "github:LnL7/nix-darwin";
     nix-darwin.inputs.nixpkgs.follows = "nixpkgs";
-    poetry2nix.url = "github:nix-community/poetry2nix";
   };
-
 
   outputs = inputs@{ nixpkgs, flake-utils, easy-purescript-nix, nix-darwin, poetry2nix, ... }:
     {
@@ -29,19 +27,10 @@
         pkgs = nixpkgs.legacyPackages.${system};
       in
       {
-        devShells.default = 
-        let inherit (poetry2nix.lib.mkPoetry2Nix { pkgs = nixpkgs.legacyPackages.${system}; }) mkPoetryEnv; in
-        pkgs.mkShell {
+        devShells.default = pkgs.mkShell {
           name = "development shell";
           
-          buildInputs =  (with pkgs; [
-              python311
-              python311Packages.black
-              python311Packages.isort
-              python311Packages.pre-commit-hooks
-              python311Packages.pip-tools
-              pre-commit
-          ]);
+          buildInputs =  (with pkgs; []);
           shellHook = ''
             source <(spago --bash-completion-script `which spago`)
             source <(node --completion-bash)

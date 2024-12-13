@@ -46,14 +46,8 @@ if ! check isLink "/etc/nix/nix.conf"; then
   echo -e "$YELLOW /etc/nix/nix.conf is not a link.  sudo rm it and link to /etc/static/nix/nix.conf"
 fi
 
-if ! check fileExists ~/.profile.nix-machines; then
-  echo "source $DIR/../dotfiles/profile" >>~/.profile
-  touch ~/.profile.nix-machines
-fi
-
-if ! check fileExists ~/.bashrc.nix-machines; then
-  echo "source $DIR/../dotfiles/bashrc" >>~/.bashrc
-  touch ~/.bashrc.nix-machines
+if ! check shellIs "/run/current-system/sw/bin/bash"; then
+  echoRun chsh -s /run/current-system/sw/bin/bash
 fi
 
 exec darwin-rebuild switch --flake $DIR/.. $@

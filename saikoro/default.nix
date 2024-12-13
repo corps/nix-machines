@@ -7,8 +7,11 @@ ngrok3 = pkgs.callPackage ../ngrok {};
 in
 
 {
+  system.stateVersion = 5;
+  nixpkgs.hostPlatform = "aarch64-darwin";
+
   imports = [
-    ../modules/darwin
+    ../modules/darwin.nix
   ];
 
   services.nix-daemon.enable = true;
@@ -18,23 +21,25 @@ in
     options = "--delete-older-than 14d";
   };
 
-  # nixpkgs.hostPlatform = "aarch64-darwin";
-
   environment.systemPackages = with pkgs; [
     ngrok3
-    nvim
+    neovim
     nnn
     git
     gnused
     direnv
     openssl
     pkg-config
+    
     watchman
+    
     lzma
     ncurses
     readline
     perl
     ripgrep
+
+    nil
 
     # pkgs.nodejs-18_x
     # pkgs.esbuild
@@ -43,8 +48,6 @@ in
     # easy-ps.purescript-language-server
     # easy-ps.purs-tidy
   ];
-
-  system.stateVersion = 5;
 
   environment.shells = [ pkgs.bashInteractive ];
   programs.bash.enable = true;

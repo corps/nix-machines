@@ -11,17 +11,16 @@ function check() {
   echo -en "checking $CYAN"
   echo -en " $@"
   echo -en "$RESTORE "
-  if ($@ &> /dev/null)
-  then
+  if ($@ &>/dev/null); then
     echo -en $GREEN
     echo -e yes
     echo -en $RESTORE
-    return 0;
+    return 0
   else
     echo -en $YELLOW
     echo -e no
     echo -en $RESTORE
-    return 1;
+    return 1
   fi
 }
 
@@ -30,7 +29,7 @@ function directoryEmpty() {
 }
 
 function runningOnPort() {
-  (nc -z localhost "$1" &> /dev/null)
+  (nc -z localhost "$1" &>/dev/null)
 }
 
 function listContains() {
@@ -46,7 +45,7 @@ function isLinux() {
 }
 
 function isWsl() {
-  ls /mnt/c/ || ls /c/ &> /dev/null
+  ls /mnt/c/ || ls /c/ &>/dev/null
 }
 
 function fileExists() {
@@ -59,7 +58,7 @@ function versionMatches() {
 }
 
 function readyPinned() {
-  local wget=$(nix-build '<nixpkgs>' -A wget --no-out-link --show-trace || dirname $(dirname $(which wget)) )/bin/wget
+  local wget=$(nix-build '<nixpkgs>' -A wget --no-out-link --show-trace || dirname $(dirname $(which wget)))/bin/wget
   local channelName="$1"
   local pathName=${2:-nixpkgs}
   local pinnedRoot=${3:-$DIR/packages/pinned}
@@ -68,17 +67,17 @@ function readyPinned() {
 
   if ! check fileExists $pinnedRoot/$channelName; then
     (
-    set -o pipefail
-    set -x
-    cd $pinnedRoot
+      set -o pipefail
+      set -x
+      cd $pinnedRoot
 
-    ref=$(basename "$(readlink ./$channelName)" | cut -d '-' -f 3)
-    url=https://github.com/NixOS/nixpkgs-channels/archive/$ref.tar.gz
+      ref=$(basename "$(readlink ./$channelName)" | cut -d '-' -f 3)
+      url=https://github.com/NixOS/nixpkgs-channels/archive/$ref.tar.gz
 
-    $wget "$url"
-    tar -xzf $ref.tar.gz
+      $wget "$url"
+      tar -xzf $ref.tar.gz
 
-    rm $ref.tar.gz
+      rm $ref.tar.gz
     )
   fi
 
@@ -91,8 +90,8 @@ function ensureRepo() {
 
   if ! check fileExists "$HOME/$repo" && ! check fileExists "$HOME/Development/$repo"; then
     (
-    cd $HOME
-    git clone git@github.com:$owner/$repo.git
+      cd $HOME
+      git clone git@github.com:$owner/$repo.git
     )
   fi
 }
@@ -125,13 +124,13 @@ function confirm() {
 }
 
 function isNonRootUser() {
-  [[ $EUID -ne 0 ]];
+  [[ $EUID -ne 0 ]]
 }
 
 function isXcodeInstalled() {
   local result
   set +e
-  xcode-select -p &> /dev/null
+  xcode-select -p &>/dev/null
   result=$?
   set -e
   [ $result -eq 0 ]
@@ -140,7 +139,7 @@ function isXcodeInstalled() {
 function existsOnPath() {
   local result
   set +e
-  which "$1" > /dev/null
+  which "$1" >/dev/null
   result=$?
   set -e
   [ $result -eq 0 ]
@@ -155,6 +154,10 @@ function exitWithMessage() {
   exit $1
 }
 
+function shellIs() {
+  [ "$SHELL" == "$1" ]
+}
+
 function versionAtleast() {
   local IFS='.'
   local expected got
@@ -162,16 +165,17 @@ function versionAtleast() {
   version=$($1 --version)
   [[ "$version" =~ ([0-9]+\.?([0-9]+\.?)*) ]] && version="$BASH_REMATCH"
 
-  read -a expected <<< "$2"
-  read -a got <<< "$version"
+  read -a expected <<<"$2"
+  read -a got <<<"$version"
 
   while [[ -n "$expected" || -n "$got" ]]; do
-    [[ ! -n "$got" ]] && return 1;
-    [[ ! -n "$expected" ]] && return 0;
-    [[ "$expected" -gt "$got" ]] && return 1;
-    [[ "$expected" -lt "$got" ]] && return 0;
+    [[ ! -n "$got" ]] && return 1
+    [[ ! -n "$expected" ]] && return 0
+    [[ "$expected" -gt "$got" ]] && return 1
+    [[ "$expected" -lt "$got" ]] && return 0
 
     got=("${got[@]:1}")
     expected=("${expected[@]:1}")
   done
 }
+
