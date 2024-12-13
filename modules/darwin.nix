@@ -39,6 +39,21 @@ with lib;
     system.defaults.dockEx."workspaces-edge-delay" = mkOption {
       default = null;
     };
+
+    programs.git.enable = mkOption {
+      default = true;
+      type = types.bool;
+    };
+
+    programs.git.userName = mkOption {
+      default = "Zachary Collins";
+      type = types.str;
+    };
+
+    programs.git.userEmail = mkOption {
+      default = "recursive.cookie.jar@gmail.com";
+      type = types.str;
+    };
   };
 
   config = {
@@ -55,5 +70,12 @@ with lib;
 
     environment.shells = [ pkgs.bashInteractive ];
     services.skhd.enable = true;
+    environment.systemPackages = [ ] ++ (if config.programs.git.enable then [ pkgs.git ] else [ ]);
+    system.activationScripts = mkIf config.programs.git.enable {
+      extraUserActivation.text = ''
+        git config --global user.name ${config.programs.git.userName}
+        git config --global user.email ${config.programs.git.userEmail}
+      '';
+    };
   };
 }
