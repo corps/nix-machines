@@ -1,8 +1,0 @@
-services:
-  serve:
-    build:
-      context: .
-    volumes:
-      - ./src/:/app/src/
-      - ./frontend:/app/frontend
-    command: npm run serve

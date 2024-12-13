@@ -4,20 +4,19 @@
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
     flake-utils.url = "github:numtide/flake-utils";
     easy-purescript-nix.url = "github:justinwoo/easy-purescript-nix";
-    nixvim = {
-        url = "github:nix-community/nixvim";
-#       url = "github:nix-community/nixvim/nixos-24.05";
-        inputs.nixpkgs.follows = "nixpkgs";
-    };
     nix-darwin.url = "github:LnL7/nix-darwin";
     nix-darwin.inputs.nixpkgs.follows = "nixpkgs";
     poetry2nix.url = "github:nix-community/poetry2nix";
   };
 
 
-  outputs = inputs@{ nixpkgs, flake-utils, easy-purescript-nix, nixvim, nix-darwin, poetry2nix, ... }:
+  outputs = inputs@{ nixpkgs, flake-utils, easy-purescript-nix, nix-darwin, poetry2nix, ... }:
     {
         darwinConfigurations = rec {
+            "saikoro" = nix-darwin.lib.darwinSystem {
+              modules = [ ./saikoro/default.nix ];
+              specialArgs = { inherit inputs; };
+            };
             RY0KG7652H = nix-darwin.lib.darwinSystem {
                 modules = [ ./sentry-laptop/home.nix ];
                 specialArgs = { inherit inputs; };
