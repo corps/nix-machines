@@ -1,3 +1,34 @@
+{ config, lib, pkgs, ... }:
+
+with lib;
+
+let
+ngrok3 = pkgs.callPackage ../ngrok {};
+in
+
+{
+  imports = [
+    ./development.nix
+  ];
+
+  config = {
+    environment = {
+      systemPackages = with pkgs; [
+        neovim
+        git
+        gnused
+      ] ++ (if config.environment.development.enable then with pkgs; [
+        hub
+        ngrok3
+      ] else []);
+    };
+
+    programs.bash.enable = true;
+    programs.bash.completion.enable = true;
+    programs.direnv.enable = true;
+    programs.direnv.nix-direnv.enable = true;
+
+    programs.bash.interactiveShellInit = ''
 HISTSIZE=100000
 HISTFILESIZE=200000
 
@@ -18,3 +49,6 @@ shopt -s checkwinsize
 # If set, the pattern "**" used in a pathname expansion context will
 # match all files and zero or more directories and subdirectories.
 shopt -s globstar
+    '';
+  };
+}

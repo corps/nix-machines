@@ -1,7 +1,7 @@
 { config, lib, pkgs, ... }:
 
 with lib;
-let cfg = config.programs.python; in
+let cfg = config.programs.node; in
 
 {
   imports = [
@@ -10,17 +10,17 @@ let cfg = config.programs.python; in
   ];
 
   options = {
-    programs.python = {
+    programs.node = {
       enable = mkOption {
         type = types.bool;
         default = false;
-        description = "enable python environment";
+        description = "enable node environment";
       };
       
       default = mkOption {
         type = types.package;
-        default = pkgs.python312;
-        description = "Default python to be provided";
+        default = pkgs.nodejs-18_x;
+        description = "Default node to be provided";
       };
       
       alternatives = mkOption {
@@ -31,17 +31,18 @@ let cfg = config.programs.python; in
   };
 
   config = {
+    programs.bash.interactiveShellInit = if cfg.enable then ''
+      source <(node --completion-bash)
+    '' else "";
+
     environment = mkIf cfg.enable {
       systemPackages = [ 
         cfg.default 
-      ] ++ (if config.environment.development.enable then [
-        cfg.default.pkgs.black
-        cfg.default.pkgs.isort
-        cfg.default.pkgs.pre-commit-hooks
-        cfg.default.pkgs.pip-tools
+      ] ++ (if config.environment.development.enable then with pkgs; [
+        pkgs.esbuild
       ] else []);
       
-      linked = attrsets.mapAttrsToList (name: value: { source = value; links = { "bin/python" = "bin/python${name}"; }; });
+      linked = attrsets.mapAttrsToList (name: value: { source = value; links = { "bin/node" = "bin/node${name}"; }; });
     };
   };
 }

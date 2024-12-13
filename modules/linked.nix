@@ -3,28 +3,38 @@
 with lib;
 
 let
-mkLinks = src: dst: if builtins.isList dst then concatStringsSep "\n" (map (mkLinks src) dst) else "ln -s ${src} $out/bin/${out}"
+mkLink = link: "ln -s ${src} $out/bin/${out}";
+linkedPackageType = types.submodule {
+  options = {
+    source = mkOption {
+      type = types.package;
+    };
+    links = mkOption {
+      type = types.attrsOf types.string;
+    };
+  };
+};
+
 in
 
 {
   options = {
     environment.linked = mkOption {
-      type = types.attrsOf (types.either types.str (types.listOf types.str));
-      default = {};
-      description = "Paths to be linked";
-    }
+      type = types.listOf linkedPackageType;
+      default = [];
+      description = "Named paths to be linked indirectly from a package.";
+    };
   };
 
   config = {
-    environment.packages = [(
-      pkgs.stdenv.mkDerivation {
+    environment.systemPackages = map (linkPackage: pkgs.stdenv.mkDerivation (rec {
+        inherit (linkPackage) source;
         name = "linked";
         phases = [ "installPhase" ];
+        buildInputs = [ source ];
         installPhase = ''
-          mkdir -p $out/bin
-
-        '' + (builtins.foldlAttrs mkLinks "" (acc: src: dst: acc + "\n" + (linked src dst)) config.environment.linked)
-      };
-    )]
+          mkdir -p $out
+        '' + concatStringsSep "\n" (attrsets.mapAttrsToList (k: v: "mkdir -p $(dirname ${v})\nln -s $source/${k} $out/${v}") linkPackage.links);
+    })) config.environment.linked;
   };
 }

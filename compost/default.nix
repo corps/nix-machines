@@ -2,4 +2,4 @@
 pkgs.writeScriptBin "compost" ''
 #! ${bash}/bin/bash
 exec ~/nix-machines/compost/compost.sh
-'';
+''

@@ -25,16 +25,22 @@
     flake-utils.lib.eachDefaultSystem (system:
       let
         pkgs = nixpkgs.legacyPackages.${system};
+        config = (pkgs.lib.evalModules { modules = [
+          ./modules/shell.nix
+          ./modules/python.nix
+          ./modules/purescript.nix
+          { 
+            name = "nix-machines development shell";
+            environment.development.enable = true;
+            programs.python.default = pkgs.python311;
+          }
+        ]; }).config;
       in
       {
         devShells.default = pkgs.mkShell {
           name = "development shell";
-          
-          buildInputs =  (with pkgs; []);
-          shellHook = ''
-            source <(spago --bash-completion-script `which spago`)
-            source <(node --completion-bash)
-            '';
+          buildInputs = config.systemPackages;
+          shellHook = config.interactiveShellInit;
         };
      }
   );
