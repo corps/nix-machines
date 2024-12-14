@@ -19,9 +19,11 @@ let compost = import ../compost { inherit pkgs; }; in
     nix = {
       gc = {
         automatic = true;
-        interval = mkIf pkgs.stdenv.isDarwin { Weekday = 0; Hour = 10; Minute = 0; };
         options = "--delete-older-than 14d";
-      };
+      } // (if pkgs.stdenv.isDarwin then {
+        interval = { Weekday = 0; Hour = 10; Minute = 0; };
+      } else {});
+      
       settings = {
         "extra-experimental-features" = [ "nix-command" "flakes" ];
       };
