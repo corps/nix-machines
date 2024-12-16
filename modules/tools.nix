@@ -33,6 +33,7 @@ in
             [
               hub
               ngrok3
+              just
             ]
           else
             [ ]

@@ -33,6 +33,7 @@ with lib;
     ./python.nix
     ./tools.nix
     ./lean.nix
+    ./lua.nix
   ];
 
   options = {
