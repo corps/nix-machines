@@ -1,4 +1,4 @@
 { config, pkgs, ... }:
 {
-  imports = [ ../modules/nixos/server.nix ../modules/nixos/swarm-host.nix ];
+  imports = [ ../modules/nixos.nix ];
 }

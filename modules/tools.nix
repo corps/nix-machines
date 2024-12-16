@@ -26,6 +26,8 @@ in
           gnused
           curl
           wget
+          jq
+          gnumake
         ]
         ++ (
           if config.environment.development.enable then

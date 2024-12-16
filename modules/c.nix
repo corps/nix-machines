@@ -10,12 +10,6 @@ let cfg = config.programs.gcc; in
 
   options = {
     programs.gcc = {
-      enable = mkOption {
-        type = types.bool;
-        default = false;
-        description = "enable gcc environment";
-      };
-      
       default = mkOption {
         type = types.package;
         default = pkgs.gcc;
@@ -24,7 +18,7 @@ let cfg = config.programs.gcc; in
     };
   };
 
-  config = mkIf cfg.enable {
+  config = {
     environment = {
       systemPackages = (if config.environment.development.enable then with pkgs; [
         cfg.default 

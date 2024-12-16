@@ -11,7 +11,7 @@ with lib;
     environment = {
       systemPackages = with pkgs; [
         readline
-        lzma
+        (if pkgs.stdenv.isDarwin then lzma else xz)
         openssl
       ] ++ (if config.environment.development.enable then with pkgs; [
         ncurses

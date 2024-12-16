@@ -52,15 +52,17 @@ if isDarwin; then
   if ! check shellIs "/run/current-system/sw/bin/bash"; then
     echoRun chsh -s /run/current-system/sw/bin/bash
   fi
-else
-  # TODO: Install home manager?
-  echo 1
 fi
 
-if ! check isLink "/etc/nix/nix.conf"; then
-  echo -e "$YELLOW /etc/nix/nix.conf is not a link.  sudo rm it and link to /etc/static/nix/nix.conf"
+if isDarwin; then
+  if ! check isLink "/etc/nix/nix.conf"; then
+    echo -e "$YELLOW /etc/nix/nix.conf is not a link.  sudo rm it and link to /etc/static/nix/nix.conf"
+  fi
 fi
 
 if isDarwin; then
   exec darwin-rebuild switch --flake $DIR/.. $@
+else
+  nix run --extra-experimental-features "nix-command flakes" home-manager -- switch --flake $DIR/.. $@
+  sudo nixos-rebuild switch --flake $DIR/.. --impure $@
 fi
