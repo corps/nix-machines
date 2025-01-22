@@ -77,7 +77,6 @@ with lib;
       extraUserActivation.text = ''
         git config --global user.name ${config.programs.git.userName}
         git config --global user.email ${config.programs.git.userEmail}
-        mkdir -p ~/Library
       '';
     };
   };
