@@ -69,13 +69,15 @@ with lib;
     # system.defaults.finder._FXShowPosixPathInTitle = true;
     # system.defaults.dockEx."workspaces-edge-delay" = "0.0";
 
+    fonts.packages = [ pkgs.nerd-fonts.code-new-roman ];
     environment.shells = [ pkgs.bashInteractive ];
     services.skhd.enable = true;
-    environment.systemPackages = [ ] ++ (if config.programs.git.enable then [ pkgs.git ] else [ ]);
+    environment.systemPackages = [ pkgs.starship ] ++ (if config.programs.git.enable then [ pkgs.git ] else [ ]);
     system.activationScripts = mkIf config.programs.git.enable {
       extraUserActivation.text = ''
         git config --global user.name ${config.programs.git.userName}
         git config --global user.email ${config.programs.git.userEmail}
+        mkdir -p ~/Library
       '';
     };
   };

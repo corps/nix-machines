@@ -32,11 +32,6 @@
           modules = [ ./saikoro/default.nix ];
           specialArgs = { inherit inputs; };
         };
-        RY0KG7652H = nix-darwin.lib.darwinSystem {
-          modules = [ ./sentry-laptop/home.nix ];
-          specialArgs = { inherit inputs; };
-        };
-        RY0KG7652H-2 = RY0KG7652H;
       };
 
       homeConfigurations.home = home-manager.lib.homeManagerConfiguration {
