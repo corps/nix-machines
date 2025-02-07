@@ -1,4 +1,6 @@
-{ config, lib, pkgs, inputs, ... }:
+{
+  ...
+}:
 
 {
   system.stateVersion = 5;
@@ -11,9 +13,25 @@
   ];
 
   services.skhd.skhdConfig = ''
-    shift + cmd - d : open -a "Safari"
-    shift + cmd - e : open -a "Terminal"
+    shift + cmd - d    : open -a "Safari"
+    shift + cmd - e    : open -a "Alacritty"
     shift + cmd - 0x2F : open -a "Visual Studio Code"
-    shift + cmd - 0x2C : open -a Pycharm
   '';
+  # shift + cmd - 0x2C : open -a Pycharm
+
+  programs.alacritty.settings = {
+    font = {
+      normal.family = "CodeNewRoman Nerd Font Mono";
+      size = 16;
+      bold = {
+        style = "Bold";
+      };
+    };
+
+    window.padding = {
+      x = 2;
+      y = 2;
+    };
+    cursor.style = "Beam";
+  };
 }

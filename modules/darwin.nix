@@ -8,15 +8,19 @@
 
 with lib;
 
-# let
-#   edgeDelay = config.system.defaults.dockEx."workspaces-edge-delay";
-#   showWriteDefaults = delay: ''
-#       echo Writing worksapces edge delay value
-#     	echo defaults write com.apple.dock workspaces-edge-delay -float ${toString delay}
-#     	defaults write com.apple.dock workspaces-edge-delay -float ${toString delay}
-#   '';
-#
-# in
+let
+  tomlFormat = pkgs.formats.toml { };
+  alacrittyConfig =
+    (tomlFormat.generate "alacritty.toml" config.programs.alacritty.settings).overrideAttrs
+      (
+        finalAttrs: prevAttrs: {
+          buildCommand = lib.concatStringsSep "\n" [
+            prevAttrs.buildCommand
+            "substituteInPlace $out --replace-quiet '\\\\' '\\'"
+          ];
+        }
+      );
+in
 
 {
   imports = [
@@ -25,6 +29,7 @@ with lib;
         inherit inputs;
       };
     }
+    # inputs.home-manager.darwinModules.home-manager
     ./c.nix
     ./libs.nix
     ./nix.nix
@@ -37,10 +42,6 @@ with lib;
   ];
 
   options = {
-    system.defaults.dockEx."workspaces-edge-delay" = mkOption {
-      default = null;
-    };
-
     programs.git.enable = mkOption {
       default = true;
       type = types.bool;
@@ -55,29 +56,65 @@ with lib;
       default = "recursive.cookie.jar@gmail.com";
       type = types.str;
     };
+
+    programs.alacritty.enable = mkOption {
+      default = true;
+      type = types.bool;
+    };
+
+    programs.alacritty.settings = mkOption {
+      type = tomlFormat.type;
+      default = { };
+    };
   };
 
   config = {
-    # system.activationScripts.defaults.text = showWriteDefaults
-    # (if (isNull edgeDelay) then "0.5" else edgeDelay);
-    #
-    # system.defaults.NSGlobalDomain."com.apple.trackpad.trackpadCornerClickBehavior" = 1;
-    # system.defaults.NSGlobalDomain.NSDocumentSaveNewDocumentsToCloud = false;
-    # system.defaults.dock.autohide = true;
-    # system.defaults.dock.orientation = "left";
-    # system.defaults.finder.AppleShowAllExtensions = true;
-    # system.defaults.finder._FXShowPosixPathInTitle = true;
-    # system.defaults.dockEx."workspaces-edge-delay" = "0.0";
+    system.defaults.NSGlobalDomain.NSDocumentSaveNewDocumentsToCloud = false;
+    system.defaults.dock.autohide = true;
+
+    system.defaults.finder = {
+      AppleShowAllExtensions = true;
+      AppleShowAllFiles = true;
+      FXPreferredViewStyle = "clmv";
+      _FXShowPosixPathInTitle = true;
+      QuitMenuItem = true;
+      ShowStatusBar = true;
+      ShowPathbar = true;
+    };
 
     fonts.packages = [ pkgs.nerd-fonts.code-new-roman ];
     environment.shells = [ pkgs.bashInteractive ];
     services.skhd.enable = true;
-    environment.systemPackages = [ pkgs.starship ] ++ (if config.programs.git.enable then [ pkgs.git ] else [ ]);
-    system.activationScripts = mkIf config.programs.git.enable {
-      extraUserActivation.text = ''
-        git config --global user.name ${config.programs.git.userName}
-        git config --global user.email ${config.programs.git.userEmail}
-      '';
+    environment.systemPackages =
+      [
+        pkgs.fzf
+        pkgs.starship
+      ]
+      ++ (if config.programs.git.enable then [ pkgs.git ] else [ ])
+      ++ (if config.programs.alacritty.enable then [ pkgs.alacritty ] else [ ]);
+    system.activationScripts.extraUserActivation.text =
+      ""
+      + (
+        if config.programs.git.enable then
+          ''
+            git config --global user.name ${config.programs.git.userName}
+            git config --global user.email ${config.programs.git.userEmail}
+          ''
+        else
+          ""
+      )
+      + (
+        if config.programs.alacritty.enable then
+          ''
+            mkdir -p "$HOME/.config/alacritty"
+            ln -sf /etc/alacritty/alacritty.toml "$HOME/.config/alacritty/alacritty.toml"
+          ''
+        else
+          ""
+      );
+
+    environment.etc."alacritty/alacritty.toml" = mkIf config.programs.alacritty.enable {
+      source = alacrittyConfig;
     };
   };
 }
