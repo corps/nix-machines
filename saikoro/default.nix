@@ -32,7 +32,7 @@
       x = 2;
       y = 2;
     };
-    window.decorations = "None";
+    window.decorations = "Transparent";
     window.opacity = 0.5;
     window.blur = true;
     keyboard.bindings = [

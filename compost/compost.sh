@@ -60,6 +60,13 @@ if isDarwin; then
   fi
 fi
 
+if ! check fileExists ~/.config/nvim; then
+  echoRun git clone git@github.com:corps/lazy-vim.git ~/.config/nvim
+fi
+
+echoRun cd ~/.config/nvim
+echoRun git pull || true
+
 if isDarwin; then
   exec darwin-rebuild switch --flake $DIR/.. $@
 else
