@@ -39,12 +39,12 @@
       {
         key = "[";
         mods = "Command|Shift";
-        action = "None";
+        action = "ReceiveChar";
       }
       {
         key = "]";
         mods = "Command|Shift";
-        action = "None";
+        action = "ReceiveChar";
       }
       {
         key = "`";

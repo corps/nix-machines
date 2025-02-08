@@ -1,3 +1,9 @@
 [submodule "ben-srs"]
 	path = ben-srs
 	url = git@github.com:corps/ben-srs.git
+[submodule "lazy-vim"]
+	path = lazy-vim
+	url = git@github.com:corps/lazy-vim.git
+[submodule "resume"]
+	path = resume
+	url = git@github.com:corps/resume.git
