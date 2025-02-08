@@ -61,7 +61,7 @@ if isDarwin; then
 fi
 
 if ! check fileExists ~/.config/nvim; then
-  ln -s $HOME/nix-machines/lazy-vim/ ~/.config/nvim
+  echoRun ln -s $HOME/nix-machines/lazy-vim/ ~/.config/nvim
 fi
 
 if isDarwin; then
