@@ -29,6 +29,7 @@ in
           jq
           gnumake
           fzf
+          starship
         ]
         ++ (
           if config.environment.development.enable then

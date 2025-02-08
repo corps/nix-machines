@@ -27,24 +27,16 @@
         style = "Bold";
       };
     };
-
-    window.padding = {
-      x = 2;
-      y = 2;
-    };
-    window.decorations = "Full";
-    window.opacity = 0.5;
-    window.blur = true;
     keyboard.bindings = [
       {
         key = "[";
         mods = "Command|Shift";
-        action = "ReceiveChar";
+        action = "None";
       }
       {
         key = "]";
         mods = "Command|Shift";
-        action = "ReceiveChar";
+        action = "None";
       }
       {
         key = "`";
