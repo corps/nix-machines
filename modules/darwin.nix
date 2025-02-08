@@ -8,20 +8,6 @@
 
 with lib;
 
-let
-  tomlFormat = pkgs.formats.toml { };
-  alacrittyConfig =
-    (tomlFormat.generate "alacritty.toml" config.programs.alacritty.settings).overrideAttrs
-      (
-        finalAttrs: prevAttrs: {
-          buildCommand = lib.concatStringsSep "\n" [
-            prevAttrs.buildCommand
-            "substituteInPlace $out --replace-quiet '\\\\' '\\'"
-          ];
-        }
-      );
-in
-
 {
   imports = [
     {
@@ -30,6 +16,7 @@ in
       };
     }
     # inputs.home-manager.darwinModules.home-manager
+    ./alacritty.nix
     ./c.nix
     ./libs.nix
     ./nix.nix
@@ -56,16 +43,6 @@ in
       default = "recursive.cookie.jar@gmail.com";
       type = types.str;
     };
-
-    programs.alacritty.enable = mkOption {
-      default = true;
-      type = types.bool;
-    };
-
-    programs.alacritty.settings = mkOption {
-      type = tomlFormat.type;
-      default = { };
-    };
   };
 
   config = {
@@ -85,12 +62,7 @@ in
     fonts.packages = [ pkgs.nerd-fonts.code-new-roman ];
     environment.shells = [ pkgs.bashInteractive ];
     services.skhd.enable = true;
-    environment.systemPackages =
-      [
-        pkgs.starship
-      ]
-      ++ (if config.programs.git.enable then [ pkgs.git ] else [ ])
-      ++ (if config.programs.alacritty.enable then [ pkgs.alacritty ] else [ ]);
+    environment.systemPackages = (if config.programs.git.enable then [ pkgs.git ] else [ ]);
     system.activationScripts.extraUserActivation.text =
       ""
       + (
@@ -101,19 +73,6 @@ in
           ''
         else
           ""
-      )
-      + (
-        if config.programs.alacritty.enable then
-          ''
-            mkdir -p "$HOME/.config/alacritty"
-            ln -sf /etc/alacritty/alacritty.toml "$HOME/.config/alacritty/alacritty.toml"
-          ''
-        else
-          ""
       );
-
-    environment.etc."alacritty/alacritty.toml" = mkIf config.programs.alacritty.enable {
-      source = alacrittyConfig;
-    };
   };
 }
