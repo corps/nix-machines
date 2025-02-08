@@ -32,6 +32,26 @@
       x = 2;
       y = 2;
     };
+    window.decorations = "None";
+    window.opacity = 0.5;
+    window.blur = true;
+    keyboard.bindings = [
+      {
+        key = "[";
+        mods = "Command|Shift";
+        action = "None";
+      }
+      {
+        key = "]";
+        mods = "Command|Shift";
+        action = "None";
+      }
+      {
+        key = "`";
+        mods = "Command";
+        action = "SelectNextTab";
+      }
+    ];
     cursor.style = "Beam";
   };
 }
