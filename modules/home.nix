@@ -1,4 +1,10 @@
-{ config, lib, pkgs, inputs, ... }:
+{
+  config,
+  lib,
+  pkgs,
+  inputs,
+  ...
+}:
 
 with lib;
 
@@ -13,16 +19,17 @@ with lib;
     ./python.nix
     ./tools.nix
     ./lean.nix
+    ./lua.nix
   ];
   options = {
     environment.systemPackages = mkOption {
       type = types.listOf types.package;
-      default = [];
+      default = [ ];
     };
 
     environment.variables = mkOption {
       type = types.attrsOf types.str;
-      default = {};
+      default = { };
     };
 
     programs.bash.completion.enable = mkOption {
