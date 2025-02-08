@@ -24,13 +24,22 @@ in
 {
   options = {
     programs.alacritty.enable = mkOption {
-      default = true;
+      default = false;
       type = types.bool;
     };
 
     programs.alacritty.settings = mkOption {
       type = tomlFormat.type;
-      default = { };
+      default = {
+        font = {
+          normal.family = "CodeNewRoman Nerd Font Mono";
+          size = 16;
+          bold = {
+            style = "Bold";
+          };
+        };
+        cursor.style = "Beam";
+      };
     };
   };
 

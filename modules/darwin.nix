@@ -74,5 +74,7 @@ with lib;
         else
           ""
       );
+
+    programs.alacritty.enable = true;
   };
 }
