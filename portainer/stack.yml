@@ -1,4 +1,4 @@
-version: '3.2'
+version: "3.2"
 
 services:
   agent:
@@ -32,7 +32,7 @@ services:
         - traefik.http.routers.portainer-http.entrypoints=http
         - traefik.http.services.portainer.loadbalancer.server.port=9000
       placement:
-        constraints: 
+        constraints:
           - node.role == manager
           - node.labels.portainer == true
 

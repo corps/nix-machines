@@ -8,12 +8,12 @@ appPairs = map (shortName: { inherit shortName; install = apps."${shortName}".in
 importApp = { shortName, install }@args: args // (import "${./native-apps}/${shortName}.nix");
 importedApps = map importApp appPairs;
 
-activateApp = { shortName, install, name, zipped, url }: 
+activateApp = { shortName, install, name, zipped, url }:
   if install then ''
     if ! [ -e "/Applications/${name}" ]; then
       set -x
       curl -sL "${url}" > /tmp/darwin-rebuild-app
-      ${ if zipped then "unzip -q /tmp/darwin-rebuild-app -d /tmp/" 
+      ${ if zipped then "unzip -q /tmp/darwin-rebuild-app -d /tmp/"
          else "mv /tmp/darwin-rebuild-app \"/tmp/${name}\"" }
       mv "/tmp/${name}" "/Applications/${name}"
       set +x

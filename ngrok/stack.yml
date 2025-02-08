@@ -1,4 +1,4 @@
-version: '3.8'
+version: "3.8"
 services:
   agent:
     image: corps/ngrok:latest
@@ -29,12 +29,12 @@ services:
 networks:
   traefik-public:
     external: true
-    
+
 configs:
   ngrok.yml:
     external: true
     name: ${ngrokyml:-ngrok.yml}
-    
+
 secrets:
   ngrok-auth:
     external: true

@@ -20,7 +20,7 @@ let cfg = config.environment.development; in
 
   config = {
     environment = mkIf cfg.enable {
-      systemPackages = with pkgs; [ 
+      systemPackages = with pkgs; [
         ripgrep
         watchman
         pre-commit

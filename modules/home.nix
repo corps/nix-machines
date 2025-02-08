@@ -24,7 +24,7 @@ with lib;
       type = types.attrsOf types.str;
       default = {};
     };
-    
+
     programs.bash.completion.enable = mkOption {
       type = types.bool;
       default = true;
@@ -35,7 +35,7 @@ with lib;
       default = "";
     };
   };
-  
+
   config = {
     nix.package = pkgs.nix;
     home.username = "home";

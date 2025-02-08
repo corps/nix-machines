@@ -1,10 +1,10 @@
 {
-    "purescript.addNpmPath": true,
-    "purescript.addSpagoSources": true,
-    "purescript.buildCommand": "spago build --purs-args --json-errors",
-    "javascript.suggest.enabled": false,
-    "editor.suggest.showSnippets": false,
-    "php.suggest.basic": false,
-    "javascript.suggest.names": false,
-    "editor.acceptSuggestionOnCommitCharacter": false
+  "purescript.addNpmPath": true,
+  "purescript.addSpagoSources": true,
+  "purescript.buildCommand": "spago build --purs-args --json-errors",
+  "javascript.suggest.enabled": false,
+  "editor.suggest.showSnippets": false,
+  "php.suggest.basic": false,
+  "javascript.suggest.names": false,
+  "editor.acceptSuggestionOnCommitCharacter": false
 }

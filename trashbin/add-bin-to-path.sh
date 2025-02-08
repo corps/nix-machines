@@ -12,7 +12,7 @@ bname=$(basename $bin)
 
 echo "
 { pkgs ? import <nixpkgs> {}
-, writeScriptBin ? pkgs.writeScriptBin 
+, writeScriptBin ? pkgs.writeScriptBin
 }:
 writeScriptBin \"${bname}\" ''
 #! /usr/bin/env bash

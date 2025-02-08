@@ -18,7 +18,7 @@ limits(){
     echo "\nCurrent limits\n-------------"
     sysctl fs.inotify.max_user_instances  fs.inotify.max_user_watches
 
-    cat <<- EOF 
+    cat <<- EOF
 
 
 Changing settings permanently
@@ -35,7 +35,7 @@ if [ "$1" = "--limits" -o "$1" = "-l" ]; then
 fi
 
 if [ "$1" = "--help" -o "$1" = "-h" ]; then
-    usage 
+    usage
     exit 0
 fi
 
@@ -47,7 +47,7 @@ fi
 
 
 generateRawData(){
-    # From `man find`: 
+    # From `man find`:
     #    %h     Leading directories of file's name (all but the last element).  If the file name contains no slashes  (since  it
     #           is in the current directory) the %h specifier expands to `.'.
     #    %f     File's name with any leading directories removed (only the last element).
@@ -57,7 +57,7 @@ generateRawData(){
     -printf '%hinfo/%f\n' 2>/dev/null \
     \
     | xargs grep -c '^inotify'  \
-    | sort -n -t: -k2 -r 
+    | sort -n -t: -k2 -r
 }
 
 printf "\n%10s\n" "INOTIFY"
@@ -72,10 +72,9 @@ generateRawData | { while read line; do
     total_watchers=$((total_watchers+watcher_count))
     pid=$(echo $line | sed -e 's/\/proc\/\([0-9]*\)\/.*/\1/')
     if [ $pid -gt 0 ]; then
-        cmdline=$(ps --columns 120 -o command --no-headers -p $pid) 
+        cmdline=$(ps --columns 120 -o command --no-headers -p $pid)
     fi
     printf "%8d  %7d  %s\n" "$watcher_count" "$pid" "$cmdline"
 done
 printf "\n%8d     %s\n" "$total_watchers" "WATCHERS TOTAL COUNT"
 }
-

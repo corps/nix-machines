@@ -11,7 +11,7 @@ $@ || true
 while true; do
   sleep 10
   git fetch
-  
+
   if git log HEAD..origin/$branch | grep commit; then
     git pull
     $@ || true

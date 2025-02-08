@@ -1,5 +1,5 @@
 from IPython import get_ipython
-from IPython.core.magic import magics_class, Magics, cell_magic
+from IPython.core.magic import Magics, cell_magic, magics_class
 
 
 @magics_class

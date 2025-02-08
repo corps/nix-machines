@@ -4,10 +4,12 @@ import re
 from enum import IntEnum
 from functools import cached_property
 from typing import Any, Callable, Literal, TypeVar
-from pydantic import BaseModel, Field, ValidationError
+
 import requests
+from pydantic import BaseModel, Field, ValidationError
 
 _M = TypeVar("_M", bound=BaseModel)
+
 
 class Ability(IntEnum):
     STRENGTH = 0
@@ -18,11 +20,12 @@ class Ability(IntEnum):
     CHARISMA = 5
 
     @classmethod
-    def by_short_name(cls, name: str) -> 'Ability':
+    def by_short_name(cls, name: str) -> "Ability":
         for ability in cls:
             if ability.name.lower()[:3] == name.lower():
                 return ability
         raise ValueError(f"Unknown ability name: {name}")
+
 
 skills = {
     "acrobatics": Ability.DEXTERITY,
@@ -56,6 +59,7 @@ class ActivationType(IntEnum):
 
     def __str__(self):
         return self.name.lower().capitalize()
+
 
 def parse_formula_tokens(i: str) -> list[str]:
     return re.findall(r"\(|\)|\+|\*|[a-z:]*|[0-9]*", i)
@@ -636,7 +640,9 @@ class DDBCharacter(BaseModel):
     def calculate_weapon_best_stat(self, weapon: Weapon) -> Ability:
         properties_ = [p.name for p in weapon.definition.properties]
         if "Finesse" in properties_:
-            if self.calculate_stat(Ability.STRENGTH) > self.calculate_stat(Ability.DEXTERITY):
+            if self.calculate_stat(Ability.STRENGTH) > self.calculate_stat(
+                Ability.DEXTERITY
+            ):
                 return Ability.STRENGTH
             return Ability.DEXTERITY
         if "Thrown" in properties_:
@@ -699,11 +705,15 @@ class DDBCharacter(BaseModel):
                         next_f = lambda l: l(int(token))
                     elif token.startswith("modifier:"):
                         next_f = lambda l: l(
-                            self.calculate_mod(Ability.by_short_name(token.split(":")[-1]))
+                            self.calculate_mod(
+                                Ability.by_short_name(token.split(":")[-1])
+                            )
                         )
                     elif token.startswith("savedc:"):
                         next_f = lambda l: l(
-                            self.calculate_mod(Ability.by_short_name(token.split(":")[-1]))
+                            self.calculate_mod(
+                                Ability.by_short_name(token.split(":")[-1])
+                            )
                             + 8
                             + self.proficiency_modifier
                         )
@@ -947,7 +957,10 @@ class DDBCharacter(BaseModel):
     def unarmed_modifier(self) -> int:
         feature = self.find_class_feature("Martial Arts")
         if feature is not None:
-            return max(self.calculate_mod(Ability.DEXTERITY), self.calculate_mod(Ability.STRENGTH))
+            return max(
+                self.calculate_mod(Ability.DEXTERITY),
+                self.calculate_mod(Ability.STRENGTH),
+            )
         return self.calculate_mod(Ability.STRENGTH)
 
     @cached_property
@@ -1074,5 +1087,3 @@ def load_character(character_id: int) -> DDBCharacter:
     res.raise_for_status()
     json_body = res.json()
     return DDBCharacter.model_validate(json_body)
-
-

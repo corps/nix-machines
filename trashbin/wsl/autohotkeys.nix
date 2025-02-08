@@ -29,9 +29,8 @@ in
       wintmp
     ];
 
-    system.activationScripts.extraUserActivation.text = 
+    system.activationScripts.extraUserActivation.text =
       "\"${ahk}\" $(wintmp ${toString ./suspend.ahk})\n" +
       (concatStringsSep "\n" (map runScript cfg.scripts));
   };
 }
-

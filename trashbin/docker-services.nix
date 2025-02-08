@@ -10,7 +10,7 @@ dockerService = {
       type = types.str;
       description = "Image to use";
     };
-    
+
     tag = mkOption {
       type = types.str;
       default = "latest";
@@ -55,12 +55,12 @@ in
 
   config.systemd.services = builtins.listToAttrs (map (k: {
     name = k;
-    value = let 
-      dsConf = config.dockerServices."${k}"; 
+    value = let
+      dsConf = config.dockerServices."${k}";
       watchtowerEnabledOptions =
         if dsConf.runEvery == null then [] else
         ["'--label=com.centurylinklabs.watchtower.enable=false'"];
-      installOptions = if dsConf.runEvery == null 
+      installOptions = if dsConf.runEvery == null
         then {wantedBy = ["multi-user.target"]; after = ["docker.service"];}
         else {};
       optionsJoined = lib.concatStringsSep " " (dsConf.options ++ watchtowerEnabledOptions);
@@ -83,7 +83,7 @@ in
 
   config.systemd.timers = builtins.listToAttrs (filter (v: v.name != null) (map (k:
     let
-      dsConf = config.dockerServices."${k}"; 
+      dsConf = config.dockerServices."${k}";
       runEvery = dsConf.runEvery;
     in
     if runEvery == null then { name = null; } else {

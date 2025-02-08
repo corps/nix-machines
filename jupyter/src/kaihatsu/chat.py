@@ -1,15 +1,16 @@
 import dataclasses
-
-import dotenv
 import json
 import os
 from functools import cached_property
+from typing import Generic, TypeVar
+
+import dotenv
 from mistralai import Mistral
 from pydantic import BaseModel
-from typing import TypeVar, Generic
 
 dotenv.load_dotenv(dotenv.find_dotenv())
 _B = TypeVar("_B", bound=BaseModel)
+
 
 @dataclasses.dataclass
 class Chat(Generic[_B]):
@@ -27,24 +28,37 @@ class Chat(Generic[_B]):
         message = message.strip()
 
         if self.system_prompt:
-            messages.append({
-                "role": "system",
-                "content": self.system_prompt,
-            })
-        messages.append({
-            "role": "user",
-            "content": message,
-        })
+            messages.append(
+                {
+                    "role": "system",
+                    "content": self.system_prompt,
+                }
+            )
+        messages.append(
+            {
+                "role": "user",
+                "content": message,
+            }
+        )
 
         response = self.client.chat.complete(
             model=self.model,
             max_tokens=self.max_tokens,
             messages=messages,
-            tools=[{"type": "function", "function": {
-                "name": self.tool.__name__.lower(),
-                "description": self.tool.__doc__,
-                "parameters": self.tool.model_json_schema()
-            }}] if self.tool else None,
+            tools=(
+                [
+                    {
+                        "type": "function",
+                        "function": {
+                            "name": self.tool.__name__.lower(),
+                            "description": self.tool.__doc__,
+                            "parameters": self.tool.model_json_schema(),
+                        },
+                    }
+                ]
+                if self.tool
+                else None
+            ),
             tool_choice="auto" if self.tool else None,
         )
 

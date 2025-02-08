@@ -13,7 +13,7 @@ with lib;
         type = types.lines;
         default = "";
     };
-    
+
     environment.systemPackages = mkOption {
         type = types.listOf types.package;
         default = [];

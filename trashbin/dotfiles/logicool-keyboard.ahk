@@ -1,7 +1,7 @@
 #InstallKeybdHook
 #SingleInstance force
 
-<^+D:: 
+<^+D::
 if WinExist("ahk_exe Brave.exe")
     WinActivate, ahk_exe Brave.exe
 else

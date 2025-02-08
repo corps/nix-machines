@@ -21,7 +21,7 @@ let cfg = config.programs.gcc; in
   config = {
     environment = {
       systemPackages = (if config.environment.development.enable then with pkgs; [
-        cfg.default 
+        cfg.default
         pkg-config
       ] else []);
     };

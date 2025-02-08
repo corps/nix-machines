@@ -1,7 +1,7 @@
 from typing import ClassVar
 
-from pydantic import BaseModel
 import requests
+from pydantic import BaseModel
 
 
 class IdsResponse(BaseModel):
@@ -73,7 +73,9 @@ class GuiEditNoteRequest(BaseModel):
     class Response(BaseModel):
         error: str | None
 
+
 host = ""
+
 
 def request(r: BaseModel) -> BaseModel:
     res = requests.post(host, json=r.model_dump())
@@ -82,14 +84,20 @@ def request(r: BaseModel) -> BaseModel:
         raise RuntimeError(result.error)
     return result
 
+
 def search_cards(search: str) -> list[CardsResponse.Card]:
-    ids_response: IdsResponse = request(FindCardsRequest(
-        params=FindCardsRequest.Params(query=search),
-    ))
+    ids_response: IdsResponse = request(
+        FindCardsRequest(
+            params=FindCardsRequest.Params(query=search),
+        )
+    )
     ids = ids_response.result
 
-    cards_response: CardsResponse = request(CardsInfoRequest(params=CardsInfoRequest.Params(cards=ids)))
+    cards_response: CardsResponse = request(
+        CardsInfoRequest(params=CardsInfoRequest.Params(cards=ids))
+    )
     return cards_response.result
+
 
 def edit_cards(card: CardsResponse.Card) -> None:
     request(GuiEditNoteRequest(params=GuiEditNoteRequest.Params(note=card.note)))

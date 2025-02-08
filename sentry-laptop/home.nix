@@ -65,7 +65,7 @@ nixconfig = {
 
     globals.mapleader = ",";
 
-    keymaps = [ 
+    keymaps = [
       {
         mode = "n";
         key = "<space>";

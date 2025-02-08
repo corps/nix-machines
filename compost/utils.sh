@@ -178,4 +178,3 @@ function versionAtleast() {
     expected=("${expected[@]:1}")
   done
 }
-
