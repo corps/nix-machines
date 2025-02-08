@@ -13,14 +13,19 @@ services:
         - traefik.http.routers.loogle-http.rule=Host(`loogle.kaihatsu.io`)
         - traefik.http.routers.loogle-http.entrypoints=http
         - traefik.http.routers.loogle-http.service=loogle
-        - traefik.http.services.loogle.loadbalancer.server.port=8888
+        - traefik.http.services.loogle.loadbalancer.server.port=8088
       placement:
         constraints:
           - node.role == manager
           - node.labels.loogle == true
+
+    volumes:
+      - lake_cache:/loogle/.lake
 
 networks:
   traefik-public:
     external: true
 
 volumes:
+  lake_cache:
+    driver: local

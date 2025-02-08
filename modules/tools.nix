@@ -28,6 +28,7 @@ in
           wget
           jq
           gnumake
+          fzf
         ]
         ++ (
           if config.environment.development.enable then

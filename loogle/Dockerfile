@@ -9,8 +9,21 @@ RUN curl https://raw.githubusercontent.com/leanprover/elan/master/elan-init.sh -
     elan --version; \
     lean --version; \
     leanc --version; \
-    lake --version; \
+    lake --version;
 
-RUN python --version
+# Bump to upgrade: 1
+RUN git clone https://github.com/nomeata/loogle.git
 
-CMD jupyter notebook --ip=0.0.0.0 --port=8888 --no-browser --allow-root
+# Bump to upgrade: 1
+RUN apt-get update
+RUN apt-get install -y python3 python3-venv
+RUN python3 --version
+
+WORKDIR /loogle
+
+COPY server.sh .
+RUN sed -i 's/localhost/0.0.0.0/' server.py
+RUN python3 -m venv /loogle/venv
+RUN /loogle/venv/bin/pip3 install prometheus_client
+
+CMD /loogle/server.sh

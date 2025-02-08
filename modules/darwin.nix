@@ -87,7 +87,6 @@ in
     services.skhd.enable = true;
     environment.systemPackages =
       [
-        pkgs.fzf
         pkgs.starship
       ]
       ++ (if config.programs.git.enable then [ pkgs.git ] else [ ])

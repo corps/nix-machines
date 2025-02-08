@@ -32,7 +32,7 @@
       x = 2;
       y = 2;
     };
-    window.decorations = "Transparent";
+    window.decorations = "Full";
     window.opacity = 0.5;
     window.blur = true;
     keyboard.bindings = [
@@ -50,6 +50,11 @@
         key = "`";
         mods = "Command";
         action = "SelectNextTab";
+      }
+      {
+        key = "b";
+        mods = "Command";
+        action = "None";
       }
     ];
     cursor.style = "Beam";
