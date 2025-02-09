@@ -54,8 +54,8 @@ in
             ProgramArguments = [
               "ssh"
               "-N"
-              "-R"
-              "${toString def.remotePort}:localhost:${toString def.localPort}"
+              "-L"
+              "${toString def.localPort}:localhost:${toString def.remotePort}"
               def.host
             ];
             KeepAlive = true;
