@@ -21,6 +21,9 @@ let
         host = mkOption {
           type = types.str;
         };
+        command = mkOption {
+          type = types.listOf (types.str);
+        };
       };
     };
 
@@ -53,11 +56,10 @@ in
           serviceConfig = {
             ProgramArguments = [
               "ssh"
-              "-N"
               "-L"
               "${toString def.localPort}:localhost:${toString def.remotePort}"
               def.host
-            ];
+            ] ++ def.command;
             KeepAlive = true;
             ProcessType = "Background";
             StandardOutPath = "/tmp/${name}.log";

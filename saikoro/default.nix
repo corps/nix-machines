@@ -26,6 +26,12 @@
         remotePort = 8991;
         localPort = 8991;
         host = "excalibur";
+        command = [
+          "nvim"
+          "--listen"
+          "0.0.0.0:8991"
+          "--headless"
+        ];
       }
     ];
   };
