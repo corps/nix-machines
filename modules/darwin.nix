@@ -26,6 +26,7 @@ with lib;
     ./tools.nix
     ./lean.nix
     ./lua.nix
+    ./tunnels.nix
   ];
 
   options = {

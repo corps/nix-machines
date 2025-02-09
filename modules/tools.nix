@@ -18,6 +18,7 @@ in
 
   config = {
     environment = {
+      systemPath = [ "$HOME/nix-machines/bin" ];
       systemPackages =
         with pkgs;
         [
