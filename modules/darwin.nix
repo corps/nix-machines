@@ -47,6 +47,7 @@ with lib;
   };
 
   config = {
+    environment.systemPath = [ "$HOME/nix-machines/bin" ];
     system.defaults.NSGlobalDomain.NSDocumentSaveNewDocumentsToCloud = false;
     system.defaults.dock.autohide = true;
 
