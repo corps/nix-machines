@@ -12,7 +12,7 @@
     };
 
     serviceConfig = {
-      ExecStart = "${pkgs.nvim}/bin/nvim --listen 8991 --headless";
+      ExecStart = "${pkgs.neovim}/bin/nvim --listen 8991 --headless";
     };
 
     wantedBy = [ "multi-user.target" ];
