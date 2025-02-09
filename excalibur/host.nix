@@ -1,9 +1,7 @@
 { pkgs, ... }:
 {
   imports = [ ../modules/nixos.nix ];
-  networking.firewall.allowedTCPPorts = [
-    8991
-  ];
+  networking.firewall.allowedTCPPorts = [ ];
 
   systemd.services.nvim-server = {
     enable = true;

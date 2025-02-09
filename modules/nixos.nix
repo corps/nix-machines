@@ -42,6 +42,10 @@ with lib;
     ];
 
     services.openssh.enable = true;
+    services.openssh.settings = {
+      GatewayPorts = "yes";
+      PasswordAuthentication = false;
+    };
 
     security.sudo.extraRules = [
       {
