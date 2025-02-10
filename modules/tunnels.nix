@@ -22,7 +22,8 @@ let
           type = types.str;
         };
         command = mkOption {
-          type = types.listOf (types.str);
+          type = types.either (types.listOf (types.str)) types.bool;
+          default = false;
         };
       };
     };
@@ -54,12 +55,17 @@ in
         "${name}" = {
           path = [ config.environment.systemPath ];
           serviceConfig = {
-            ProgramArguments = [
-              "ssh"
-              "-L"
-              "${toString def.localPort}:localhost:${toString def.remotePort}"
-              def.host
-            ] ++ def.command;
+            ProgramArguments =
+              [
+                "ssh"
+              ]
+              ++ (if def.command then [ ] else [ "-N" ])
+              ++ [
+                "-L"
+                "${toString def.localPort}:localhost:${toString def.remotePort}"
+                def.host
+              ]
+              ++ (if def.command then def.command else [ ]);
             KeepAlive = true;
             ProcessType = "Background";
             StandardOutPath = "/tmp/${name}.log";
