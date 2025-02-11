@@ -1,7 +1,7 @@
 {
   description = "system configurations";
   inputs = {
-    nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
+    nixpkgs.url = "github:NixOS/nixpkgs/master";
     nixos.url = "github:NixOs/nixpkgs/nixos-24.11";
     flake-utils.url = "github:numtide/flake-utils";
     easy-purescript-nix.url = "github:justinwoo/easy-purescript-nix";
@@ -13,6 +13,10 @@
       # url = "github:nix-community/home-manager/release-24.05";
       inputs.nixpkgs.follows = "nixos";
     };
+    # nix-ld = {
+    # url = "github:Mic92/nix-ld";
+    # inputs.nixpkgs.follows = "nixpkgs"; # requires rust 1.8.3
+    # };
   };
 
   outputs =
@@ -24,6 +28,7 @@
       easy-purescript-nix,
       nix-darwin,
       poetry2nix,
+      # nix-ld,
       ...
     }:
     {
@@ -48,6 +53,7 @@
           modules = [
             /etc/nixos/configuration.nix
             ./excalibur/host.nix
+            # nix-ld.nixosModules.nix-ld
           ];
         };
       };

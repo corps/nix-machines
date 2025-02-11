@@ -75,15 +75,20 @@ with lib;
       [ ]
   );
 
-  users.extraUsers.home = {
-    isNormalUser = true;
-    extraGroups = [
-      "wheel"
-      "networkmanager"
-      "docker"
-    ];
-    openssh.authorizedKeys.keys = (import ./authorized-keys.nix).github.corps;
+  users.extraUsers = rec {
+    home = {
+      isNormalUser = true;
+      extraGroups = [
+        "wheel"
+        "networkmanager"
+        "docker"
+      ];
+      homeMode = "770";
+      openssh.authorizedKeys.keys = (import ./authorized-keys.nix).github.corps;
+    };
   };
+
+  programs.nix-ld.enable = true;
 
   networking.wireless.userControlled.enable = true;
   # networking

@@ -50,6 +50,11 @@ with lib;
     home.packages = config.environment.systemPackages;
     home.sessionVariables = config.environment.variables;
     programs.bash.enableCompletion = config.programs.bash.completion.enable;
-    programs.bash.initExtra = config.programs.bash.interactiveShellInit;
+    programs.bash.initExtra =
+      config.programs.bash.interactiveShellInit
+      + ''
+        ${config.lib.shell.exportAll config.home.sessionVariables}
+        export PATH=$PATH:$HOME/nix-machines/bin
+      '';
   };
 }
