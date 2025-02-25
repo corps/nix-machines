@@ -23,6 +23,7 @@ with lib;
     ./node.nix
     ./purescript.nix
     ./python.nix
+    ./rust.nix
     ./tools.nix
     ./lean.nix
     ./lua.nix

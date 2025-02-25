@@ -1474,5 +1474,10 @@
     "key": "cmd+k f",
     "command": "-workbench.action.closeFolder",
     "when": "emptyWorkspaceSupport && workbenchState != 'empty'"
+  },
+  {
+    "key": "shift+cmd+]",
+    "command": "-workbench.action.debug.nextConsole",
+    "when": "inDebugRepl"
   }
 ]
