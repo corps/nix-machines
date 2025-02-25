@@ -5,5 +5,4 @@
     enable = true;
     userControlled.enable = true;
   };
-  networking.firewall.allowedTCPPorts = [];
 }
