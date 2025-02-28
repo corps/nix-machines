@@ -6,3 +6,6 @@ venv
 __pycache__
 .direnv
 .ipynb_checkpoints/
+build
+.lake
+.vscode

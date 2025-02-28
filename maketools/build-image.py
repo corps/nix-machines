@@ -14,6 +14,10 @@ docker_exec = run.subcommand("docker", "exec")
 nix_build = docker_exec.subcommand("nix-builder", "nix-build")
 docker_build = run.subcommand("docker", "build")
 
+# Builds an image for a Dockerfile by recursively checking FROM clauses
+# for dependencies and building them, too.  Supports also building .nix files
+# that result in images.
+
 
 def determine_tag(fullpath: str):
     file = os.path.basename(fullpath)
