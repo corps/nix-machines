@@ -1,0 +1,53 @@
+version: "3.9"
+services:
+  server:
+    image: corps/miniflux:latest
+    networks:
+      - traefik-public
+      - db
+    deploy:
+      replicas: 1
+    command:
+      - bash
+      - -c
+      - |
+        set -e
+        export DATABASE_URL=postgres://postgres:$(cat /run/secrets/miniflux_postgres_password)@db/miniflux?sslmode=disable
+        miniflux -flush-sessions || true
+        miniflux -migrate
+        miniflux -create-admin
+        exec miniflux
+  db:
+    image: postgresql
+    restart: always
+    networks:
+      - db
+    deploy:
+      replicas: 1
+      placement:
+        constraints:
+          - node.labels.miniflux-db == true
+    volumes:
+      - type: tmpfs
+        target: /dev/shm
+        tmpfs:
+        size: 134217728 # 128*2^20 bytes = 128Mb
+      - miniflux_data:/var/lib/postgresql/data
+
+    environment:
+      POSTGRES_PASSWORD_FILE: /run/secrets/miniflux_postgres_password
+    secrets:
+      - miniflux_postgres_password
+
+volumes:
+  miniflux_data:
+    external: true
+
+networks:
+  traefik-public:
+    external: true
+  db:
+
+secrets:
+  miniflux_postgres_password:
+    external: true
