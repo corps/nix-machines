@@ -14,7 +14,6 @@ dockerTools.buildImage {
 
   config = {
     WorkingDir = "/home/${name}";
-    Entrypoint = "/bin/";
     Cmd = [ "miniflux" ];
     Env = [
       "GIT_SSL_CAINFO=${pkgs.cacert}/etc/ssl/certs/ca-bundle.crt"

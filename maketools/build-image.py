@@ -11,8 +11,9 @@ docker_start = run.subcommand("docker", "start")
 docker_create = run.subcommand("docker", "create")
 docker_inspect = run.subcommand("docker", "inspect")
 docker_exec = run.subcommand("docker", "exec")
-nix_build = docker_exec.subcommand("nix-builder", "nix-build")
 docker_build = run.subcommand("docker", "build")
+nix_build = run.subcommand("nix", "build")
+docker_load = run.subcommand("docker", "load")
 
 # Builds an image for a Dockerfile by recursively checking FROM clauses
 # for dependencies and building them, too.  Supports also building .nix files
@@ -34,30 +35,32 @@ def determine_tag(fullpath: str):
 def build_nix(nixfile):
     tagname = determine_tag(nixfile)
     rel_nixfile = nixfile[len(root_dir) + 1 :]
+    nix_build("--file", os.path.join(root_dir, rel_nixfile), o="result")
+    docker_load("--input", "result")
 
-    nix_builder_exec = docker_exec.subcommand("nix-builder-cache")
-
-    build_image(os.path.join(root_dir, "nix-builder", "Dockerfile"))
-    if not docker_inspect("nix-builder-cache", required=False, silent=True):
-        try:
-            docker_create(
-                "nix-builder",
-                name="nix-builder-cache",
-                privileged=True,
-                i=True,
-                t=True,
-                w="/work",
-                v=f"{root_dir}:/work",
-                mount="type=bind,source=/var/run/docker.sock,target=/var/run/docker.sock,readonly",
-            )
-            docker_start("nix-builder-cache")
-        except:
-            run("docker", "stop", "nix-builder-cache", required=False)
-            run("docker", "rm", "nix-builder-cache", required=False)
-            raise
-
-    nix_builder_exec.subcommand("nix-build")(rel_nixfile, o="/result")
-    nix_builder_exec.subcommand("docker", "load")("--input", "/result")
+    # nix_builder_exec = docker_exec.subcommand("nix-builder-cache")
+    #
+    # build_image(os.path.join(root_dir, "nix-builder", "Dockerfile"))
+    # if not docker_inspect("nix-builder-cache", required=False, silent=True):
+    #     try:
+    #         docker_create(
+    #             "nix-builder",
+    #             name="nix-builder-cache",
+    #             privileged=True,
+    #             i=True,
+    #             t=True,
+    #             w="/work",
+    #             v=f"{root_dir}:/work",
+    #             mount="type=bind,source=/var/run/docker.sock,target=/var/run/docker.sock,readonly",
+    #         )
+    #         docker_start("nix-builder-cache")
+    #     except:
+    #         run("docker", "stop", "nix-builder-cache", required=False)
+    #         run("docker", "rm", "nix-builder-cache", required=False)
+    #         raise
+    #
+    # nix_builder_exec.subcommand("nix-build")(rel_nixfile, o="/result")
+    # nix_builder_exec.subcommand("docker", "load")("--input", "/result")
 
 
 def build_image(dockerfile, parents=None, seen=None):
