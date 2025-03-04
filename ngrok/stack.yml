@@ -26,6 +26,32 @@ services:
         ngrok config check
         exec ngrok start --all
 
+  mitm_agent:
+    image: corps/ngrok:latest
+    networks:
+      - traefik-public
+    deploy:
+      replicas: 1
+      placement:
+        constraints:
+          - node.role == manager
+    configs:
+      - source: ngrok.tcp.yml
+        target: /ngrok.base.yml
+    secrets:
+      - ngrok-auth
+    command:
+      - bash
+      - -c
+      - |
+        set -e
+        mkdir -p ~/.config/ngrok/
+        cp /ngrok.base.yml ~/.config/ngrok/ngrok.yml
+        chmod +w ~/.config/ngrok/ngrok.yml
+        ngrok config add-authtoken "$$(cat /run/secrets/ngrok-auth)"
+        ngrok config check
+        exec ngrok start --all
+
 networks:
   traefik-public:
     external: true
@@ -34,6 +60,9 @@ configs:
   ngrok.yml:
     external: true
     name: ${ngrokyml:-ngrok.yml}
+  ngrok.tcp.yml:
+    external: true
+    name: ${ngrokyml:-ngrok.tcp.yml}
 
 secrets:
   ngrok-auth:

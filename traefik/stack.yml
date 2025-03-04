@@ -35,6 +35,8 @@ services:
       - --entrypoints.http.address=:80
       # Create an entrypoint "https" listening on port 443
       - --entrypoints.https.address=:443
+      # Create an entrypoint "socks" listening on port 1080"
+      - --entrypoints.socks.address=:1080
       # Enable the access log, with HTTP requests
       - --accesslog
       # Enable the Traefik log, for configurations and errors

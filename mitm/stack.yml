@@ -1,0 +1,27 @@
+version: "3.9"
+services:
+  server:
+    image: corps/mitm:latest
+    networks:
+      - traefik-public
+    deploy:
+      replicas: 1
+      labels:
+        - traefik.enable=true
+        - traefik.docker.network=traefik-public
+        - traefik.constraint-label=traefik-public
+        - traefik.tcp.routers.mitm-tcp.rule=HostSNI(`*`)
+        - traefik.tcp.routers.mitm-tcp.entrypoints=socks
+        - traefik.tcp.routers.mitm-tcp.service=mitm
+        - traefik.tcp.services.mitm.loadbalancer.server.port=1080
+    command: mitmdump -s /home/mitmproxy/scripts.py --set flow_detail=0 --set mode=socks5 --set listen_host=0.0.0.0 --set listen_port=1080
+    volumes:
+      - mitmproxy:/home/mitmproxy/.mitmproxy
+
+volumes:
+  mitmproxy:
+    external: true
+
+networks:
+  traefik-public:
+    external: true

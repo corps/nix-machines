@@ -7,11 +7,13 @@
   imports = [ ../modules/home.nix ];
 
   environment.variables = {
-    NIX_LD_LIBRARY_PATH = with pkgs; lib.makeLibraryPath [
-      stdenv.cc.cc
-      openssl
-      zlib
-    ];
+    NIX_LD_LIBRARY_PATH =
+      with pkgs;
+      lib.makeLibraryPath [
+        stdenv.cc.cc
+        openssl
+        zlib
+      ];
     NIX_LD = lib.fileContents "${pkgs.stdenv.cc}/nix-support/dynamic-linker";
   };
 
@@ -21,7 +23,7 @@
     };
     Service = {
       Restart = "always";
-      ExecStart = "${pkgs.bash}/bin/bash -l -c start-nvim-server.sh";
+      ExecStart = "${pkgs.bash}/bin/bash -l -c /home/home/nix-machines/bin/start-nvim-server.sh";
     };
 
     Install = {
