@@ -58,9 +58,22 @@
         excalibur = nixos.lib.nixosSystem {
           system = "x86_64-linux";
           modules = [
-            /etc/nixos/configuration.nix
+            (
+              if builtins.pathExists /etc/nixos/configuration.nix then
+                /etc/nixos/configuration.nix
+              else
+                # Simple approximation for nix flake check runs
+                {
+                  networking.hostName = "excalibur";
+                  system.stateVersion = "20.09";
+                  fileSystems."/" = {
+                    device = "/dev/disk/by-uuid/xxxx";
+                    fsType = "ext4";
+                  };
+                  boot.loader.systemd-boot.enable = true;
+                }
+            )
             ./excalibur/host.nix
-            # nix-ld.nixosModules.nix-ld
           ];
         };
       };
