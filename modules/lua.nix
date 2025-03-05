@@ -13,7 +13,6 @@ in
 {
   imports = [
     ./linked.nix
-    ./development.nix
   ];
 
   options = {
@@ -33,18 +32,10 @@ in
 
   config = {
     environment = {
-      systemPackages =
-        [
-          cfg.default
-        ]
-        ++ (
-          if config.environment.development.enable then
-            [
-              pkgs.luarocks
-            ]
-          else
-            [ ]
-        );
+      systemPackages = [
+        cfg.default
+        pkgs.luarocks
+      ];
 
       linked = attrsets.mapAttrsToList (name: value: {
         source = value;

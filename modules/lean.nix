@@ -1,14 +1,10 @@
 {
   pkgs,
-  config,
-  lib,
   ...
 }:
 
 {
-  imports = [ ./development.nix ];
-
-  config = lib.mkIf config.environment.development.enable {
+  config = {
     environment.systemPackages = with pkgs; [ elan ];
 
     programs.bash.interactiveShellInit = ''

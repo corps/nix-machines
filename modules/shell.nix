@@ -1,22 +1,27 @@
-{ config, lib, pkgs, ... }:
+# Maps over home manager and darwin attributes to devShell attributes
+{
+  config,
+  lib,
+  ...
+}:
 
 with lib;
+let
+  pre-commit-hooks = config.checks.pre-commit-check;
+in
 
 {
-  imports = [
-    ./linked.nix
-    ./development.nix
-  ];
+  imports = [ ./checks.nix ];
 
   options = rec {
     programs.bash.interactiveShellInit = mkOption {
-        type = types.lines;
-        default = "";
+      type = types.lines;
+      default = "";
     };
 
     environment.systemPackages = mkOption {
-        type = types.listOf types.package;
-        default = [];
+      type = types.listOf types.package;
+      default = [ ];
     };
 
     buildInputs = environment.systemPackages;
@@ -24,7 +29,8 @@ with lib;
   };
 
   config = {
-    buildInputs = config.environment.systemPackages;
+    buildInputs = config.environment.systemPackages ++ pre-commit-hooks.enabledPackages;
+    programs.bash.interactiveShellInit = pre-commit-hooks.shellHook;
     shellHook = config.programs.bash.interactiveShellInit;
   };
 }

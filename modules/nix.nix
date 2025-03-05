@@ -11,24 +11,13 @@ let
 in
 
 {
-  imports = [
-    ./development.nix
-  ];
-
   config = {
     environment = {
-      systemPackages =
-        (
-          if config.environment.development.enable then
-            with pkgs;
-            [
-              nixd
-              nixfmt-rfc-style
-            ]
-          else
-            [ ]
-        )
-        ++ [ compost ];
+      systemPackages = with pkgs; [
+        nixd
+        nixfmt-rfc-style
+        compost
+      ];
     };
 
     nix = {

@@ -13,7 +13,7 @@ in
 {
   imports = [
     ./linked.nix
-    ./development.nix
+    ./checks.nix
   ];
 
   options = {
@@ -33,21 +33,12 @@ in
 
   config = {
     environment = {
-      systemPackages =
-        [
-          cfg.default
-        ]
-        ++ (
-          if config.environment.development.enable then
-            [
-              cfg.default.pkgs.black
-              cfg.default.pkgs.isort
-              cfg.default.pkgs.pre-commit-hooks
-              cfg.default.pkgs.pip-tools
-            ]
-          else
-            [ ]
-        );
+      systemPackages = [
+        cfg.default
+        cfg.default.pkgs.black
+        cfg.default.pkgs.isort
+        cfg.default.pkgs.pip-tools
+      ];
 
       linked = attrsets.mapAttrsToList (name: value: {
         source = value;
@@ -55,6 +46,12 @@ in
           "bin/python" = "bin/python${name}";
         };
       }) cfg.alternatives;
+    };
+
+    hooks.settings = {
+      black.enable = true;
+      isort.enable = true;
+      isort.settings.profile = "black";
     };
   };
 }

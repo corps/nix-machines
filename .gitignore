@@ -9,3 +9,6 @@ __pycache__
 build
 .lake
 .vscode
+
+# This is managed by flake.nix
+/.pre-commit-config.yaml

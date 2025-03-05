@@ -1,12 +1,16 @@
-{ config, lib, pkgs, ... }:
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}:
 
 with lib;
-let cfg = config.programs.gcc; in
+let
+  cfg = config.programs.gcc;
+in
 
 {
-  imports = [
-    ./development.nix
-  ];
 
   options = {
     programs.gcc = {
@@ -20,10 +24,10 @@ let cfg = config.programs.gcc; in
 
   config = {
     environment = {
-      systemPackages = (if config.environment.development.enable then with pkgs; [
+      systemPackages = [
         cfg.default
         pkg-config
-      ] else []);
+      ];
     };
   };
 }

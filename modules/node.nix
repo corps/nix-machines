@@ -13,7 +13,6 @@ in
 {
   imports = [
     ./linked.nix
-    ./development.nix
   ];
 
   options = {
@@ -37,19 +36,10 @@ in
     '';
 
     environment = {
-      systemPackages =
-        [
-          cfg.default
-        ]
-        ++ (
-          if config.environment.development.enable then
-            with pkgs;
-            [
-              pkgs.esbuild
-            ]
-          else
-            [ ]
-        );
+      systemPackages = [
+        cfg.default
+        pkgs.esbuild
+      ];
 
       linked = attrsets.mapAttrsToList (name: value: {
         source = value;

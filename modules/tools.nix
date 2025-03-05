@@ -1,5 +1,4 @@
 {
-  config,
   lib,
   pkgs,
   ...
@@ -12,38 +11,26 @@ let
 in
 
 {
-  imports = [
-    ./development.nix
-  ];
-
   config = {
     environment = {
-      systemPackages =
-        with pkgs;
-        [
-          vim
-          neovim
-          gnused
-          curl
-          wget
-          jq
-          gnumake
-          fzf
-          starship
-        ]
-        ++ (
-          if config.environment.development.enable then
-            with pkgs;
-            [
-              hub
-              ngrok3
-              just
-            ]
-          else
-            [ ]
-        );
+      systemPackages = with pkgs; [
+        vim
+        neovim
+        gnused
+        curl
+        wget
+        jq
+        gnumake
+        fzf
+        starship
+        ripgrep
+        hub
+        ngrok3
+        just
+      ];
 
       variables = {
+        # Commit messages and the look should be simple
         EDITOR = "vim";
       };
     };

@@ -15,7 +15,6 @@ in
 {
   imports = [
     ./node.nix
-    ./development.nix
   ];
 
   options = {
@@ -29,7 +28,7 @@ in
   };
 
   # Spago isn't building for arm right now, CPU error
-  config = mkIf (config.environment.development.enable && pkgs.system != "aarch64-darwin") {
+  config = mkIf (pkgs.system != "aarch64-darwin") {
     programs.bash.interactiveShellInit = ''
       source <(spago --bash-completion-script `which spago`)
     '';

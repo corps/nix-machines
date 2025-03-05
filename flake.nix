@@ -3,36 +3,43 @@
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/master";
     nixos.url = "github:NixOs/nixpkgs/nixos-24.11";
-    flake-utils.url = "github:numtide/flake-utils";
     easy-purescript-nix.url = "github:justinwoo/easy-purescript-nix";
     nix-darwin.url = "github:LnL7/nix-darwin";
     nix-darwin.inputs.nixpkgs.follows = "nixpkgs";
+    nix-github-actions.url = "github:nix-community/nix-github-actions";
+    nix-github-actions.inputs.nixpkgs.follows = "nixpkgs";
+    pre-commit-hooks.url = "github:cachix/git-hooks.nix";
+    pre-commit-hooks.inputs.nixpkgs.follows = "nixpkgs";
     home-manager = {
       url = "github:nix-community/home-manager/release-24.11";
-      # url = "github:nix-community/home-manager";
-      # url = "github:nix-community/home-manager/release-24.05";
       inputs.nixpkgs.follows = "nixos";
     };
-    # nix-ld = {
-    # url = "github:Mic92/nix-ld";
-    # inputs.nixpkgs.follows = "nixpkgs"; # requires rust 1.8.3
-    # };
   };
 
   outputs =
     inputs@{
+      self,
       nixpkgs,
       nixos,
-      flake-utils,
       home-manager,
-      easy-purescript-nix,
+      nix-github-actions,
+      # easy-purescript-nix,
       nix-darwin,
-      poetry2nix,
+      # poetry2nix,
       # nix-ld,
       ...
     }:
+    let
+      supportedSystems = [
+        "x86_64-linux"
+        "aarch64-linux"
+        "x86_64-darwin"
+        "aarch64-darwin"
+      ];
+      forAllSystems = nixpkgs.lib.genAttrs supportedSystems;
+    in
     {
-      darwinConfigurations = rec {
+      darwinConfigurations = {
         "saikoro" = nix-darwin.lib.darwinSystem {
           modules = [ ./saikoro/default.nix ];
           specialArgs = { inherit inputs; };
@@ -57,33 +64,36 @@
           ];
         };
       };
-    }
 
-    //
+      githubActions = nix-github-actions.lib.mkGithubMatrix {
+        checks = self.checks."x86_64-linux";
+      };
 
-      flake-utils.lib.eachDefaultSystem (
+      dev = forAllSystems (
         system:
         let
           pkgs = nixpkgs.legacyPackages.${system};
-          config =
-            (pkgs.lib.evalModules {
-              modules = [
-                ./modules/shell.nix
-                ./modules/python.nix
-                ./modules/purescript.nix
-                {
-                  _module.args = { inherit pkgs inputs; };
-                  environment.development.enable = true;
-                  programs.python.default = pkgs.python311;
-                }
-              ];
-            }).config;
         in
-        {
-          devShells.default = pkgs.mkShell {
-            inherit (config) shellHook buildInputs;
-            name = "nix-machines development shell";
-          };
-        }
+
+        (pkgs.lib.evalModules {
+          modules = [
+            ./modules/shell.nix
+            ./modules/python.nix
+            {
+              _module.args = { inherit pkgs inputs; };
+              programs.python.default = pkgs.python311;
+            }
+          ];
+        }).config
       );
+
+      checks = forAllSystems (system: self.dev.${system}.checks);
+
+      devShells = forAllSystems (system: {
+        default = nixpkgs.legacyPackages.${system}.mkShell {
+          inherit (self.dev.${system}) shellHook buildInputs;
+          name = "nix-machines development shell";
+        };
+      });
+    };
 }
