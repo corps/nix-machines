@@ -66,7 +66,7 @@
       };
 
       githubActions = nix-github-actions.lib.mkGithubMatrix {
-        checks = self.checks."x86_64-linux";
+        checks = nixpkgs.lib.getAttrs [ "x86_64-linux" ] self.checks;
       };
 
       dev = forAllSystems (
