@@ -17,9 +17,8 @@ def request(flow: http.HTTPFlow):
         "reddit.com",
         "news.jchk.net",
         "jchk.net",
+        "awful.systems",
     ):
         forward_to(flow, "https://miniflux.kaihatsu.io")
-    if flow.request.pretty_host in ("awful.systems",):
-        forward_to(flow, "https://miniflux.kaihatsu.io")
-    if flow.request.pretty_host in ("politico.com",):
+    if flow.request.pretty_host in ("politico.com", "www.politico.com"):
         forward_to(flow, "https://b.hatena.ne.jp")
