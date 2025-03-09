@@ -11,3 +11,6 @@ guidance
 python-dotenv
 ipywidgets
 traitlets
+jupyter-scheduler
+beancount
+dropbox
