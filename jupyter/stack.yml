@@ -21,6 +21,7 @@ services:
     volumes:
       - jupyter_app_home:/app
       - jupyter_root:/root/.jupyter
+      - beancount_root:/app/beancount
 
 networks:
   traefik-public:
@@ -31,3 +32,5 @@ volumes:
     driver: local
   jupyter_root:
     driver: local
+  beancount_root:
+    external: true
