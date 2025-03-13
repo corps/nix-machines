@@ -1,7 +1,7 @@
 { pkgs, lib, ... }:
 
 {
-  home.stateVersion = "20.09";
+  home.stateVersion = "24.11";
   imports = [ ../modules/home.nix ];
 
   systemd.user.services.nvim-server = {

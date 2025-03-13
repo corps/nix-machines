@@ -24,7 +24,7 @@ in
 
   config = {
     environment = {
-      systemPackages = [
+      systemPackages = with pkgs; [
         cfg.default
         pkg-config
       ];

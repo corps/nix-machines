@@ -46,15 +46,46 @@
         };
       };
 
-      homeConfigurations.home = home-manager.lib.homeManagerConfiguration {
-        pkgs = import nixos { system = "x86_64-linux"; };
-        modules = [
-          ./excalibur/home.nix
-        ];
-        extraSpecialArgs = { inherit inputs; };
+      homeConfigurations = {
+        "home@excalibur" = home-manager.lib.homeManagerConfiguration {
+          pkgs = import nixos { system = "x86_64-linux"; };
+          modules = [
+            ./excalibur/home.nix
+          ];
+          extraSpecialArgs = { inherit inputs; };
+        };
+        "home@mikazuki" = home-manager.lib.homeManagerConfiguration {
+          pkgs = import nixos { system = "x86_64-linux"; };
+          modules = [
+            ./mikazuki/home.nix
+          ];
+          extraSpecialArgs = { inherit inputs; };
+        };
       };
 
       nixosConfigurations = {
+        mikazuki = nixos.lib.nixosSystem {
+          system = "x86_64-linux";
+          modules = [
+            (
+              if builtins.pathExists /etc/nixos/configuration.nix then
+                /etc/nixos/configuration.nix
+              else
+                # Simple approximation for nix flake check runs
+                {
+                  networking.hostName = "mikazuki";
+                  system.stateVersion = "24.11";
+                  fileSystems."/" = {
+                    device = "/dev/disk/by-uuid/xxxx";
+                    fsType = "ext4";
+                  };
+                  boot.loader.systemd-boot.enable = true;
+                }
+            )
+            ./mikazuki/host.nix
+          ];
+        };
+
         excalibur = nixos.lib.nixosSystem {
           system = "x86_64-linux";
           modules = [
