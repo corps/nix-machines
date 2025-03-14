@@ -13,4 +13,7 @@ ipywidgets
 traitlets
 jupyter-scheduler
 beancount
+beangulp
 dropbox
+git-remote-dropbox
+parsy

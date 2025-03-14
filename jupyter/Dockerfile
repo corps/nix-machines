@@ -2,6 +2,7 @@ FROM python:3.11
 
 RUN apt-get update \
     && apt-get install -y --no-install-recommends \
+    bash \
     curl \
     tini \
     nodejs \
