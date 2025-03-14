@@ -49,7 +49,16 @@ with lib;
     home.username = "home";
     home.homeDirectory = "/home/home";
     home.packages = config.environment.systemPackages;
-    home.sessionVariables = config.environment.variables;
+    home.sessionVariables = config.environment.variables // {
+      NIX_LD_LIBRARY_PATH =
+        with pkgs;
+        lib.makeLibraryPath [
+          stdenv.cc.cc
+          openssl
+          zlib
+        ];
+      NIX_LD = lib.fileContents "${pkgs.stdenv.cc}/nix-support/dynamic-linker";
+    };
     programs.bash.enableCompletion = config.programs.bash.completion.enable;
     programs.bash.initExtra =
       config.programs.bash.interactiveShellInit

@@ -46,7 +46,7 @@ check existsOnPath nix-env || exitWithMessage 1 "Cannot find nix executables on 
 
 if isDarwin; then
   if ! check existsOnPath darwin-rebuild; then
-    nix run --extra-experimental-features "nix-command flakes" nix-darwin -- switch --flake $DIR/.. $@
+    echoRun nix run --extra-experimental-features "nix-command flakes" nix-darwin -- switch --flake $DIR/.. $@
   fi
 
   if ! check shellIs "/run/current-system/sw/bin/bash"; then
@@ -67,6 +67,6 @@ fi
 if isDarwin; then
   exec darwin-rebuild switch --flake $DIR/.. $@
 else
-  nix run --extra-experimental-features "nix-command flakes" home-manager -- switch --flake $DIR/.. $@
+  nix --extra-experimental-features "nix-command flakes" run home-manager -- switch --extra-experimental-features "nix-command flakes" --flake $DIR/.. $@
   sudo nixos-rebuild switch --flake $DIR/.. --impure $@
 fi

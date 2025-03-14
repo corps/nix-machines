@@ -14,8 +14,8 @@ with lib;
     curl
     bash
   ];
-  networking.firewall.enable = true;
 
+  networking.firewall.enable = true;
   networking.firewall.allowedTCPPorts = [
     80
     443
@@ -24,17 +24,11 @@ with lib;
     7946
   ];
 
-  virtualisation.docker.enable = true;
-  virtualisation.docker.liveRestore = false;
-  virtualisation.docker.autoPrune = {
-    enable = true;
-    dates = "daily";
-  };
-
   networking.firewall.trustedInterfaces = [
     "docker0"
     "docker_gwbridge"
   ];
+
   networking.firewall.allowedUDPPorts = [
     4789
     7946
@@ -45,6 +39,14 @@ with lib;
     "8.8.8.8"
     "8.8.4.4"
   ];
+
+  virtualisation.docker.enable = true;
+  virtualisation.docker.liveRestore = false;
+  virtualisation.docker.autoPrune = {
+    enable = true;
+    dates = "daily";
+  };
+
 
   services.openssh.enable = true;
   services.openssh.settings = {
@@ -88,9 +90,8 @@ with lib;
     };
   };
 
-  programs.nix-ld.enable = true;
-
   networking.wireless.userControlled.enable = true;
+
   # networking
   networking.wireless.networks = {
     projector = {
@@ -119,6 +120,8 @@ with lib;
     HHonors = { };
     ihgconnect = { };
   };
+
+  programs.nix-ld.enable = true;
 
   time.timeZone = "America/Los_Angeles";
   boot.kernel.sysctl."fs.inotify.max_user_instances" = 2147483647;
