@@ -7,3 +7,6 @@
 [submodule "resume"]
 	path = resume
 	url = git@github.com:corps/resume.git
+[submodule "nixpkgs"]
+	path = nixpkgs
+	url = git@github.com:corps/nixpkgs.git
