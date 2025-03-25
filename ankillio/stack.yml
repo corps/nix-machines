@@ -1,0 +1,30 @@
+version: "3.8"
+services:
+  app:
+    image: corps/ankillio
+    networks:
+      - traefik-public
+    deploy:
+      replicas: 1
+      labels:
+        - traefik.enable=true
+        - traefik.docker.network=traefik-public
+        - traefik.constraint-label=traefik-public
+        - traefik.http.routers.ankillio-http.rule=Host(`ankillio.kaihatsu.io`)
+        - traefik.http.routers.ankillio-http.entrypoints=http
+        - traefik.http.routers.ankillio-http.service=ankillio
+        - traefik.http.services.ankillio.loadbalancer.server.port=5000
+      placement:
+        constraints:
+          - node.role == manager
+          - node.labels.ankillio == true
+    volumes:
+      - data:/app/data
+
+networks:
+  traefik-public:
+    external: true
+
+volumes:
+  data:
+    driver: local

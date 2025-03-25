@@ -1,0 +1,14 @@
+certifi
+pydantic==2.*
+requests==2.*
+types-requests==2.*
+urllib3==1.*
+mistralai==1.*
+guidance
+python-dotenv
+dropbox
+git-remote-dropbox
+twilio
+flask
+bs4
+lxml
