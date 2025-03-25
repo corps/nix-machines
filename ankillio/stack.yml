@@ -18,6 +18,8 @@ services:
         constraints:
           - node.role == manager
           - node.labels.ankillio == true
+    secrets:
+      - ankillio_dotenv:/app/.env
     volumes:
       - data:/app/data
 
@@ -28,3 +30,7 @@ networks:
 volumes:
   data:
     driver: local
+
+secrets:
+  ankillio_dotenv:
+    external: true

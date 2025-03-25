@@ -19,5 +19,8 @@ RUN pip install -r requirements.frozen.txt --no-cache-dir
 COPY src src
 COPY setup.py .
 RUN pip install --default-timeout=120 -e . --no-cache-dir --no-deps
+RUN mkdir /app/data
 
-CMD
+ENV STUDY_DATA_PATH=/app/data/study.json
+
+CMD python -m ankillio.server
