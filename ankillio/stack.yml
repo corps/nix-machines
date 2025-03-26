@@ -16,10 +16,10 @@ services:
         - traefik.http.services.ankillio.loadbalancer.server.port=5000
       placement:
         constraints:
-          - node.role == manager
           - node.labels.ankillio == true
     secrets:
-      - ankillio_dotenv:/app/.env
+      - source: ankillio_dotenv
+        target: /app/.env
     volumes:
       - data:/app/data
 

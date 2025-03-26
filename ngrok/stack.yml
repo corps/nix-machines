@@ -5,13 +5,7 @@ services:
     networks:
       - traefik-public
     deploy:
-      replicas: 1
-      placement:
-        constraints:
-          - node.role == manager
-    configs:
-      - source: ngrok.yml
-        target: /ngrok.base.yml
+      replicas: 2
     secrets:
       - ngrok-auth
     command:
@@ -20,24 +14,16 @@ services:
       - |
         set -e
         mkdir -p ~/.config/ngrok/
-        cp /ngrok.base.yml ~/.config/ngrok/ngrok.yml
-        chmod +w ~/.config/ngrok/ngrok.yml
         ngrok config add-authtoken "$$(cat /run/secrets/ngrok-auth)"
         ngrok config check
-        exec ngrok start --all
+        exec ngrok http traefik_traefik:80 --url https://default.internal --pooling-enabled
 
   mitm_agent:
     image: corps/ngrok:latest
     networks:
       - traefik-public
     deploy:
-      replicas: 1
-      placement:
-        constraints:
-          - node.role == manager
-    configs:
-      - source: ngrok.tcp.yml
-        target: /ngrok.base.yml
+      replicas: 2
     secrets:
       - ngrok-auth
     command:
@@ -46,23 +32,12 @@ services:
       - |
         set -e
         mkdir -p ~/.config/ngrok/
-        cp /ngrok.base.yml ~/.config/ngrok/ngrok.yml
-        chmod +w ~/.config/ngrok/ngrok.yml
         ngrok config add-authtoken "$$(cat /run/secrets/ngrok-auth)"
-        ngrok config check
-        exec ngrok start --all
+        exec ngrok tcp traefik_traefik:1080 --url tcp://socks.internal:1080 --pooling-enabled
 
 networks:
   traefik-public:
     external: true
-
-configs:
-  ngrok.yml:
-    external: true
-    name: ${ngrokyml:-ngrok.yml}
-  ngrok.tcp.yml:
-    external: true
-    name: ${ngrokyml:-ngrok.tcp.yml}
 
 secrets:
   ngrok-auth:

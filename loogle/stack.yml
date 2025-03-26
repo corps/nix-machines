@@ -16,7 +16,6 @@ services:
         - traefik.http.services.loogle.loadbalancer.server.port=8088
       placement:
         constraints:
-          - node.role == manager
           - node.labels.loogle == true
 
     volumes:
