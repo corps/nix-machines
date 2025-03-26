@@ -1,8 +1,12 @@
+import os
 from typing import ClassVar
 
 import requests
 from bs4 import BeautifulSoup, NavigableString
+from dotenv import load_dotenv
 from pydantic import BaseModel
+
+load_dotenv()
 
 
 class IdsResponse(BaseModel):
@@ -182,23 +186,34 @@ class StudyItems(BaseModel):
 class SyncService(BaseModel):
     host: str
     anki_service: AnkiService
+    twilio_auth_token: str
 
     def sync(self):
         request = SyncRequest(cards=self.anki_service.search_cards("tag:audio"))
+        print(f"Pushing {len(request.cards)} cards")
         resp = SyncResponse.model_validate(
-            requests.put(self.host + "/sync", json=request.model_dump()).json()
+            requests.put(
+                self.host + "/sync",
+                json=request.model_dump(),
+                headers={"Authorization": self.twilio_auth_token},
+            ).json()
         )
         for studied in resp.studied:
             if studied.ease != 0:
                 card = self.anki_service.card_info(studied.cardId)
                 if card is not None:
+                    print("Receiving update...")
                     self.anki_service.answer_cards([studied])
                     self.anki_service.remove_tags(card, "audio")
 
 
 def sync(server: str):
-    SyncService(host=server, anki_service=AnkiService()).sync()
+    SyncService(
+        host=server,
+        anki_service=AnkiService(),
+        twilio_auth_token=os.environ["TWILIO_AUTH_TOKEN"],
+    ).sync()
 
 
 if __name__ == "__main__":
-    sync("http://127.0.0.1:5000")
+    sync("https://ankillio.kaihatsu.io")

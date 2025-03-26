@@ -45,8 +45,8 @@ def script():
         response.pause(1)
         gather: Gather = response.gather(timeout=60, language="ja-JP")
         for i in range(3):
-            gather.say(card_text)
-            gather.pause(2 ** (i + 1))
+            gather.say(card_text, language="ja-JP")
+            gather.pause(2 ** (i + 2))
         gather.say("いかがでしょうか？", language="ja-JP")
         reply = yield response
         if chat(f"次の返事は肯定ですか？\n{reply}", YesNo):
@@ -57,7 +57,7 @@ def script():
 
     response = VoiceResponse()
     response.say(
-        "この以上のスケジュールされている課題はありまません．失礼しいます．",
+        "この以上のスケジュールされている課題はありまません．失礼します．",
         language="ja-JP",
     )
     return response
