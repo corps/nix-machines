@@ -18,7 +18,7 @@ services:
         constraints:
           - node.labels.ankillio == true
     secrets:
-      - source: ankillio_dotenv
+      - source: ankillio_dotenv2
         target: /app/.env
     volumes:
       - data:/app/data
@@ -32,5 +32,5 @@ volumes:
     driver: local
 
 secrets:
-  ankillio_dotenv:
+  ankillio_dotenv2:
     external: true

@@ -1,5 +1,6 @@
 import dataclasses
 import enum
+import logging
 import os
 from typing import Generator
 
@@ -59,6 +60,7 @@ def script():
         "この以上のスケジュールされている課題はありまません．失礼しいます．",
         language="ja-JP",
     )
+    return response
 
 
 @dataclass
@@ -77,6 +79,7 @@ def handle_call():
         # Extract the necessary parameters from the request
         signature = request.headers.get("X-Twilio-Signature", "")
         params = request.args if request.method == "GET" else request.form
+        request.scheme = "https"  # this is http due to proxy, force it
         if not validator.validate(request.url, params, signature):
             raise Unauthorized()
 
@@ -115,6 +118,8 @@ def write_study(items: StudyItems):
 
 @app.route("/sync", methods=["PUT"])
 def sync():
+    if request.headers.get("Authorization", "") != os.environ["TWILIO_AUTH_TOKEN"]:
+        raise Unauthorized()
     items = load_study()
     seen_ids = set(c.cardId for c in items.studied) | set(c.cardId for c in items.cards)
     req = SyncRequest.model_validate(request.get_json(True))
@@ -134,4 +139,5 @@ def sync():
 
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.logger.setLevel(logging.DEBUG)
+    app.run(host="0.0.0.0", port=5000)
