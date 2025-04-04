@@ -21,6 +21,7 @@ with lib;
     ./tools.nix
     ./lean.nix
     ./lua.nix
+    ./vine.nix
   ];
   options = {
     environment.systemPackages = mkOption {

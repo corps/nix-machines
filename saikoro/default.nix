@@ -5,8 +5,6 @@
 {
   system.stateVersion = 5;
   nixpkgs.hostPlatform = "aarch64-darwin";
-  services.nix-daemon.enable = true;
-  environment.development.enable = true;
 
   imports = [
     ../modules/darwin.nix
