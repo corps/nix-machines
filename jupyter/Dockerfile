@@ -1,10 +1,12 @@
 FROM jupyter:base-image.nix
 ENV PATH=/bin
 ENTRYPOINT ["/bin/tini", "--"]
-
 RUN mkdir -p /app
-
 WORKDIR /app
+
+RUN python -m venv /app/venv
+ENV PATH=/app/venv/bin:/bin
+RUN python -m ensurepip
 
 COPY requirements.frozen.txt .
 RUN pip install -r requirements.frozen.txt --no-cache-dir

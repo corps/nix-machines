@@ -5,7 +5,7 @@ services:
     networks:
       - traefik-public
     deploy:
-      replicas: 2
+      mode: global
     secrets:
       - ngrok-auth
     command:
@@ -23,7 +23,7 @@ services:
     networks:
       - traefik-public
     deploy:
-      replicas: 2
+      mode: global
     secrets:
       - ngrok-auth
     command:

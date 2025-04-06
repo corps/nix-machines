@@ -44,6 +44,5 @@ dockerTools.buildImage {
     #!${pkgs.runtimeShell}
     set -x
     ${dockerTools.shadowSetup}
-    useradd -Ums ${pkgs.bash}/bin/bash -u 3753 ngrok
   '';
 }
