@@ -1,0 +1,19 @@
+diff --git a/cli/src/vine_cli.rs b/cli/src/vine_cli.rs
+--- a/cli/src/vine_cli.rs
++++ b/cli/src/vine_cli.rs
+@@ -1,5 +1,5 @@
+ use std::{
+-  fs,
++  env, fs,
+   io::{stdin, Read},
+   path::PathBuf,
+   process::exit,
+@@ -84,7 +84,7 @@ impl CompileArgs {
+
+ fn std_path() -> PathBuf {
+   let mut path = PathBuf::new();
+-  path.push(env!("CARGO_MANIFEST_DIR"));
++  path.push(env!("VINE_CLI_DIR"));
+   path.push("../vine/std/std.vi");
+   path
+ }
