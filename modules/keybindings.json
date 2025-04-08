@@ -945,7 +945,7 @@
   },
   {
     "key": "shift+cmd+[",
-    "command": "-workbench.action.previousEditor"
+    "command": "workbench.action.previousEditor"
   },
   {
     "key": "alt+cmd+left",
@@ -1136,11 +1136,6 @@
     "when": "terminalFocus && terminalHasBeenCreated || terminalFocus && terminalIsOpen || terminalFocus && terminalProcessSupported || terminalHasBeenCreated && terminalTabsFocus || terminalIsOpen && terminalTabsFocus || terminalProcessSupported && terminalTabsFocus"
   },
   {
-    "key": "shift+cmd+]",
-    "command": "-workbench.action.terminal.focusNext",
-    "when": "terminalFocus && terminalHasBeenCreated && !terminalEditorFocus || terminalFocus && terminalProcessSupported && !terminalEditorFocus"
-  },
-  {
     "key": "alt+cmd+down",
     "command": "-workbench.action.terminal.focusNextPane",
     "when": "terminalFocus && terminalHasBeenCreated || terminalFocus && terminalProcessSupported"
@@ -1149,11 +1144,6 @@
     "key": "alt+cmd+right",
     "command": "-workbench.action.terminal.focusNextPane",
     "when": "terminalFocus && terminalHasBeenCreated || terminalFocus && terminalProcessSupported"
-  },
-  {
-    "key": "shift+cmd+[",
-    "command": "-workbench.action.terminal.focusPrevious",
-    "when": "terminalFocus && terminalHasBeenCreated && !terminalEditorFocus || terminalFocus && terminalProcessSupported && !terminalEditorFocus"
   },
   {
     "key": "alt+cmd+up",
@@ -1479,5 +1469,9 @@
     "key": "shift+cmd+]",
     "command": "-workbench.action.debug.nextConsole",
     "when": "inDebugRepl"
+  },
+  {
+    "key": "shift+cmd+]",
+    "command": "workbench.action.nextEditor"
   }
 ]
