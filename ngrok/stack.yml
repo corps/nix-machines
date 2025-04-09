@@ -15,25 +15,7 @@ services:
         set -e
         mkdir -p ~/.config/ngrok/
         ngrok config add-authtoken "$$(cat /run/secrets/ngrok-auth)"
-        ngrok config check
-        exec ngrok http traefik_traefik:80 --url https://default.internal --pooling-enabled
-
-  mitm_agent:
-    image: corps/ngrok:latest
-    networks:
-      - traefik-public
-    deploy:
-      mode: global
-    secrets:
-      - ngrok-auth
-    command:
-      - bash
-      - -c
-      - |
-        set -e
-        mkdir -p ~/.config/ngrok/
-        ngrok config add-authtoken "$$(cat /run/secrets/ngrok-auth)"
-        exec ngrok tcp traefik_traefik:1080 --url tcp://socks.internal:1080 --pooling-enabled
+        exec ngrok http traefik_traefik:80 --url https://*.kaihatsu.io --pooling-enabled
 
 networks:
   traefik-public:
