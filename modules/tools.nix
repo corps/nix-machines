@@ -44,6 +44,9 @@ in
       enable = true;
       userName = "Zachary Collins";
       userEmail = "recursive.cookie.jar@gmail.com";
+      extraConfig = {
+        protocol.dropbox.allow = "always";
+      };
     };
 
     programs.bash.interactiveShellInit = ''

@@ -1,0 +1,9 @@
+pydantic==2.*
+nicegui==2.*
+mypy
+aiohttp
+pytest
+pytest-asyncio
+requests==2.*
+types-requests==2.*
+urllib3==1.*

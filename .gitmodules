@@ -13,3 +13,6 @@
 [submodule "vine"]
 	path = vine
 	url = git@github.com:corps/vine.git
+[submodule "accounting"]
+	path = accounting
+	url = dropbox:///git/accounting
