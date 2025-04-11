@@ -1,0 +1,29 @@
+version: "3.8"
+services:
+  app:
+    image: corps/trains
+    networks:
+      - traefik-public
+    deploy:
+      replicas: 1
+      labels:
+        - traefik.enable=true
+        - traefik.docker.network=traefik-public
+        - traefik.constraint-label=traefik-public
+        - traefik.http.routers.trains-http.rule=Host(`trains.kaihatsu.io`)
+        - traefik.http.routers.trains-http.entrypoints=http
+        - traefik.http.routers.trains-http.service=trains
+        - traefik.http.services.trains.loadbalancer.server.port=5000
+      placement:
+        constraints:
+          - node.labels.trains == true
+    volumes:
+      - data:/app/.nicegui
+
+networks:
+  traefik-public:
+    external: true
+
+volumes:
+  data:
+    driver: local
