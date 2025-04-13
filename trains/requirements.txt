@@ -7,3 +7,5 @@ pytest-asyncio
 requests==2.*
 types-requests==2.*
 urllib3==1.*
+geojson-pydantic
+shapely

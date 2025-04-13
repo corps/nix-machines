@@ -44,12 +44,14 @@ frozenlist==1.5.0
     # via
     #   aiohttp
     #   aiosignal
+geojson-pydantic==1.2.0
+    # via -r requirements.txt
 h11==0.14.0
     # via
     #   httpcore
     #   uvicorn
     #   wsproto
-httpcore==1.0.7
+httpcore==1.0.8
     # via httpx
 httptools==0.6.4
     # via uvicorn
@@ -83,6 +85,8 @@ mypy-extensions==1.0.0
     # via mypy
 nicegui==2.14.1
     # via -r requirements.txt
+numpy==2.2.4
+    # via shapely
 orjson==3.10.16
     # via nicegui
 packaging==24.2
@@ -99,6 +103,7 @@ pydantic==2.11.3
     # via
     #   -r requirements.txt
     #   fastapi
+    #   geojson-pydantic
 pydantic-core==2.33.1
     # via pydantic
 pygments==2.19.1
@@ -111,11 +116,11 @@ pytest-asyncio==0.26.0
     # via -r requirements.txt
 python-dotenv==1.1.0
     # via uvicorn
-python-engineio==4.11.2
+python-engineio==4.12.0
     # via python-socketio
 python-multipart==0.0.20
     # via nicegui
-python-socketio==5.12.1
+python-socketio==5.13.0
     # via nicegui
 pyyaml==6.0.2
     # via uvicorn
@@ -123,6 +128,8 @@ requests==2.32.3
     # via
     #   -r requirements.txt
     #   nicegui
+shapely==2.1.0
+    # via -r requirements.txt
 simple-websocket==1.1.0
     # via python-engineio
 sniffio==1.3.1
