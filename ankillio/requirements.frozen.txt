@@ -4,11 +4,16 @@
 #
 #    pip-compile --output-file=requirements.frozen.txt --strip-extras requirements.txt
 #
+aiofiles==24.1.0
+    # via nicegui
 aiohappyeyeballs==2.6.1
     # via aiohttp
-aiohttp==3.11.14
+aiohttp==3.11.18
     # via
+    #   -r requirements.txt
     #   aiohttp-retry
+    #   nicegui
+    #   python-socketio
     #   twilio
 aiohttp-retry==2.9.1
     # via twilio
@@ -17,35 +22,46 @@ aiosignal==1.3.2
 annotated-types==0.7.0
     # via pydantic
 anyio==4.9.0
-    # via httpx
+    # via
+    #   httpx
+    #   starlette
+    #   watchfiles
 asttokens==3.0.0
     # via stack-data
 attrs==25.3.0
     # via
     #   aiohttp
     #   referencing
-beautifulsoup4==4.13.3
+beautifulsoup4==4.13.4
     # via bs4
+bidict==0.23.1
+    # via python-socketio
 blinker==1.9.0
     # via flask
 bs4==0.0.2
     # via -r requirements.txt
-certifi==2025.1.31
+certifi==2025.4.26
     # via
     #   -r requirements.txt
     #   httpcore
     #   httpx
+    #   nicegui
     #   requests
 charset-normalizer==3.4.1
     # via requests
 click==8.1.8
-    # via flask
+    # via
+    #   -r requirements.txt
+    #   flask
+    #   uvicorn
 comm==0.2.2
     # via ipywidgets
 decorator==5.2.1
     # via ipython
 diskcache==5.6.3
     # via guidance
+docutils==0.21.2
+    # via nicegui
 dropbox==12.0.2
     # via
     #   -r requirements.txt
@@ -54,9 +70,11 @@ eval-type-backport==0.2.2
     # via mistralai
 executing==2.2.0
     # via stack-data
+fastapi==0.115.12
+    # via nicegui
 flask==3.1.0
     # via -r requirements.txt
-frozenlist==1.5.0
+frozenlist==1.6.0
     # via
     #   aiohttp
     #   aiosignal
@@ -66,52 +84,77 @@ guidance==0.2.1
     # via -r requirements.txt
 guidance-stitch==0.1.4
     # via guidance
-h11==0.14.0
-    # via httpcore
-httpcore==1.0.7
+h11==0.16.0
+    # via
+    #   httpcore
+    #   uvicorn
+    #   wsproto
+httpcore==1.0.9
     # via httpx
+httptools==0.6.4
+    # via uvicorn
 httpx==0.28.1
-    # via mistralai
+    # via
+    #   mistralai
+    #   nicegui
 idna==3.10
     # via
     #   anyio
     #   httpx
     #   requests
     #   yarl
-ipython==9.0.2
+ifaddr==0.2.0
+    # via nicegui
+ipython==9.2.0
     # via ipywidgets
 ipython-pygments-lexers==1.1.1
     # via ipython
-ipywidgets==8.1.5
+ipywidgets==8.1.6
     # via guidance-stitch
 itsdangerous==2.2.0
-    # via flask
+    # via
+    #   flask
+    #   nicegui
 jedi==0.19.2
     # via ipython
 jinja2==3.1.6
-    # via flask
-jupyterlab-widgets==3.0.13
+    # via
+    #   flask
+    #   nicegui
+joblib==1.4.2
+    # via scikit-learn
+jupyterlab-widgets==3.0.14
     # via ipywidgets
 llguidance==0.6.31
     # via guidance
-lxml==5.3.1
+lxml==5.4.0
     # via -r requirements.txt
+markdown2==2.5.3
+    # via nicegui
 markupsafe==3.0.2
     # via
     #   jinja2
     #   werkzeug
 matplotlib-inline==0.1.7
     # via ipython
-mistralai==1.6.0
+mistralai==1.7.0
     # via -r requirements.txt
-multidict==6.2.0
+multidict==6.4.3
     # via
     #   aiohttp
     #   yarl
-numpy==2.2.4
-    # via guidance
+nicegui==2.15.0
+    # via -r requirements.txt
+numpy==2.2.5
+    # via
+    #   -r requirements.txt
+    #   guidance
+    #   scikit-learn
+    #   scipy
 ordered-set==4.1.0
     # via guidance
+orjson==3.10.16
+    # via nicegui
 parso==0.8.4
     # via jedi
 pexpect==4.9.0
@@ -120,35 +163,51 @@ platformdirs==4.3.7
     # via guidance
 ply==3.11
     # via stone
-prompt-toolkit==3.0.50
+prompt-toolkit==3.0.51
     # via ipython
 propcache==0.3.1
     # via
     #   aiohttp
     #   yarl
+pscript==0.7.7
+    # via vbuild
 psutil==7.0.0
     # via guidance
 ptyprocess==0.7.0
     # via pexpect
 pure-eval==0.2.3
     # via stack-data
-pydantic==2.10.6
+pydantic==2.11.3
     # via
     #   -r requirements.txt
+    #   fastapi
     #   guidance
     #   mistralai
-pydantic-core==2.27.2
+pydantic-core==2.33.1
     # via pydantic
 pygments==2.19.1
     # via
     #   ipython
     #   ipython-pygments-lexers
+    #   nicegui
 pyjwt==2.10.1
     # via twilio
 python-dateutil==2.9.0.post0
     # via mistralai
 python-dotenv==1.1.0
-    # via -r requirements.txt
+    # via
+    #   -r requirements.txt
+    #   uvicorn
+python-engineio==4.12.0
+    # via
+    #   nicegui
+    #   python-socketio
+python-multipart==0.0.20
+    # via nicegui
+python-socketio==5.13.0
+    # via nicegui
+pyyaml==6.0.2
+    # via uvicorn
 referencing==0.36.2
     # via guidance
 regex==2024.11.6
@@ -158,10 +217,17 @@ requests==2.32.3
     #   -r requirements.txt
     #   dropbox
     #   guidance
+    #   nicegui
     #   tiktoken
     #   twilio
-rpds-py==0.23.1
+rpds-py==0.24.0
     # via referencing
+scikit-learn==1.6.1
+    # via -r requirements.txt
+scipy==1.15.2
+    # via scikit-learn
+simple-websocket==1.1.0
+    # via python-engineio
 six==1.17.0
     # via
     #   dropbox
@@ -169,12 +235,18 @@ six==1.17.0
     #   stone
 sniffio==1.3.1
     # via anyio
-soupsieve==2.6
+soupsieve==2.7
     # via beautifulsoup4
 stack-data==0.6.3
     # via ipython
+starlette==0.46.2
+    # via
+    #   fastapi
+    #   nicegui
 stone==3.3.1
     # via dropbox
+threadpoolctl==3.6.0
+    # via scikit-learn
 tiktoken==0.9.0
     # via guidance
 traitlets==5.14.3
@@ -183,34 +255,53 @@ traitlets==5.14.3
     #   ipython
     #   ipywidgets
     #   matplotlib-inline
-twilio==9.5.1
+twilio==9.5.2
     # via -r requirements.txt
 types-requests==2.31.0.6
     # via -r requirements.txt
 types-urllib3==1.26.25.14
     # via types-requests
-typing-extensions==4.13.0
+typing-extensions==4.13.2
     # via
     #   anyio
     #   beautifulsoup4
+    #   fastapi
     #   ipython
+    #   nicegui
     #   pydantic
     #   pydantic-core
     #   referencing
     #   typing-inspection
 typing-inspection==0.4.0
-    # via mistralai
+    # via
+    #   mistralai
+    #   pydantic
 urllib3==1.26.20
     # via
     #   -r requirements.txt
+    #   nicegui
     #   requests
+uvicorn==0.34.2
+    # via nicegui
+uvloop==0.21.0
+    # via uvicorn
+vbuild==0.8.2
+    # via nicegui
+watchfiles==1.0.5
+    # via
+    #   nicegui
+    #   uvicorn
 wcwidth==0.2.13
     # via prompt-toolkit
+websockets==15.0.1
+    # via uvicorn
 werkzeug==3.1.3
     # via flask
-widgetsnbextension==4.0.13
+widgetsnbextension==4.0.14
     # via ipywidgets
-yarl==1.18.3
+wsproto==1.2.0
+    # via simple-websocket
+yarl==1.20.0
     # via aiohttp
 
 # The following packages are considered to be unsafe in a requirements file:

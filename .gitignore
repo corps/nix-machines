@@ -12,3 +12,5 @@ build
 .env
 # This is managed by flake.nix
 /.pre-commit-config.yaml
+*.egg-info
+.nicegui

@@ -46,6 +46,11 @@ with lib;
       default = "recursive.cookie.jar@gmail.com";
       type = types.str;
     };
+
+    programs.git.extraConfig = mkOption {
+      default = "";
+      type = types.str;
+    };
   };
 
   config = {

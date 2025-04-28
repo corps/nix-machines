@@ -12,3 +12,8 @@ twilio
 flask
 bs4
 lxml
+nicegui
+aiohttp
+click
+numpy
+scikit-learn

@@ -1,10 +1,14 @@
-import os
+import datetime
 from typing import ClassVar
 
-import requests
-from bs4 import BeautifulSoup, NavigableString
+import aiohttp
+import numpy as np
 from dotenv import load_dotenv
-from pydantic import BaseModel
+from mistralai import Mistral
+from pydantic import BaseModel, Field
+from sklearn.metrics.pairwise import cosine_similarity
+
+from ankillio.storage import ModelStorage
 
 load_dotenv()
 
@@ -89,7 +93,7 @@ class GuiEditNoteRequest(BaseModel):
         note: int
 
     params: Params
-    action: str = "cardsInfo"
+    action: str = "guiEditNote"
     version: int = 6
 
     class Response(BaseModel):
@@ -112,28 +116,29 @@ class RemoveTagsRequest(BaseModel):
 class AnkiService(BaseModel):
     host: str = "http://127.0.0.1:8765"
 
-    def request(self, r: BaseModel) -> BaseModel:
-        res = requests.post(self.host, json=r.model_dump())
-        result = r.Response.model_validate(res.json())
-        if result.error:
-            raise RuntimeError(result.error)
-        return result
+    async def request(self, r: BaseModel) -> BaseModel:
+        async with aiohttp.ClientSession() as session:
+            res = await session.post(self.host, json=r.model_dump())
+            result = r.Response.model_validate(await res.json())
+            if result.error:
+                raise RuntimeError(result.error)
+            return result
 
-    def search_cards(self, search: str) -> list[CardsResponse.Card]:
-        ids_response: IdsResponse = self.request(
+    async def search_cards(self, search: str) -> list[CardsResponse.Card]:
+        ids_response: IdsResponse = await self.request(
             FindCardsRequest(
                 params=FindCardsRequest.Params(query=search),
             )
         )
         ids = ids_response.result
 
-        cards_response: CardsResponse = self.request(
+        cards_response: CardsResponse = await self.request(
             CardsInfoRequest(params=CardsInfoRequest.Params(cards=ids))
         )
         return cards_response.result
 
-    def card_info(self, cardId: int) -> CardsResponse.Card | None:
-        cards_response: CardsResponse = self.request(
+    async def card_info(self, cardId: int) -> CardsResponse.Card | None:
+        cards_response: CardsResponse = await self.request(
             CardsInfoRequest(params=CardsInfoRequest.Params(cards=[cardId]))
         )
 
@@ -141,79 +146,103 @@ class AnkiService(BaseModel):
             return cards_response.result[0]
         return None
 
-    def answer_cards(self, answers: list[AnswerCardEasing]) -> None:
-        self.request(
+    async def answer_cards(self, answers: list[AnswerCardEasing]) -> None:
+        await self.request(
             AnswerCardsRequest(params=AnswerCardsRequest.Params(answers=answers))
         )
 
-    def edit_cards(self, card: CardsResponse.Card) -> None:
-        self.request(
+    async def gui_edit_note(self, note: int) -> None:
+        await self.request(
+            GuiEditNoteRequest(params=GuiEditNoteRequest.Params(note=note))
+        )
+
+    async def edit_cards(self, card: CardsResponse.Card) -> None:
+        await self.request(
             GuiEditNoteRequest(params=GuiEditNoteRequest.Params(note=card.note))
         )
 
-    def remove_tags(self, card: CardsResponse.Card, tag: str) -> None:
-        self.request(
+    async def remove_tags(self, card: CardsResponse.Card, tag: str) -> None:
+        await self.request(
             RemoveTagsRequest(
                 params=RemoveTagsRequest.Params(notes=[card.note], tag=tag)
             )
         )
 
 
-class SyncRequest(BaseModel):
-    cards: list[CardsResponse.Card]
+class Embedded(BaseModel):
+    card: CardsResponse.Card
+    front_embedding: list[float] = Field(default_factory=list)
+    back_embedding: list[float] = Field(default_factory=list)
+
+    def needs_update(self, other: CardsResponse.Card) -> bool:
+        return not self.front_embedding or self.card.mod < other.mod
 
 
-class SyncResponse(BaseModel):
-    studied: list[AnswerCardEasing]
+class SyncState(BaseModel):
+    last_date: datetime.date = Field(default_factory=lambda: datetime.date(2020, 1, 1))
 
 
-class StudyItems(BaseModel):
-    cards: list[CardsResponse.Card]
-    studied: list[AnswerCardEasing]
+async def sync(
+    card_storage: ModelStorage[Embedded],
+    client: Mistral,
+) -> list[Embedded]:
+    service = AnkiService()
+    cards = await service.search_cards(f"deck:Language")
+    needs_update: list[CardsResponse.Card] = []
+    with_embedded: list[Embedded] = []
+    for card in cards:
+        existing = card_storage.load(card.cardId, lambda: Embedded(card=card))
+        if existing.needs_update(card):
+            needs_update.append(card)
+        else:
+            with_embedded.append(existing)
 
-    def find_next(self) -> CardsResponse.Card | None:
-        studied_ids = set(c.cardId for c in self.studied)
-        for card in self.cards:
-            if card.cardId in studied_ids:
-                continue
-            return card
+    if needs_update:
+        print(f"needs_update {len(needs_update)}")
+        for i in range(0, len(needs_update), 10):
+            print("processing batch " + str(i))
+            batch = needs_update[i : i + 10]
+            response = await client.embeddings.create_async(
+                model="mistral-embed",
+                inputs=[
+                    text
+                    for card in batch
+                    for text in (card.question[:6000], card.answer[:6000])
+                ],
+            )
 
-    def answer(self, card: CardsResponse.Card, ease: int) -> None:
-        self.studied.append(AnswerCardEasing(cardId=card.cardId, ease=ease))
-        self.cards = [c for c in self.cards if c.cardId != card.cardId]
+            for (front, back), card in zip(
+                [
+                    (response.data[i].embedding, response.data[i + 1].embedding)
+                    for i in range(0, len(response.data), 2)
+                ],
+                batch,
+            ):
+                embedded = Embedded(
+                    card=card, front_embedding=front, back_embedding=back
+                )
+                card_storage.store(card.cardId, embedded)
+                with_embedded.append(embedded)
 
-
-class SyncService(BaseModel):
-    host: str
-    anki_service: AnkiService
-    twilio_auth_token: str
-
-    def sync(self):
-        request = SyncRequest(cards=self.anki_service.search_cards("tag:audio"))
-        print(f"Pushing {len(request.cards)} cards")
-        resp = SyncResponse.model_validate(
-            requests.put(
-                self.host + "/sync",
-                json=request.model_dump(),
-                headers={"Authorization": self.twilio_auth_token},
-            ).json()
-        )
-        for studied in resp.studied:
-            if studied.ease != 0:
-                card = self.anki_service.card_info(studied.cardId)
-                if card is not None:
-                    print("Receiving update...")
-                    self.anki_service.answer_cards([studied])
-                    self.anki_service.remove_tags(card, "audio")
-
-
-def sync(server: str):
-    SyncService(
-        host=server,
-        anki_service=AnkiService(),
-        twilio_auth_token=os.environ["TWILIO_AUTH_TOKEN"],
-    ).sync()
+    return with_embedded
 
 
-if __name__ == "__main__":
-    sync("https://ankillio.kaihatsu.io")
+async def query_similar(
+    query: str, client: Mistral, embedded: list[Embedded]
+) -> list[Embedded]:
+    query_embedding = (
+        (await client.embeddings.create_async(model="mistral-embed", inputs=[query]))
+        .data[0]
+        .embedding
+    )
+
+    similarities = cosine_similarity(
+        [query_embedding],
+        [
+            embedding
+            for e in embedded
+            for embedding in (e.front_embedding, e.back_embedding)
+        ],
+    )
+    top_indices = np.argsort(similarities[0])[::-1][:5]
+    return [embedded[i] for i in set(i // 2 for i in top_indices)]
