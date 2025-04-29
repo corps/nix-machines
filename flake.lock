@@ -197,7 +197,8 @@
         "nixos": "nixos",
         "nixpkgs": "nixpkgs",
         "pre-commit-hooks": "pre-commit-hooks",
-        "rust-overlay": "rust-overlay"
+        "rust-overlay": "rust-overlay",
+        "vine": "vine"
       }
     },
     "rust-overlay": {
@@ -220,6 +221,27 @@
         "type": "github"
       }
     },
+    "rust-overlay_2": {
+      "inputs": {
+        "nixpkgs": [
+          "vine",
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1744079607,
+        "narHash": "sha256-5cog6Qd6w/bINdLO5mOysAHOHey8PwFXk4IWo+y+Czg=",
+        "owner": "oxalica",
+        "repo": "rust-overlay",
+        "rev": "f6b62cc99c25e79a1c17e9fca91dc6b6faebec6c",
+        "type": "github"
+      },
+      "original": {
+        "owner": "oxalica",
+        "repo": "rust-overlay",
+        "type": "github"
+      }
+    },
     "systems": {
       "locked": {
         "lastModified": 1681028828,
@@ -232,6 +254,27 @@
       "original": {
         "owner": "nix-systems",
         "repo": "default",
+        "type": "github"
+      }
+    },
+    "vine": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs"
+        ],
+        "rust-overlay": "rust-overlay_2"
+      },
+      "locked": {
+        "lastModified": 1745428062,
+        "narHash": "sha256-Y9Htdd/nGkuq2mXFwAI2+QWxc+hMOgr2TqqucfEqHUE=",
+        "owner": "VineLang",
+        "repo": "vine",
+        "rev": "20e2178883cc51445300fbb79b2d9f2bdb8ed696",
+        "type": "github"
+      },
+      "original": {
+        "owner": "VineLang",
+        "repo": "vine",
         "type": "github"
       }
     }

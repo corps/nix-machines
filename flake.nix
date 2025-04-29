@@ -18,6 +18,10 @@
       url = "github:oxalica/rust-overlay";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    vine = {
+      url = "github:VineLang/vine";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs =
