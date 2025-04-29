@@ -1,5 +1,6 @@
 {
   inputs,
+  pkgs,
   ...
 }:
 
@@ -9,7 +10,7 @@
 
     environment = {
       systemPackages = [
-        inputs.vine
+        inputs.vine.packages.${pkgs.system}.default
       ];
     };
   };
