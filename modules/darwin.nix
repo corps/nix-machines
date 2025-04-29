@@ -6,6 +6,31 @@
   ...
 }:
 
+let
+  gitConfigInvocations =
+    let
+      recurse =
+        path: attrs:
+        if lib.isAttrs attrs && !lib.isDerivation attrs then
+          lib.concatMap (x: x) (lib.mapAttrsToList (k: v: recurse ([ k ] ++ path) v) attrs)
+        else
+          [
+            "git config --global ${lib.concatStringsSep "." (lib.reverseList (lib.tail path))}.${lib.head path} ${attrs}"
+          ];
+    in
+    config: lib.concatStringsSep "\n" (recurse [ ] config);
+
+  gitIniType =
+    with lib.types;
+    let
+      primitiveType = either str (either bool int);
+      multipleType = either primitiveType (listOf primitiveType);
+      sectionType = attrsOf multipleType;
+      supersectionType = attrsOf (either multipleType sectionType);
+    in
+    attrsOf supersectionType;
+in
+
 with lib;
 
 {
@@ -48,8 +73,8 @@ with lib;
     };
 
     programs.git.extraConfig = mkOption {
-      default = "";
-      type = types.str;
+      type = types.either types.lines gitIniType;
+      default = { };
     };
   };
 
@@ -80,6 +105,7 @@ with lib;
             git config --global user.name ${config.programs.git.userName}
             git config --global user.email ${config.programs.git.userEmail}
           ''
+          + (gitConfigInvocations config.programs.git.extraConfig)
         else
           ""
       );
