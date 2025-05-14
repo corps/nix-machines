@@ -52,6 +52,10 @@
           modules = [ ./saikoro/default.nix ];
           specialArgs = { inherit inputs; };
         };
+        "Zachs-MacBook-Pro" = nix-darwin.lib.darwinSystem {
+          modules = [ ./candid/default.nix ];
+          specialArgs = { inherit inputs; };
+        };
       };
 
       homeConfigurations = {

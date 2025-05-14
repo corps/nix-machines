@@ -8,6 +8,8 @@
 with lib;
 let
   cfg = config.programs.node;
+  nvm = pkgs.callPackage ./nvm.nix { };
+  fern = pkgs.callPackage ./fern.nix { };
 in
 
 {
@@ -39,6 +41,8 @@ in
       systemPackages = [
         cfg.default
         pkgs.esbuild
+        # nvm
+        # fern
       ];
 
       linked = attrsets.mapAttrsToList (name: value: {
