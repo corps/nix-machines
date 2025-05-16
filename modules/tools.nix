@@ -8,6 +8,12 @@ with lib;
 
 let
   ngrok3 = pkgs.callPackage ../ngrok { };
+  gdk = pkgs.google-cloud-sdk.withExtraComponents (
+    with pkgs.google-cloud-sdk.components;
+    [
+      gke-gcloud-auth-plugin
+    ]
+  );
 in
 
 {
@@ -27,6 +33,7 @@ in
         hub
         ngrok3
         just
+        gdk
       ];
 
       variables = {

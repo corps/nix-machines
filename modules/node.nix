@@ -41,6 +41,7 @@ in
       systemPackages = [
         cfg.default
         pkgs.esbuild
+        pkgs.yarn
         # nvm
         # fern
       ];
