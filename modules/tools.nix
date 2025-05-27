@@ -49,6 +49,7 @@ in
 
     programs.git = {
       enable = true;
+      lfs.enable = true;
       userName = "Zachary Collins";
       userEmail = "recursive.cookie.jar@gmail.com";
       extraConfig = {

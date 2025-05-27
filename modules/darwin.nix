@@ -62,6 +62,11 @@ with lib;
       type = types.bool;
     };
 
+    programs.git.lfs.enable = mkOption {
+      default = true;
+      type = types.bool;
+    };
+
     programs.git.userName = mkOption {
       default = "Zachary Collins";
       type = types.str;
@@ -96,7 +101,9 @@ with lib;
     fonts.packages = [ pkgs.nerd-fonts.code-new-roman ];
     environment.shells = [ pkgs.bashInteractive ];
     services.skhd.enable = true;
-    environment.systemPackages = (if config.programs.git.enable then [ pkgs.git ] else [ ]);
+    environment.systemPackages =
+      (if config.programs.git.enable then [ pkgs.git ] else [ ])
+      ++ (if config.programs.git.lfs.enable then [ pkgs.git-lfs ] else [ ]);
     system.activationScripts.extraUserActivation.text =
       ""
       + (
