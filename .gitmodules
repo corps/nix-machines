@@ -16,3 +16,6 @@
 [submodule "accounting"]
 	path = accounting
 	url = dropbox:///git/accounting
+[submodule "py-ivm"]
+	path = py-ivm
+	url = git@github.com:corps/py-ivm.git
