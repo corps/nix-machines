@@ -111,6 +111,7 @@ with lib;
           ''
             git config --global user.name ${config.programs.git.userName}
             git config --global user.email ${config.programs.git.userEmail}
+            git config --global pull.rebase true
           ''
           + (gitConfigInvocations config.programs.git.extraConfig)
         else

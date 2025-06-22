@@ -34,6 +34,7 @@ in
         ngrok3
         just
         gdk
+        gh
       ];
 
       variables = {
