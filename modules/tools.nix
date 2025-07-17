@@ -35,6 +35,7 @@ in
         just
         gdk
         gh
+        graphite-cli
       ];
 
       variables = {
@@ -47,6 +48,7 @@ in
     programs.bash.completion.enable = true;
     programs.direnv.enable = true;
     programs.direnv.nix-direnv.enable = true;
+    nixpkgs.config.allowUnfree = true;
 
     programs.git = {
       enable = true;

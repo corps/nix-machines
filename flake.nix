@@ -22,6 +22,10 @@
       url = "github:VineLang/vine";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    py-ivm = {
+      url = "github:corps/py-ivm";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs =
@@ -33,6 +37,7 @@
       nix-github-actions,
       # easy-purescript-nix,
       nix-darwin,
+      # py-ivm,
       # poetry2nix,
       # nix-ld,
       ...
