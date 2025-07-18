@@ -21,7 +21,7 @@ in
     programs.node = {
       default = mkOption {
         type = types.package;
-        default = pkgs.nodejs-18_x;
+        default = pkgs.nodejs_22;
         description = "Default node to be provided";
       };
 

@@ -24,7 +24,6 @@
     };
     py-ivm = {
       url = "github:corps/py-ivm";
-      inputs.nixpkgs.follows = "nixpkgs";
     };
   };
 

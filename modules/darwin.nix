@@ -104,19 +104,19 @@ with lib;
     environment.systemPackages =
       (if config.programs.git.enable then [ pkgs.git ] else [ ])
       ++ (if config.programs.git.lfs.enable then [ pkgs.git-lfs ] else [ ]);
-    system.activationScripts.extraUserActivation.text =
-      ""
-      + (
-        if config.programs.git.enable then
-          ''
-            git config --global user.name ${config.programs.git.userName}
-            git config --global user.email ${config.programs.git.userEmail}
-            git config --global pull.rebase true
-          ''
-          + (gitConfigInvocations config.programs.git.extraConfig)
-        else
-          ""
-      );
+    # system.activationScripts.extraUserActivation.text =
+    #   ""
+    #   + (
+    #     if config.programs.git.enable then
+    #       ''
+    #         git config --global user.name ${config.programs.git.userName}
+    #         git config --global user.email ${config.programs.git.userEmail}
+    #         git config --global pull.rebase true
+    #       ''
+    #       + (gitConfigInvocations config.programs.git.extraConfig)
+    #     else
+    #       ""
+    #   );
 
     programs.alacritty.enable = true;
   };
