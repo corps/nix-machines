@@ -36,6 +36,7 @@ in
         gdk
         gh
         graphite-cli
+        gemini-cli
       ];
 
       variables = {

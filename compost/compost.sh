@@ -65,7 +65,7 @@ if ! check fileExists ~/.config/nvim; then
 fi
 
 if isDarwin; then
-  exec darwin-rebuild switch --flake $DIR/.. $@
+  sudo darwin-rebuild switch --flake $DIR/.. $@
 else
   nix --extra-experimental-features "nix-command flakes" run home-manager -- switch --extra-experimental-features "nix-command flakes" --flake $DIR/.. $@
   sudo nixos-rebuild switch --flake $DIR/.. --impure $@
