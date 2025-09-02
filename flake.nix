@@ -2,7 +2,7 @@
   description = "system configurations";
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/master";
-    nixos.url = "github:NixOs/nixpkgs/nixos-24.11";
+    nixos.url = "github:NixOs/nixpkgs/nixos-25.05";
     easy-purescript-nix.url = "github:justinwoo/easy-purescript-nix";
     nix-darwin.url = "github:LnL7/nix-darwin";
     nix-darwin.inputs.nixpkgs.follows = "nixpkgs";
@@ -11,7 +11,7 @@
     pre-commit-hooks.url = "github:cachix/git-hooks.nix";
     pre-commit-hooks.inputs.nixpkgs.follows = "nixpkgs";
     home-manager = {
-      url = "github:nix-community/home-manager/release-24.11";
+      url = "github:nix-community/home-manager/release-25.05";
       inputs.nixpkgs.follows = "nixos";
     };
     rust-overlay = {
