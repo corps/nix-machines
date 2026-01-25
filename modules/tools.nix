@@ -37,6 +37,7 @@ in
         gh
         graphite-cli
         gemini-cli
+        postgresql
       ];
 
       variables = {
