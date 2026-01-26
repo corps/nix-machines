@@ -9,10 +9,11 @@ from geojson_pydantic import Feature, FeatureCollection, Polygon
 from mypyc.crash import contextmanager
 from nicegui import ui
 from nicegui.elements.html import Html
-from shapely import box
+from shapely import Geometry, box
 from shapely.geometry import shape
 from shapely.geometry.base import BaseGeometry
 from shapely.geometry.collection import GeometryCollection
+from shapely.geometry.point import Point
 
 dir = os.path.dirname(os.path.abspath(__file__))
 usdata: FeatureCollection[Feature[Polygon, dict]] = (
@@ -69,6 +70,7 @@ for feature in mexicodata.features:
 class Map:
     land: GeometryCollection
     rivers: GeometryCollection
+    lakes: GeometryCollection
 
     @property
     def width(self):
@@ -103,20 +105,6 @@ def cur() -> Element:
     return _stack[-1]
 
 
-def render_dot(x: int, y: int):
-    cx, cy = triangle_coord(x, y)
-    return SubElement(
-        cur(),
-        "circle",
-        r="1",
-        cx=str(cx),
-        cy=str(cy),
-        fill="none",
-        stroke="black",
-        stroke_width="1",
-    )
-
-
 def miller_projection(x: int, y: int):
     lon_rad = math.radians(x)
     lat_rad = math.radians(y)
@@ -132,7 +120,7 @@ def render_geometry(feature: BaseGeometry, fill: str):
             "polygon",
             points=" ".join(
                 ",".join(str(s) for s in miller_projection(*pair))
-                for ring in [feature.exterior, *feature.interiors]
+                for ring in [feature.exterior]
                 for pair in ring.coords
             ),
             fill=fill,
@@ -191,27 +179,69 @@ def render_map(grid: Html, map: Map, scale: int):
                 ),
             )
         ):
+            for x in range(int(map.land.bounds[0]), int(map.land.bounds[2])):
+                for y in range(int(map.land.bounds[1]), int(map.land.bounds[3])):
+                    cx, cy = triangle_coord(x, y)
+                    for coll in []:
+                        if coll.overlaps(Point(cx, cy)):
+                            break
+                    else:
+                        # if map.land.overlaps(Point(cx, cy)):
+                        circle = SubElement(
+                            cur(),
+                            "circle",
+                            r="0.1",
+                            cx=str(cx),
+                            cy=str(cy),
+                            fill="none",
+                            stroke="black",
+                            stroke_width="1",
+                        )
+                        circle.set("vector-effect", "non-scaling-stroke")
             for geom in map.land.geoms:
                 render_geometry(geom, "white")
             for geom in map.rivers.geoms:
+                render_geometry(geom, "blue")
+            for geom in map.lakes.geoms:
                 render_geometry(geom, "blue")
 
     grid.set_content(tostring(svg, encoding="unicode"))
 
 
-if __name__ in {"__main__", "__mp_main__"}:
+def create_maps() -> dict[str, Map]:
+    return dict(
+        USA=create_us_map(),
+    )
+
+
+def create_us_map() -> Map:
     land = GeometryCollection(
         [shape(f.geometry) for f in continental.features if shape(f.geometry)]
     )
     rivers = GeometryCollection(
         [
             s
-            for ds in [rivers_50_nadata, ne_50m_lakesdata]
+            for ds in [rivers_50_nadata]
             for f in ds.features
             if f.geometry
             for s in (shape(f.geometry),)
             if land.contains(s)
         ]
     )
-    render_map(ui.html(), Map(land=land, rivers=rivers), 5)
+    lakes = GeometryCollection(
+        [
+            s
+            for ds in [ne_50m_lakesdata]
+            for f in ds.features
+            if f.geometry
+            for s in (shape(f.geometry),)
+            if land.contains(s) and s.area > 0.3
+        ]
+    )
+
+    return Map(land=land, rivers=rivers, lakes=lakes)
+
+
+if __name__ in {"__main__", "__mp_main__"}:
+    render_map(ui.html(), create_us_map(), 10)
     ui.run()
