@@ -1,0 +1,3 @@
+#!/usr/bin/env bash
+
+exec node ~/fern/packages/cli/cli/dist/prod/cli.cjs $@

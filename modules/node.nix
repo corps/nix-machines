@@ -8,6 +8,8 @@
 with lib;
 let
   cfg = config.programs.node;
+  nvm = pkgs.callPackage ./nvm.nix { };
+  fern = pkgs.callPackage ./fern.nix { };
 in
 
 {
@@ -19,7 +21,7 @@ in
     programs.node = {
       default = mkOption {
         type = types.package;
-        default = pkgs.nodejs-18_x;
+        default = pkgs.nodejs_22;
         description = "Default node to be provided";
       };
 
@@ -39,6 +41,9 @@ in
       systemPackages = [
         cfg.default
         pkgs.esbuild
+        pkgs.yarn
+        # nvm
+        # fern
       ];
 
       linked = attrsets.mapAttrsToList (name: value: {

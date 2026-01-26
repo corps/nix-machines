@@ -8,6 +8,12 @@ with lib;
 
 let
   ngrok3 = pkgs.callPackage ../ngrok { };
+  gdk = pkgs.google-cloud-sdk.withExtraComponents (
+    with pkgs.google-cloud-sdk.components;
+    [
+      gke-gcloud-auth-plugin
+    ]
+  );
 in
 
 {
@@ -27,6 +33,11 @@ in
         hub
         ngrok3
         just
+        gdk
+        gh
+        graphite-cli
+        gemini-cli
+        postgresql
       ];
 
       variables = {
@@ -39,9 +50,11 @@ in
     programs.bash.completion.enable = true;
     programs.direnv.enable = true;
     programs.direnv.nix-direnv.enable = true;
+    nixpkgs.config.allowUnfree = true;
 
     programs.git = {
       enable = true;
+      lfs.enable = true;
       userName = "Zachary Collins";
       userEmail = "recursive.cookie.jar@gmail.com";
       extraConfig = {

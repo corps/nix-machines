@@ -45,15 +45,15 @@ in
 
   config = {
     environment.systemPackages = (if config.programs.alacritty.enable then [ pkgs.alacritty ] else [ ]);
-    system.activationScripts.extraUserActivation.text = (
-      if config.programs.alacritty.enable then
-        ''
-          mkdir -p "$HOME/.config/alacritty"
-          ln -sf /etc/alacritty/alacritty.toml "$HOME/.config/alacritty/alacritty.toml"
-        ''
-      else
-        ""
-    );
+    # system.activationScripts.text = (
+    #   if config.programs.alacritty.enable then
+    #     ''
+    #       mkdir -p "$HOME/.config/alacritty"
+    #       ln -sf /etc/alacritty/alacritty.toml "$HOME/.config/alacritty/alacritty.toml"
+    #     ''
+    #   else
+    #     ""
+    # );
 
     environment.etc."alacritty/alacritty.toml" = mkIf config.programs.alacritty.enable {
       source = alacrittyConfig;

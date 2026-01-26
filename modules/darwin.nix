@@ -53,11 +53,15 @@ with lib;
     ./lean.nix
     ./lua.nix
     ./tunnels.nix
-    ./vine.nix
   ];
 
   options = {
     programs.git.enable = mkOption {
+      default = true;
+      type = types.bool;
+    };
+
+    programs.git.lfs.enable = mkOption {
       default = true;
       type = types.bool;
     };
@@ -96,19 +100,22 @@ with lib;
     fonts.packages = [ pkgs.nerd-fonts.code-new-roman ];
     environment.shells = [ pkgs.bashInteractive ];
     services.skhd.enable = true;
-    environment.systemPackages = (if config.programs.git.enable then [ pkgs.git ] else [ ]);
-    system.activationScripts.extraUserActivation.text =
-      ""
-      + (
-        if config.programs.git.enable then
-          ''
-            git config --global user.name ${config.programs.git.userName}
-            git config --global user.email ${config.programs.git.userEmail}
-          ''
-          + (gitConfigInvocations config.programs.git.extraConfig)
-        else
-          ""
-      );
+    environment.systemPackages =
+      (if config.programs.git.enable then [ pkgs.git ] else [ ])
+      ++ (if config.programs.git.lfs.enable then [ pkgs.git-lfs ] else [ ]);
+    # system.activationScripts.extraUserActivation.text =
+    #   ""
+    #   + (
+    #     if config.programs.git.enable then
+    #       ''
+    #         git config --global user.name ${config.programs.git.userName}
+    #         git config --global user.email ${config.programs.git.userEmail}
+    #         git config --global pull.rebase true
+    #       ''
+    #       + (gitConfigInvocations config.programs.git.extraConfig)
+    #     else
+    #       ""
+    #   );
 
     programs.alacritty.enable = true;
   };

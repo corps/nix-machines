@@ -2,7 +2,7 @@
   description = "system configurations";
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/master";
-    nixos.url = "github:NixOs/nixpkgs/nixos-24.11";
+    nixos.url = "github:NixOs/nixpkgs/nixos-25.05";
     easy-purescript-nix.url = "github:justinwoo/easy-purescript-nix";
     nix-darwin.url = "github:LnL7/nix-darwin";
     nix-darwin.inputs.nixpkgs.follows = "nixpkgs";
@@ -11,7 +11,7 @@
     pre-commit-hooks.url = "github:cachix/git-hooks.nix";
     pre-commit-hooks.inputs.nixpkgs.follows = "nixpkgs";
     home-manager = {
-      url = "github:nix-community/home-manager/release-24.11";
+      url = "github:nix-community/home-manager/release-25.05";
       inputs.nixpkgs.follows = "nixos";
     };
     rust-overlay = {
@@ -21,6 +21,9 @@
     vine = {
       url = "github:VineLang/vine";
       inputs.nixpkgs.follows = "nixpkgs";
+    };
+    py-ivm = {
+      url = "github:corps/py-ivm";
     };
   };
 
@@ -33,6 +36,7 @@
       nix-github-actions,
       # easy-purescript-nix,
       nix-darwin,
+      # py-ivm,
       # poetry2nix,
       # nix-ld,
       ...
@@ -50,6 +54,10 @@
       darwinConfigurations = {
         "saikoro" = nix-darwin.lib.darwinSystem {
           modules = [ ./saikoro/default.nix ];
+          specialArgs = { inherit inputs; };
+        };
+        "Zachs-MacBook-Pro" = nix-darwin.lib.darwinSystem {
+          modules = [ ./candid/default.nix ];
           specialArgs = { inherit inputs; };
         };
       };
