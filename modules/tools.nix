@@ -38,6 +38,7 @@ in
         graphite-cli
         gemini-cli
         postgresql
+        nixos-rebuild
       ];
 
       variables = {
