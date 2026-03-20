@@ -46,5 +46,10 @@ def render_map():
     grid = ui.html()
 
 
-if __name__ in {"__main__", "__mp_main__"}:
+def main():
+    """Entry point for the trains server."""
     ui.run()
+
+
+if __name__ in {"__main__", "__mp_main__"}:
+    main()

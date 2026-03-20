@@ -242,6 +242,11 @@ def create_us_map() -> Map:
     return Map(land=land, rivers=rivers, lakes=lakes)
 
 
-if __name__ in {"__main__", "__mp_main__"}:
+def main():
+    """Entry point for the trains map viewer."""
     render_map(ui.html(), create_us_map(), 10)
     ui.run()
+
+
+if __name__ in {"__main__", "__mp_main__"}:
+    main()
