@@ -141,7 +141,7 @@
             ./modules/python.nix
             {
               _module.args = { inherit pkgs inputs; };
-              programs.python.default = pkgs.python311;
+              programs.python.default = pkgs.python312;
             }
           ];
         }).config

@@ -21,6 +21,7 @@ in
     environment = {
       systemPackages = with pkgs; [
         vim
+        helix
         neovim
         gnused
         curl
