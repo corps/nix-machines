@@ -53,6 +53,7 @@ with lib;
     ./lean.nix
     ./lua.nix
     ./tunnels.nix
+    ./vine.nix
   ];
 
   options = {
