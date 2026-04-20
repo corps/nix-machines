@@ -1,6 +1,7 @@
 {
   lib,
   pkgs,
+  inputs,
   ...
 }:
 
@@ -21,7 +22,6 @@ in
     environment = {
       systemPackages = with pkgs; [
         vim
-        helix
         neovim
         gnused
         curl
@@ -32,14 +32,11 @@ in
         starship
         ripgrep
         hub
-        ngrok3
         just
         gdk
         gh
-        graphite-cli
-        gemini-cli
-        postgresql
         nixos-rebuild
+        inputs.mistral-vibe.packages.${pkgs.system}.default
       ];
 
       variables = {

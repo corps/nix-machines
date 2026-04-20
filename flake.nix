@@ -25,6 +25,9 @@
     py-ivm = {
       url = "github:corps/py-ivm";
     };
+    mistral-vibe = {
+      url = "github:mistralai/mistral-vibe";
+    };
   };
 
   outputs =
@@ -34,10 +37,8 @@
       nixos,
       home-manager,
       nix-github-actions,
-      # easy-purescript-nix,
+      mistral-vibe,
       nix-darwin,
-      # py-ivm,
-      # poetry2nix,
       # nix-ld,
       ...
     }:
@@ -138,10 +139,11 @@
         (pkgs.lib.evalModules {
           modules = [
             ./modules/shell.nix
-            ./modules/python.nix
             {
               _module.args = { inherit pkgs inputs; };
-              programs.python.default = pkgs.python312;
+              environment.systemPackages = [
+                mistral-vibe.packages.${system}.default
+              ];
             }
           ];
         }).config

@@ -17,6 +17,8 @@
     shift + cmd - 0x2F : open -a Neovide
   '';
 
+  system.primaryUser = "zachcollins";
+
   services.tunnels = {
     enable = true;
     definitions = [
