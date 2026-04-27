@@ -19,3 +19,6 @@
 [submodule "py-ivm"]
 	path = py-ivm
 	url = git@github.com:corps/py-ivm.git
+[submodule "penrose"]
+	path = penrose
+	url = https://github.com/corps/penrose.git

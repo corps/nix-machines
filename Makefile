@@ -9,3 +9,6 @@ help::
 
 test::
 	echo safe
+
+submodules::
+	git submodule update --init --recursive
