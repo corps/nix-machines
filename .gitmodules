@@ -21,4 +21,7 @@
 	url = git@github.com:corps/py-ivm.git
 [submodule "penrose"]
 	path = penrose
-	url = https://github.com/corps/penrose.git
+	url = git@github.com:corps/penrose.git
+[submodule "sujime"]
+	path = sujime
+	url = git@github.com:corps/sujime.git
