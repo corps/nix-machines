@@ -4,7 +4,7 @@
 
 {
   system.stateVersion = 5;
-  nixpkgs.hostPlatform = "aarch64-darwin";
+  nixpkgs.hostPlatform = "arm64-darwin";
 
   imports = [
     ../modules/darwin.nix
@@ -17,5 +17,5 @@
     shift + cmd - 0x2F : open -a Neovide
   '';
 
-  system.primaryUser = "zachcollins";
+  system.primaryUser = "zach";
 }

@@ -57,6 +57,10 @@
           modules = [ ./saikoro/default.nix ];
           specialArgs = { inherit inputs; };
         };
+        "ZacharynoiMac" = nix-darwin.lib.darwinSystem {
+          modules = [ ./imac/default.nix ];
+          specialArgs = { inherit inputs; };
+        };
         "Zachs-MacBook-Pro" = nix-darwin.lib.darwinSystem {
           modules = [ ./candid/default.nix ];
           specialArgs = { inherit inputs; };
@@ -141,9 +145,7 @@
             ./modules/shell.nix
             {
               _module.args = { inherit pkgs inputs; };
-              environment.systemPackages = [
-                mistral-vibe.packages.${system}.default
-              ];
+              environment.systemPackages = [ ];
             }
           ];
         }).config
