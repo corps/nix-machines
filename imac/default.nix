@@ -18,4 +18,5 @@
   '';
 
   system.primaryUser = "zach";
+  programs.neovide.enable = true;
 }

@@ -42,6 +42,7 @@ with lib;
     }
     # inputs.home-manager.darwinModules.home-manager
     ./alacritty.nix
+    ./neovide.nix
     ./c.nix
     ./libs.nix
     ./nix.nix
