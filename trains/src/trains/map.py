@@ -1,251 +1,407 @@
-import math
+"""Map model for the Empire Builders-style train game.
+
+This module provides the main Map class that manages layers and renders to SVG.
+It builds upon the existing GeoJSON loading and adds structured layer management.
+"""
+
 import os.path
 from xml.etree.ElementTree import Element, ElementTree, SubElement, tostring
 
 import geojson_pydantic
-import shapely.geometry
-from attr import dataclass
 from geojson_pydantic import Feature, FeatureCollection, Polygon
-from mypyc.crash import contextmanager
-from nicegui import ui
-from nicegui.elements.html import Html
 from shapely import Geometry, box
 from shapely.geometry import shape
 from shapely.geometry.base import BaseGeometry
 from shapely.geometry.collection import GeometryCollection
 from shapely.geometry.point import Point
 
+from .coords import BoundingBox, CoordinateSystem, HexCoord, HexGrid
+from .data.geo import (
+    canadata,
+    get_all_na_countries,
+    get_all_water_features,
+    mexicodata,
+    ne_50m_lakesdata,
+    rivers_50_nadata,
+    rivers_nadata,
+    usdata,
+)
+from .layers import (
+    AnyLayer,
+    GeometryLayer,
+    GeometryStyle,
+    Layer,
+    PositionalElementStyle,
+    PositionalLayer,
+    VisualLayer,
+)
+
+
+# Directory for data files
 dir = os.path.dirname(os.path.abspath(__file__))
-usdata: FeatureCollection[Feature[Polygon, dict]] = (
-    geojson_pydantic.FeatureCollection.model_validate_json(
-        open(os.path.join(dir, "usa.json")).read()
-    )
-)
-canadata: FeatureCollection[Feature[Polygon, dict]] = (
-    geojson_pydantic.FeatureCollection.model_validate_json(
-        open(os.path.join(dir, "canada.json")).read()
-    )
-)
-mexicodata: FeatureCollection[Feature[Polygon, dict]] = (
-    geojson_pydantic.FeatureCollection.model_validate_json(
-        open(os.path.join(dir, "mexico.json")).read()
-    )
-)
-rivers_nadata: FeatureCollection[Feature[Polygon, dict]] = (
-    geojson_pydantic.FeatureCollection.model_validate_json(
-        open(os.path.join(dir, "rivers_na.json")).read()
-    )
-)
-rivers_50_nadata: FeatureCollection[Feature[Polygon, dict]] = (
-    geojson_pydantic.FeatureCollection.model_validate_json(
-        open(os.path.join(dir, "rivers_50_na.json")).read()
-    )
-)
-ne_50m_lakesdata: FeatureCollection[Feature[Polygon, dict]] = (
-    geojson_pydantic.FeatureCollection.model_validate_json(
-        open(os.path.join(dir, "ne_50m_lakes.json")).read()
-    )
-)
-
-continental_bbox = box(-125, 24, -66, 49)
-continental = FeatureCollection(type="FeatureCollection", features=[])
-
-for feature in usdata.features:
-    s = shape(feature.geometry)
-    if continental_bbox.overlaps(s):
-        continental.features.append(feature)
-
-for feature in canadata.features:
-    s = shape(feature.geometry)
-    if continental_bbox.overlaps(s):
-        continental.features.append(feature)
-
-for feature in mexicodata.features:
-    s = shape(feature.geometry)
-    if continental_bbox.overlaps(s):
-        continental.features.append(feature)
 
 
-@dataclass
 class Map:
-    land: GeometryCollection
-    rivers: GeometryCollection
-    lakes: GeometryCollection
+    """Main map class that manages layers and renders to SVG.
 
-    @property
-    def width(self):
-        return math.ceil(self.land.bounds[2] - self.land.bounds[0])
+    The Map class is the central container for all map data and rendering.
+    It manages a collection of layers (visual, geometry, positional) and
+    provides methods to render them to SVG.
 
-    @property
-    def height(self):
-        return math.ceil(self.land.bounds[3] - self.land.bounds[1])
+    Attributes:
+        layers: List of layers in z-index order (lower = bottom)
+        coordinate_system: Coordinate system for transformations
+        bounds: Bounding box of the map in pixel coordinates
+        hex_grid: Hex grid for positional layers
+    """
 
-
-def triangle_coord(x, y):
-    px = x
-    py = y * math.sin(math.pi / 3)
-    if y % 2 == 1:
-        px += math.cos(math.pi / 3)
-    return px, py
-
-
-_stack: list[Element] = []
-
-
-@contextmanager
-def parent(p: Element):
-    _stack.append(p)
-    try:
-        yield p
-    finally:
-        _stack.pop()
-
-
-def cur() -> Element:
-    return _stack[-1]
-
-
-def miller_projection(x: int, y: int):
-    lon_rad = math.radians(x)
-    lat_rad = math.radians(y)
-    x = lon_rad
-    y = 1.25 * math.log(math.tan(math.pi / 4 + 0.4 * lat_rad))
-    return math.degrees(x), math.degrees(y)
-
-
-def render_geometry(feature: BaseGeometry, fill: str):
-    if isinstance(feature, shapely.geometry.Polygon):
-        result = SubElement(
-            cur(),
-            "polygon",
-            points=" ".join(
-                ",".join(str(s) for s in miller_projection(*pair))
-                for ring in [feature.exterior]
-                for pair in ring.coords
-            ),
-            fill=fill,
-            stroke="black",
-            stroke_width="1",
+    def __init__(
+        self,
+        pixel_width: float = 800.0,
+        pixel_height: float = 600.0,
+        hex_grid: HexGrid = None,
+    ):
+        self.layers: list[AnyLayer] = []
+        self.coordinate_system = CoordinateSystem(
+            pixel_width=pixel_width,
+            pixel_height=pixel_height,
+            hex_grid=hex_grid or HexGrid(size=10.0, orientation="flat"),
         )
-        result.set("vector-effect", "non-scaling-stroke")
-        return result
-    elif isinstance(feature, shapely.geometry.LineString):
-        result = SubElement(
-            cur(),
-            "polyline",
-            points=" ".join(
-                ",".join(str(s) for s in miller_projection(*pair))
-                for pair in feature.coords
-            ),
-            stroke=fill,
+        self.hex_grid = hex_grid or HexGrid(size=10.0, orientation="flat")
+        self.bounds = BoundingBox(0, 0, pixel_width, pixel_height)
+
+        # Update coordinate system with hex grid
+        self.coordinate_system.hex_grid = self.hex_grid
+
+    def add_layer(self, layer: AnyLayer) -> None:
+        """Add a layer to the map."""
+        self.layers.append(layer)
+        # Sort by z-index
+        self.layers.sort(key=lambda l: l.z_index)
+
+    def remove_layer(self, layer_id: str) -> bool:
+        """Remove a layer by its ID."""
+        for i, layer in enumerate(self.layers):
+            if layer.layer_id == layer_id:
+                del self.layers[i]
+                return True
+        return False
+
+    def get_layer(self, layer_id: str) -> AnyLayer | None:
+        """Get a layer by its ID."""
+        for layer in self.layers:
+            if layer.layer_id == layer_id:
+                return layer
+        return None
+
+    def get_layers_by_type(self, layer_type: type) -> list[AnyLayer]:
+        """Get all layers of a specific type."""
+        return [layer for layer in self.layers if isinstance(layer, layer_type)]
+
+    def render_to_svg(self) -> str:
+        """Render the entire map to an SVG string.
+
+        Returns:
+            SVG XML string
+        """
+        # Create SVG root element
+        svg_attrs = {
+            "xmlns": "http://www.w3.org/2000/svg",
+            "xmlns:xlink": "http://www.w3.org/1999/xlink",
+            "width": str(self.bounds.width),
+            "height": str(self.bounds.height),
+            "viewBox": f"0 0 {self.bounds.width} {self.bounds.height}",
+        }
+        svg_root = Element("svg", svg_attrs)
+
+        # Render layers in z-index order (bottom to top)
+        for layer in self.layers:
+            if layer.visible:
+                layer.render_to_svg(svg_root, self.coordinate_system)
+
+        # Convert to string
+        return tostring(svg_root, encoding="unicode")
+
+    def render_to_element(self) -> Element:
+        """Render the entire map to an SVG Element.
+
+        Returns:
+            SVG ElementTree Element
+        """
+        svg_attrs = {
+            "xmlns": "http://www.w3.org/2000/svg",
+            "xmlns:xlink": "http://www.w3.org/1999/xlink",
+            "width": str(self.bounds.width),
+            "height": str(self.bounds.height),
+            "viewBox": f"0 0 {self.bounds.width} {self.bounds.height}",
+        }
+        svg_root = Element("svg", svg_attrs)
+
+        for layer in self.layers:
+            if layer.visible:
+                layer.render_to_svg(svg_root, self.coordinate_system)
+
+        return svg_root
+
+    def render_to_nicegui(self):
+        """Render the map to a NiceGUI Html element."""
+        from nicegui.elements.html import Html
+        svg_string = self.render_to_svg()
+        return Html(svg_string)
+
+    def save_to_file(self, filepath: str) -> None:
+        """Save the SVG to a file."""
+        svg_content = self.render_to_svg()
+        with open(filepath, "w") as f:
+            f.write(svg_content)
+
+    def add_geojson_layer(
+        self,
+        feature_collection: FeatureCollection[Feature[Polygon, dict]],
+        layer_id: str,
+        name: str = "",
+        z_index: int = 0,
+        style: GeometryStyle = None,
+    ) -> GeometryLayer:
+        """Convenience method to add a GeoJSON layer."""
+        layer = GeometryLayer.from_geojson(
+            feature_collection=feature_collection,
+            layer_id=layer_id,
+            name=name,
+            z_index=z_index,
+            style=style,
+        )
+        self.add_layer(layer)
+        return layer
+
+    def add_visual_layer(
+        self,
+        layer_id: str,
+        color: str = None,
+        image_path: str = None,
+        render_type: str = "background",
+        z_index: int = -1,  # Background layers typically at bottom
+        name: str = "",
+    ) -> VisualLayer:
+        """Convenience method to add a visual layer."""
+        layer = VisualLayer(
+            layer_id=layer_id,
+            name=name,
+            z_index=z_index,
+            color=color,
+            image_path=image_path,
+            render_type=render_type,
+        )
+        self.add_layer(layer)
+        return layer
+
+    def add_positional_layer(
+        self,
+        layer_id: str,
+        hex_grid: HexGrid = None,
+        z_index: int = 10,  # Positional layers typically on top
+        name: str = "",
+    ) -> PositionalLayer:
+        """Convenience method to add a positional layer."""
+        layer = PositionalLayer(
+            layer_id=layer_id,
+            name=name,
+            z_index=z_index,
+            hex_grid=hex_grid or self.hex_grid,
+        )
+        self.add_layer(layer)
+        return layer
+
+
+def create_sample_map() -> Map:
+    """Create a sample map with North America data for demonstration."""
+    # Create map
+    map_obj = Map(pixel_width=1000, pixel_height=800)
+
+    # Add background (ocean)
+    map_obj.add_visual_layer(
+        layer_id="ocean_background",
+        color="#a8d8ea",
+        render_type="background",
+        z_index=-10,
+        name="Ocean Background",
+    )
+
+    # Add land background
+    map_obj.add_visual_layer(
+        layer_id="land_background",
+        color="#e8f5e9",
+        render_type="background",
+        z_index=-5,
+        name="Land Background",
+    )
+
+    # Add North America countries (USA, Canada, Mexico)
+    na_layer = map_obj.add_geojson_layer(
+        feature_collection=get_all_na_countries(),
+        layer_id="north_america",
+        name="North America",
+        z_index=0,
+        style=GeometryStyle(
+            stroke="#388e3c",
+            stroke_width=1.0,
+            fill="#8bc34a",
+            fill_opacity=0.5,
+        ),
+    )
+
+    # Add rivers
+    rivers_layer = map_obj.add_geojson_layer(
+        feature_collection=rivers_50_nadata,
+        layer_id="rivers",
+        name="Rivers",
+        z_index=5,
+        style=GeometryStyle(
+            stroke="#1976d2",
+            stroke_width=1.5,
             fill="none",
-        )
-        result.set("vector-effect", "non-scaling-stroke")
-        return result
-    elif isinstance(feature, shapely.geometry.MultiLineString):
-        with parent(SubElement(cur(), "g")) as group:
-            for geom in feature.geoms:
-                render_geometry(geom, fill)
-        return group
-    assert False, type(feature)
+        ),
+    )
+
+    # Add lakes
+    lakes_layer = map_obj.add_geojson_layer(
+        feature_collection=ne_50m_lakesdata,
+        layer_id="lakes",
+        name="Lakes",
+        z_index=5,
+        style=GeometryStyle(
+            stroke="#1976d2",
+            stroke_width=1.0,
+            fill="#90caf9",
+            fill_opacity=0.5,
+        ),
+    )
+
+    # Add positional layer for cities
+    cities_layer = map_obj.add_positional_layer(
+        layer_id="cities",
+        z_index=20,
+        name="Cities",
+    )
+
+    # Add some sample cities (these would normally come from data)
+    # For now, add cities at approximate hex positions
+    # These are placeholder coordinates - real implementation would use geo data
+    cities_layer.add_element(
+        hex_coord=HexCoord(0, 0),
+        element_type="city",
+        name="Chicago",
+    )
+    cities_layer.add_element(
+        hex_coord=HexCoord(5, 2),
+        element_type="city",
+        name="New York",
+    )
+    cities_layer.add_element(
+        hex_coord=HexCoord(-3, -2),
+        element_type="city",
+        name="Denver",
+    )
+
+    # Style cities
+    cities_layer.styles_by_type["city"] = PositionalElementStyle(
+        radius=8,
+        fill="#f44336",
+        stroke="#d32f2f",
+        stroke_width=2,
+        symbol="circle",
+    )
+
+    return map_obj
 
 
-def transform(name: str, *args: any):
-    return f"{name}({' '.join(str(s) for s in args)})"
+def create_hex_only_map() -> Map:
+    """Create a simple hex-grid only map for testing."""
+    map_obj = Map(pixel_width=800, pixel_height=600)
 
+    # Use a larger hex grid with centered origin
+    hex_grid = HexGrid(size=20, orientation="flat", origin=(400, 300))
 
-def render_map(grid: Html, map: Map, scale: int):
-    with parent(
-        Element("svg", xmlns="http://www.w3.org/2000/svg", version="1.1")
-    ) as svg:
-        svg.set("height", str(int(map.height * scale)))
-        svg.set("width", str(int(map.width * scale)))
-        SubElement(cur(), "rect", width="100%", height="100%", fill="lightblue")
+    # Add background
+    map_obj.add_visual_layer(
+        layer_id="background",
+        color="#f5f5f5",
+        z_index=-1,
+    )
 
-        with parent(
-            SubElement(
-                cur(),
-                "g",
-                transform=" ".join(
-                    [
-                        transform("scale", -scale, scale),
-                        transform("rotate", 180, map.width / 2, map.height / 2),
-                        transform(
-                            "translate",
-                            -map.land.bounds[0] + map.width,
-                            -map.land.bounds[1],
-                        ),
-                    ]
-                ),
+    # Add hex grid positional layer
+    hex_layer = map_obj.add_positional_layer(
+        layer_id="hex_grid",
+        hex_grid=hex_grid,
+        z_index=0,
+        name="Hex Grid",
+    )
+
+    # Style hexes
+    hex_layer.default_style = PositionalElementStyle(
+        symbol="hex",
+        stroke="#9e9e9e",
+        stroke_width=0.5,
+        fill="none",
+    )
+
+    # Add hexes in a pattern
+    for q in range(-5, 6):
+        for r in range(-5, 6):
+            hex_coord = HexCoord(q, r)
+            hex_layer.add_element(
+                hex_coord=hex_coord,
+                element_type="hex",
             )
-        ):
-            for x in range(int(map.land.bounds[0]), int(map.land.bounds[2])):
-                for y in range(int(map.land.bounds[1]), int(map.land.bounds[3])):
-                    cx, cy = triangle_coord(x, y)
-                    for coll in []:
-                        if coll.overlaps(Point(cx, cy)):
-                            break
-                    else:
-                        # if map.land.overlaps(Point(cx, cy)):
-                        circle = SubElement(
-                            cur(),
-                            "circle",
-                            r="0.1",
-                            cx=str(cx),
-                            cy=str(cy),
-                            fill="none",
-                            stroke="black",
-                            stroke_width="1",
-                        )
-                        circle.set("vector-effect", "non-scaling-stroke")
-            for geom in map.land.geoms:
-                render_geometry(geom, "white")
-            for geom in map.rivers.geoms:
-                render_geometry(geom, "blue")
-            for geom in map.lakes.geoms:
-                render_geometry(geom, "blue")
 
-    grid.set_content(tostring(svg, encoding="unicode"))
-
-
-def create_maps() -> dict[str, Map]:
-    return dict(
-        USA=create_us_map(),
+    # Add some cities
+    cities_layer = map_obj.add_positional_layer(
+        layer_id="cities",
+        hex_grid=hex_grid,
+        z_index=10,
+        name="Cities",
     )
 
-
-def create_us_map() -> Map:
-    land = GeometryCollection(
-        [shape(f.geometry) for f in continental.features if shape(f.geometry)]
+    cities_layer.add_element(
+        hex_coord=HexCoord(0, 0),
+        element_type="city",
+        name="Central City",
     )
-    rivers = GeometryCollection(
-        [
-            s
-            for ds in [rivers_50_nadata]
-            for f in ds.features
-            if f.geometry
-            for s in (shape(f.geometry),)
-            if land.contains(s)
-        ]
+    cities_layer.add_element(
+        hex_coord=HexCoord(3, -1),
+        element_type="city",
+        name="East City",
     )
-    lakes = GeometryCollection(
-        [
-            s
-            for ds in [ne_50m_lakesdata]
-            for f in ds.features
-            if f.geometry
-            for s in (shape(f.geometry),)
-            if land.contains(s) and s.area > 0.3
-        ]
+    cities_layer.add_element(
+        hex_coord=HexCoord(-2, 2),
+        element_type="city",
+        name="North City",
     )
 
-    return Map(land=land, rivers=rivers, lakes=lakes)
+    cities_layer.styles_by_type["city"] = PositionalElementStyle(
+        radius=10,
+        fill="#2196f3",
+        stroke="#1976d2",
+        stroke_width=2,
+        symbol="circle",
+    )
+
+    return map_obj
 
 
 def main():
-    """Entry point for the trains map viewer."""
-    render_map(ui.html(), create_us_map(), 10)
-    ui.run()
+    """Main function for testing map rendering."""
+    # Create a sample map
+    map_obj = create_hex_only_map()
+
+    # Save to file
+    map_obj.save_to_file("/tmp/train_map_test.svg")
+    print("Sample map saved to /tmp/train_map_test.svg")
+
+    # Also create one with North America
+    na_map = create_sample_map()
+    na_map.save_to_file("/tmp/train_map_na.svg")
+    print("North America map saved to /tmp/train_map_na.svg")
 
 
 if __name__ in {"__main__", "__mp_main__"}:
