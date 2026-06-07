@@ -230,11 +230,11 @@
         "uv2nix": "uv2nix"
       },
       "locked": {
-        "lastModified": 1778492693,
-        "narHash": "sha256-4zfeMbqM43Gd/s7EDROEHste1+0+X9Qs3LUIxCp2Clg=",
+        "lastModified": 1780064274,
+        "narHash": "sha256-N4VkqsqcjJfRJwShs5JGyoeGXgc8Ioa0M3UZbO68z0A=",
         "owner": "mistralai",
         "repo": "mistral-vibe",
-        "rev": "626f905186637a5e528e0c647b1c9f517378a98c",
+        "rev": "ad0d5c9520785065ff39e3e69958c85863e5fd43",
         "type": "github"
       },
       "original": {
@@ -250,11 +250,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1779003074,
-        "narHash": "sha256-fzWN7BoguvtZtxEohqSHpn1mE+WC8cQ587xNTW5fe4g=",
+        "lastModified": 1779036909,
+        "narHash": "sha256-zXcwYQGCT6pzinK+1dBB2ekTVtfxGZAapb3Evdcu4fY=",
         "owner": "LnL7",
         "repo": "nix-darwin",
-        "rev": "1e107a7b92c6910f0e910d9f2520f5791189a01b",
+        "rev": "56c666e108467d87d13508936aade6d567f2a501",
         "type": "github"
       },
       "original": {
@@ -317,11 +317,11 @@
     },
     "nixpkgs_2": {
       "locked": {
-        "lastModified": 1779011289,
-        "narHash": "sha256-iPKSCyyO+mKT5LXvEZvD4jYaLyynqmlcBktFsvbARQ0=",
+        "lastModified": 1780436196,
+        "narHash": "sha256-1XAw5uFVVgPk8f2myAoUw2YvvGyL2j4MpRpuqqj7WZk=",
         "owner": "NixOS",
         "repo": "nixpkgs",
-        "rev": "c573549d68b08a7a82ac78997ee46af47b312511",
+        "rev": "05e0b0171b825c8f4ba558bb6b61fd2319a612cf",
         "type": "github"
       },
       "original": {
@@ -460,11 +460,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1778987862,
-        "narHash": "sha256-V3qGt9P1eJP/r/1ONablphfGiH0RP4agQhrRANpDYx8=",
+        "lastModified": 1780370483,
+        "narHash": "sha256-7mDa7OBAaf7MU6ZovT9ENfD62kH911SsSazBb4KTDF0=",
         "owner": "oxalica",
         "repo": "rust-overlay",
-        "rev": "6f44d8874ac29806c8d5cae42bf8e19ebb5ce0d3",
+        "rev": "4a408e1fc99ad517b4cb402fd0de7464f40c05e1",
         "type": "github"
       },
       "original": {
@@ -687,11 +687,11 @@
         "typsitter": "typsitter"
       },
       "locked": {
-        "lastModified": 1778248851,
-        "narHash": "sha256-on1ilB63haR258UC4rbiAvoprTGFIlJmEN0XaiJNghg=",
+        "lastModified": 1779865382,
+        "narHash": "sha256-B8gCUoY2nZ49jypk94pLOBiKdNIsoVrnwiG+vUBII+U=",
         "owner": "VineLang",
         "repo": "vine",
-        "rev": "bacdeb4c00b7be068d097911478ec77b26539e5c",
+        "rev": "676fd16b5d01634b77cc52a235e813be8f150fb8",
         "type": "github"
       },
       "original": {
