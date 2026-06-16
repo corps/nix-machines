@@ -90,7 +90,7 @@ guidance==0.2.0
     # via -r requirements.txt
 guidance-stitch==0.1.4
     # via guidance
-h11==0.14.0
+h11==0.16.0
     # via httpcore
 hatch-nodejs-version==0.3.2
     # via -r requirements.txt
