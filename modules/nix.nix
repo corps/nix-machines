@@ -15,29 +15,28 @@ in
     environment = {
       systemPackages = with pkgs; [
         nixd
-        nixfmt-rfc-style
+        nixfmt
         compost
       ];
     };
 
     nix = {
-      gc =
-        {
-          automatic = true;
-          options = "--delete-older-than 14d";
-        }
-        // (
-          if pkgs.stdenv.isDarwin then
-            {
-              interval = {
-                Weekday = 0;
-                Hour = 10;
-                Minute = 0;
-              };
-            }
-          else
-            { }
-        );
+      gc = {
+        automatic = true;
+        options = "--delete-older-than 14d";
+      }
+      // (
+        if pkgs.stdenv.isDarwin then
+          {
+            interval = {
+              Weekday = 0;
+              Hour = 10;
+              Minute = 0;
+            };
+          }
+        else
+          { }
+      );
 
       settings = {
         "extra-experimental-features" = [

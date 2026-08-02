@@ -22,7 +22,6 @@ in
     environment = {
       systemPackages = with pkgs; [
         vim
-        neovim
         gnused
         curl
         wget

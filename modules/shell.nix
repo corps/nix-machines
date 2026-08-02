@@ -6,13 +6,8 @@
 }:
 
 with lib;
-let
-  pre-commit-hooks = config.checks.pre-commit-check;
-in
 
 {
-  imports = [ ./checks.nix ];
-
   options = rec {
     programs.bash.interactiveShellInit = mkOption {
       type = types.lines;
@@ -29,8 +24,7 @@ in
   };
 
   config = {
-    buildInputs = config.environment.systemPackages ++ pre-commit-hooks.enabledPackages;
-    programs.bash.interactiveShellInit = pre-commit-hooks.shellHook;
+    buildInputs = config.environment.systemPackages;
     shellHook = config.programs.bash.interactiveShellInit;
   };
 }

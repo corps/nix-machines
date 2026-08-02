@@ -3,13 +3,9 @@
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/master";
     nixos.url = "github:NixOs/nixpkgs/nixos-25.05";
-    easy-purescript-nix.url = "github:justinwoo/easy-purescript-nix";
+    nvf.url = "github:notashelf/nvf";
     nix-darwin.url = "github:LnL7/nix-darwin";
     nix-darwin.inputs.nixpkgs.follows = "nixpkgs";
-    nix-github-actions.url = "github:nix-community/nix-github-actions";
-    nix-github-actions.inputs.nixpkgs.follows = "nixpkgs";
-    pre-commit-hooks.url = "github:cachix/git-hooks.nix";
-    pre-commit-hooks.inputs.nixpkgs.follows = "nixpkgs";
     home-manager = {
       url = "github:nix-community/home-manager/release-25.05";
       inputs.nixpkgs.follows = "nixos";
@@ -17,13 +13,6 @@
     rust-overlay = {
       url = "github:oxalica/rust-overlay";
       inputs.nixpkgs.follows = "nixpkgs";
-    };
-    vine = {
-      url = "github:VineLang/vine";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-    py-ivm = {
-      url = "github:corps/py-ivm";
     };
     mistral-vibe = {
       url = "github:mistralai/mistral-vibe";
@@ -36,8 +25,6 @@
       nixpkgs,
       nixos,
       home-manager,
-      nix-github-actions,
-      mistral-vibe,
       nix-darwin,
       # nix-ld,
       ...
@@ -59,10 +46,6 @@
         };
         "ZacharynoiMac" = nix-darwin.lib.darwinSystem {
           modules = [ ./imac/default.nix ];
-          specialArgs = { inherit inputs; };
-        };
-        "Zachs-MacBook-Pro" = nix-darwin.lib.darwinSystem {
-          modules = [ ./candid/default.nix ];
           specialArgs = { inherit inputs; };
         };
       };
@@ -130,10 +113,6 @@
         };
       };
 
-      githubActions = nix-github-actions.lib.mkGithubMatrix {
-        checks = nixpkgs.lib.getAttrs [ "x86_64-linux" ] self.checks;
-      };
-
       dev = forAllSystems (
         system:
         let
@@ -150,8 +129,6 @@
           ];
         }).config
       );
-
-      checks = forAllSystems (system: self.dev.${system}.checks);
 
       devShells = forAllSystems (system: {
         default = nixpkgs.legacyPackages.${system}.mkShell {

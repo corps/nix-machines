@@ -34,7 +34,6 @@ in
 {
   imports = [
     ./linked.nix
-    ./checks.nix
   ];
 
   options = {
@@ -56,9 +55,6 @@ in
     environment = {
       systemPackages = [
         cfg.default
-        cfg.default.pkgs.black
-        cfg.default.pkgs.isort
-        cfg.default.pkgs.pip-tools
         git-remote-dropbox
       ];
 
@@ -68,12 +64,6 @@ in
           "bin/python" = "bin/python${name}";
         };
       }) cfg.alternatives;
-    };
-
-    hooks.settings = {
-      black.enable = true;
-      isort.enable = true;
-      isort.settings.profile = "black";
     };
   };
 }
