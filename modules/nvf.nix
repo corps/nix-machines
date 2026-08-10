@@ -54,6 +54,12 @@
       action = ":BufferLineCycleNext<CR>";
     }
     {
+      key = "<leader>e";
+      mode = "n";
+      silent = true;
+      action = ":Neotree toggle<CR>";
+    }
+    {
       key = "<leader>w";
       mode = "n";
       silent = true;
@@ -129,7 +135,7 @@ in {
               };
             };
 
-            autocomplete.nvim-cmp = {
+            autocomplete.blink-cmp = {
               enable = true;
             };
 
@@ -148,6 +154,10 @@ in {
 
               python = {
                 enable = true;
+                lsp.servers = ["ty"];
+                extraDiagnostics = {
+                  enable = false;
+                };
               };
 
               nix = {
