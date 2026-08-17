@@ -137,6 +137,19 @@ in {
 
             autocomplete.blink-cmp = {
               enable = true;
+              setupOpts = {
+                signature = {
+                  enabled = true;
+                  window.border = ["" "" "" "▕" "" "" "" "▌"];
+                };
+                cmdline = {
+                  enable = true;
+                  keymap = {
+                    "<Tab>" = ["show" "accept"];
+                    "<CR>" = ["accept" "fallback"];
+                  };
+                };
+              };
             };
 
             binds = {
@@ -179,6 +192,12 @@ in {
               cmake = {
                 enable = true;
               };
+            };
+
+            visuals = {
+              nvim-web-devicons.enable = true;
+              nvim-scrollbar.enable = true;
+              fidget-nvim.enable = true;
             };
           };
         }

@@ -1,0 +1,63 @@
+#!/bin/bash
+
+# Pi Native App Launcher
+# This script attempts to find and launch pi from /run/current-system/sw/bin/
+# using Alacritty as the terminal emulator
+
+# Resolve the actual script path, following symlinks
+resolve_script_path() {
+    local path="$1"
+    while [ -L "$path" ]; do
+        path="$(readlink "$path")"
+    done
+    echo "$(cd "$(dirname "$path")" && pwd)"
+}
+
+SCRIPT_DIR=$(resolve_script_path "$0")
+PI_PATH="/run/current-system/sw/bin/pi"
+
+# Check if pi exists at the expected path
+if [ -x "$PI_PATH" ]; then
+    # Try to find Alacritty in common locations
+    ALACRITTY_PATHS=(
+        "/run/current-system/sw/bin/alacritty"
+        "/Applications/Alacritty.app/Contents/MacOS/alacritty"
+        "/usr/local/bin/alacritty"
+        "$HOME/.cargo/bin/alacritty"
+        "$(which alacritty 2>/dev/null)"
+    )
+    
+    ALACRITTY=""
+    for path in "${ALACRITTY_PATHS[@]}"; do
+        if [ -n "$path" ] && [ -x "$path" ]; then
+            ALACRITTY="$path"
+            break
+        fi
+    done
+    
+    if [ -n "$ALACRITTY" ]; then
+        # Create a temporary config directory
+        CONFIG_DIR=$(mktemp -d)
+        CONFIG_FILE="$CONFIG_DIR/alacritty.toml"
+        
+        # Copy our custom configuration
+        cp "$SCRIPT_DIR/../Resources/alacritty.toml" "$CONFIG_FILE"
+        
+        # Launch pi in Alacritty with our custom config
+        "$ALACRITTY" --config-file "$CONFIG_FILE" -e "$PI_PATH"
+        
+        # Clean up the temp config (in background to not block)
+        (sleep 2 && rm -rf "$CONFIG_DIR") &
+    else
+        # Fall back to default Terminal if Alacritty not found
+        osascript -e "tell application \"Terminal\"" \
+                  -e "activate" \
+                  -e "do script \"$PI_PATH\"" \
+                  -e "end tell"
+        osascript -e 'display notification "Using default Terminal - consider installing Alacritty for better keybinding support" with title "Pi Native"'
+    fi
+else
+    # Show error if pi not found
+    osascript -e 'display alert "Pi not found" message "Could not find pi at /run/current-system/sw/bin/pi"'
+    exit 1
+fi

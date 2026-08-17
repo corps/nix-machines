@@ -4,20 +4,14 @@
   inputs,
   ...
 }:
-
-with lib;
-
-let
-  ngrok3 = pkgs.callPackage ../ngrok { };
+with lib; let
+  ngrok3 = pkgs.callPackage ../ngrok {};
   gdk = pkgs.google-cloud-sdk.withExtraComponents (
-    with pkgs.google-cloud-sdk.components;
-    [
+    with pkgs.google-cloud-sdk.components; [
       gke-gcloud-auth-plugin
     ]
   );
-in
-
-{
+in {
   config = {
     environment = {
       systemPackages = with pkgs; [
@@ -36,6 +30,8 @@ in
         gh
         nixos-rebuild
         inputs.mistral-vibe.packages.${pkgs.system}.default
+        pi-coding-agent
+        (import ../pi-native {inherit pkgs;})
       ];
 
       variables = {

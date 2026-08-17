@@ -1,0 +1,91 @@
+[cursor]
+style = "Beam"
+
+[font]
+size = 16
+
+[font.bold]
+style = "Bold"
+
+[font.normal]
+family = "CodeNewRoman Nerd Font Mono"
+
+[[keyboard.bindings]]
+key = "T"
+mods = "Command"
+action = "None"
+
+[[keyboard.bindings]]
+key = "W"
+mods = "Command"
+action = "None"
+
+[[keyboard.bindings]]
+key = "LBracket"
+mods = "Command|Shift"
+action = "None"
+
+[[keyboard.bindings]]
+key = "RBracket"
+mods = "Command|Shift"
+action = "None"
+
+[[keyboard.bindings]]
+key = "Key1"
+mods = "Command"
+action = "None"
+
+[[keyboard.bindings]]
+key = "Key2"
+mods = "Command"
+action = "None"
+
+[[keyboard.bindings]]
+key = "Key3"
+mods = "Command"
+action = "None"
+
+[[keyboard.bindings]]
+key = "Key4"
+mods = "Command"
+action = "None"
+
+[[keyboard.bindings]]
+key = "Key5"
+mods = "Command"
+action = "None"
+
+[[keyboard.bindings]]
+key = "Key6"
+mods = "Command"
+action = "None"
+
+[[keyboard.bindings]]
+key = "Key7"
+mods = "Command"
+action = "None"
+
+[[keyboard.bindings]]
+key = "Key8"
+mods = "Command"
+action = "None"
+
+[[keyboard.bindings]]
+key = "Key9"
+mods = "Command"
+action = "None"
+
+[[keyboard.bindings]]
+key = "C"
+mods = "Command"
+action = "Copy"
+
+[[keyboard.bindings]]
+key = "V"
+mods = "Command"
+action = "Paste"
+
+[[keyboard.bindings]]
+key = "Q"
+mods = "Command"
+action = "Quit"
