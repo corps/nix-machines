@@ -1,8 +1,4 @@
-{
-  ...
-}:
-
-{
+{...}: {
   system.stateVersion = 5;
   nixpkgs.hostPlatform = "aarch64-darwin";
 
@@ -13,7 +9,7 @@
   services.skhd.skhdConfig = ''
     shift + cmd - d    : open -a "Safari"
     shift + cmd - e    : open -a "Alacritty"
-    shift + cmd - 0x2C : open -a "Visual Studio Code"
+    shift + cmd - 0x2C : open -a /run/current-system/Applications/pi.app/
     shift + cmd - 0x2F : open -a Neovide
   '';
 
