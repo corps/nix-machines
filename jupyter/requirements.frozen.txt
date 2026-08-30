@@ -380,7 +380,7 @@ tiktoken==0.9.0
     # via guidance
 tinycss2==1.4.0
     # via bleach
-tornado==6.4.2
+tornado==6.5.1
     # via
     #   ipykernel
     #   jupyter-client
