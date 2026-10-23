@@ -95,6 +95,30 @@
       silent = true;
       action = "<leader>lgd";
     }
+    {
+      key = "<leader>ff";
+      mode = "n";
+      silent = true;
+      action = ":Telescope find_files<CR>";
+    }
+    {
+      key = "<leader>fg";
+      mode = "n";
+      silent = true;
+      action = ":Telescope live_grep<CR>";
+    }
+    {
+      key = "<leader>fa";
+      mode = "n";
+      silent = true;
+      action = ":lua telescope_smart_search()<CR>";
+    }
+    {
+      key = "<leader>fs";
+      mode = "n";
+      silent = true;
+      action = ":Telescope lsp_workspace_symbols<CR>";
+    }
   ];
 in {
   environment.systemPackages = [
@@ -111,6 +135,15 @@ in {
               shiftwidth = 2;
               softtabstop = 2;
             };
+
+            clipboard = {
+              enable = true;
+              registers = "unnamedplus";
+            };
+
+            preventJunkFiles = true;
+            searchCase = "smart";
+            undoFile.enable = true;
 
             lsp = {
               enable = true;
@@ -192,6 +225,10 @@ in {
               cmake = {
                 enable = true;
               };
+
+              zig = {
+                enable = true;
+              };
             };
 
             visuals = {
@@ -199,6 +236,29 @@ in {
               nvim-scrollbar.enable = true;
               fidget-nvim.enable = true;
             };
+
+            telescope.enable = true;
+
+            luaConfigPost = ''
+              function _G.telescope_smart_search()
+                local builtin = require('telescope.builtin')
+                vim.ui.select(
+                  {'Files', 'Workspace Symbols', 'Document Symbols', 'Live Grep'},
+                  {prompt = '🔍 Search project:'},
+                  function(choice)
+                    if choice == 'Files' then
+                      builtin.find_files()
+                    elseif choice == 'Workspace Symbols' then
+                      builtin.lsp_workspace_symbols()
+                    elseif choice == 'Document Symbols' then
+                      builtin.lsp_document_symbols()
+                    elseif choice == 'Live Grep' then
+                      builtin.live_grep()
+                    end
+                  end
+                )
+              end
+            '';
           };
         }
       ];
