@@ -1,5 +1,6 @@
 {
   pkgs,
+  lib,
   inputs,
   ...
 }: let
@@ -145,6 +146,12 @@ in {
             searchCase = "smart";
             undoFile.enable = true;
 
+            # direnv integration — the direnv-vim plugin automatically
+            # registers `autocmd DirChanged * DirenvExport` so the shell
+            # environment reloads whenever Neovim's working directory changes
+            # (e.g. via :cd, :lcd, or neo-tree).
+            utility.direnv.enable = true;
+
             lsp = {
               enable = true;
               formatOnSave = true;
@@ -152,6 +159,11 @@ in {
               # How to codeactions?
               lightbulb.enable = true;
               trouble.enable = true;
+
+              # Run zls from $PATH (e.g. provided by a project devshell/direnv)
+              # instead of the nixpkgs zls pinned by nvf's preset. mkForce is
+              # required because the preset also defines `cmd`.
+              servers.zls.cmd = lib.mkForce ["zls"];
             };
 
             theme.enable = true;
@@ -237,7 +249,22 @@ in {
               fidget-nvim.enable = true;
             };
 
-            telescope.enable = true;
+            telescope = {
+              enable = true;
+
+              # nvf's default vimgrep_arguments passes `--no-ignore`, which makes
+              # live_grep search gitignored files. Override to respect .gitignore
+              # (drop `--no-ignore`); keep `--hidden` if you still want dotfiles.
+              setupOpts.defaults.vimgrep_arguments = [
+                "${pkgs.ripgrep}/bin/rg"
+                "--color=never"
+                "--no-heading"
+                "--with-filename"
+                "--line-number"
+                "--column"
+                "--smart-case"
+              ];
+            };
 
             luaConfigPost = ''
               function _G.telescope_smart_search()
