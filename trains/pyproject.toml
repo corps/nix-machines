@@ -5,7 +5,7 @@ description = "A web-based railroad game built with NiceGUI"
 requires-python = ">=3.14"
 dependencies = [
     "pydantic>=2.0",
-    "nicegui>=3.12.1",
+    "nicegui>=3.18",
     "aiohttp",
     "requests>=2.0",
     "urllib3>=1.0,<2.0",
@@ -18,8 +18,6 @@ dependencies = [
 ]
 
 [project.scripts]
-trains-server = "trains.server:main"
-trains-map-viewer = "trains.map:main"
 
 [build-system]
 requires = ["hatchling", "editables"]
