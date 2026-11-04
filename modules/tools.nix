@@ -29,9 +29,9 @@ in {
         gdk
         gh
         nixos-rebuild
-        inputs.mistral-vibe.packages.${pkgs.system}.default
+        # inputs.mistral-vibe.packages.${pkgs.system}.default
         pi-coding-agent
-        (import ../pi-native {inherit pkgs;})
+        # (import ../pi-native {inherit pkgs;})
       ];
 
       variables = {

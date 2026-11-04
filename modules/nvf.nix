@@ -1,5 +1,6 @@
 {
   pkgs,
+  lib,
   inputs,
   ...
 }: let
@@ -95,6 +96,30 @@
       silent = true;
       action = "<leader>lgd";
     }
+    {
+      key = "<leader>ff";
+      mode = "n";
+      silent = true;
+      action = ":Telescope find_files<CR>";
+    }
+    {
+      key = "<leader>fg";
+      mode = "n";
+      silent = true;
+      action = ":Telescope live_grep<CR>";
+    }
+    {
+      key = "<leader>fa";
+      mode = "n";
+      silent = true;
+      action = ":lua telescope_smart_search()<CR>";
+    }
+    {
+      key = "<leader>fs";
+      mode = "n";
+      silent = true;
+      action = ":Telescope lsp_workspace_symbols<CR>";
+    }
   ];
 in {
   environment.systemPackages = [
@@ -112,6 +137,21 @@ in {
               softtabstop = 2;
             };
 
+            clipboard = {
+              enable = true;
+              registers = "unnamedplus";
+            };
+
+            preventJunkFiles = true;
+            searchCase = "smart";
+            undoFile.enable = true;
+
+            # direnv integration — the direnv-vim plugin automatically
+            # registers `autocmd DirChanged * DirenvExport` so the shell
+            # environment reloads whenever Neovim's working directory changes
+            # (e.g. via :cd, :lcd, or neo-tree).
+            utility.direnv.enable = true;
+
             lsp = {
               enable = true;
               formatOnSave = true;
@@ -119,6 +159,11 @@ in {
               # How to codeactions?
               lightbulb.enable = true;
               trouble.enable = true;
+
+              # Run zls from $PATH (e.g. provided by a project devshell/direnv)
+              # instead of the nixpkgs zls pinned by nvf's preset. mkForce is
+              # required because the preset also defines `cmd`.
+              servers.zls.cmd = lib.mkForce ["zls"];
             };
 
             theme.enable = true;
@@ -192,6 +237,10 @@ in {
               cmake = {
                 enable = true;
               };
+
+              zig = {
+                enable = true;
+              };
             };
 
             visuals = {
@@ -199,6 +248,44 @@ in {
               nvim-scrollbar.enable = true;
               fidget-nvim.enable = true;
             };
+
+            telescope = {
+              enable = true;
+
+              # nvf's default vimgrep_arguments passes `--no-ignore`, which makes
+              # live_grep search gitignored files. Override to respect .gitignore
+              # (drop `--no-ignore`); keep `--hidden` if you still want dotfiles.
+              setupOpts.defaults.vimgrep_arguments = [
+                "${pkgs.ripgrep}/bin/rg"
+                "--color=never"
+                "--no-heading"
+                "--with-filename"
+                "--line-number"
+                "--column"
+                "--smart-case"
+              ];
+            };
+
+            luaConfigPost = ''
+              function _G.telescope_smart_search()
+                local builtin = require('telescope.builtin')
+                vim.ui.select(
+                  {'Files', 'Workspace Symbols', 'Document Symbols', 'Live Grep'},
+                  {prompt = '🔍 Search project:'},
+                  function(choice)
+                    if choice == 'Files' then
+                      builtin.find_files()
+                    elseif choice == 'Workspace Symbols' then
+                      builtin.lsp_workspace_symbols()
+                    elseif choice == 'Document Symbols' then
+                      builtin.lsp_document_symbols()
+                    elseif choice == 'Live Grep' then
+                      builtin.live_grep()
+                    end
+                  end
+                )
+              end
+            '';
           };
         }
       ];
