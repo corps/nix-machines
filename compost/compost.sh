@@ -60,10 +60,6 @@ if isDarwin; then
   fi
 fi
 
-if ! check fileExists ~/.config/nvim; then
-  echoRun ln -s $HOME/nix-machines/lazy-vim/ ~/.config/nvim
-fi
-
 if isDarwin; then
   sudo darwin-rebuild switch --flake $DIR/.. $@
 else
