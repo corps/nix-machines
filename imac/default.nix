@@ -1,8 +1,4 @@
-{
-  ...
-}:
-
-{
+{...}: {
   system.stateVersion = 5;
   nixpkgs.hostPlatform = "arm64-darwin";
 
@@ -14,7 +10,7 @@
     shift + cmd - d    : open -a "Safari"
     shift + cmd - e    : open -a "Alacritty"
     shift + cmd - 0x2C : open -a "PyCharm"
-    shift + cmd - 0x2F : open -a Neovide
+    shift + cmd - 0x2F : open -a /run/current-system/Applications/pi.app/
   '';
 
   system.primaryUser = "zach";
