@@ -8,27 +8,6 @@
 with lib;
 let
   cfg = config.programs.python;
-  git-remote-dropbox = cfg.default.pkgs.buildPythonPackage rec {
-    pname = "git-remote-dropbox";
-    version = "2.0.5";
-    pyproject = true;
-
-    src = pkgs.fetchFromGitHub {
-      owner = "anishathalye";
-      repo = "git-remote-dropbox";
-      tag = "v${version}";
-      hash = "sha256-Bv9+lZCZia+ZhcXOnzD1kz0KIbwkcS2gqG2C4J0Kp7Q=";
-    };
-
-    build-system = [
-      cfg.default.pkgs.hatchling
-      cfg.default.pkgs.flit-core
-    ];
-
-    dependencies = [
-      cfg.default.pkgs.dropbox
-    ];
-  };
 in
 
 {
@@ -53,10 +32,7 @@ in
 
   config = {
     environment = {
-      systemPackages = [
-        cfg.default
-        git-remote-dropbox
-      ];
+      systemPackages = [ cfg.default ];
 
       linked = attrsets.mapAttrsToList (name: value: {
         source = value;

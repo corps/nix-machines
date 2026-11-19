@@ -31,7 +31,6 @@ in {
         nixos-rebuild
         # inputs.mistral-vibe.packages.${pkgs.system}.default
         pi-coding-agent
-        # (import ../pi-native {inherit pkgs;})
       ];
 
       variables = {
@@ -51,9 +50,6 @@ in {
       lfs.enable = true;
       userName = "Zachary Collins";
       userEmail = "recursive.cookie.jar@gmail.com";
-      extraConfig = {
-        protocol.dropbox.allow = "always";
-      };
     };
 
     programs.bash.interactiveShellInit = ''

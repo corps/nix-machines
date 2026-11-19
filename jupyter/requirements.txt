@@ -15,6 +15,5 @@ jupyter-scheduler
 beancount
 beangulp
 dropbox
-git-remote-dropbox
 parsy
 jupyter_client
