@@ -241,6 +241,10 @@ in {
               zig = {
                 enable = true;
               };
+
+              rust = {
+                enable = true;
+              };
             };
 
             visuals = {

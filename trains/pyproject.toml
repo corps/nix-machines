@@ -18,6 +18,7 @@ dependencies = [
 ]
 
 [project.scripts]
+trains-editor = "trains.editor:main"
 
 [build-system]
 requires = ["hatchling", "editables"]

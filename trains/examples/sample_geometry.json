@@ -1,0 +1,39 @@
+{
+  "shapes": [
+    {
+      "type": "rect",
+      "x": 40,
+      "y": 40,
+      "width": 180,
+      "height": 110,
+      "rx": 12,
+      "fill": "#dcfce7",
+      "stroke": "#15803d",
+      "stroke_width": 4
+    },
+    {
+      "type": "polygon",
+      "points": [[620, 80], [820, 80], [720, 240]],
+      "fill": "#dbeafe",
+      "stroke": "#1d4ed8",
+      "stroke_width": 4
+    },
+    {
+      "type": "circle",
+      "cx": 450,
+      "cy": 320,
+      "r": 70,
+      "fill": "#fef9c3",
+      "stroke": "#a16207",
+      "stroke_width": 4
+    },
+    {
+      "type": "path",
+      "d": "M 80 520 Q 250 440 420 520 T 760 520",
+      "fill": "none",
+      "stroke": "#0e7490",
+      "stroke_width": 6,
+      "stroke_linecap": "round"
+    }
+  ]
+}
